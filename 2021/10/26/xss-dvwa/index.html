@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"h01iday.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="反射型XSS Low1234567891011&lt;?phpheader (&quot;X-XSS-Protection: 0&quot;);&#x2F;&#x2F; Is there any input?if( array_key_exists( &quot;name&quot;, $_GET ) &amp;&amp; $_GET[ &amp;#x27;name&amp;#x27; ] !&#x3D; NULL ) &amp;#123;    &#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://h01iday.github.io/2021/10/26/xss-dvwa/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="反射型XSS Low1234567891011&lt;?phpheader (&quot;X-XSS-Protection: 0&quot;);&#x2F;&#x2F; Is there any input?if( array_key_exists( &quot;name&quot;, $_GET ) &amp;&amp; $_GET[ &amp;#x27;name&amp;#x27; ] !&#x3D; NULL ) &amp;#123;    &#x2F;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xss20.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xss21.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xss22.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xss23.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xss24.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xss25.png">
+<meta property="article:published_time" content="2021-10-26T10:53:49.169Z">
+<meta property="article:modified_time" content="2021-10-27T13:47:51.924Z">
+<meta property="article:author" content="H01iday">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/blog/H01iday/source_posts/pics/xss20.png">
+
+
+<link rel="canonical" href="https://h01iday.github.io/2021/10/26/xss-dvwa/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://h01iday.github.io/2021/10/26/xss-dvwa/","path":"2021/10/26/xss-dvwa/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Low"><span class="nav-number">1.</span> <span class="nav-text">Low</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Medium"><span class="nav-number">2.</span> <span class="nav-text">Medium</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#High"><span class="nav-number">3.</span> <span class="nav-text">High</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Impossible"><span class="nav-number">4.</span> <span class="nav-text">Impossible</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%9E%8BXSS"><span class="nav-number"></span> <span class="nav-text">存储型XSS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Low-1"><span class="nav-number">1.</span> <span class="nav-text">Low</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Medium-1"><span class="nav-number">2.</span> <span class="nav-text">Medium</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#High-1"><span class="nav-number">3.</span> <span class="nav-text">High</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Impossible-1"><span class="nav-number">4.</span> <span class="nav-text">Impossible</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DOM-XSS"><span class="nav-number"></span> <span class="nav-text">DOM XSS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Low-2"><span class="nav-number">1.</span> <span class="nav-text">Low</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Medium-2"><span class="nav-number">2.</span> <span class="nav-text">Medium</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#High-2"><span class="nav-number">3.</span> <span class="nav-text">High</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Impossible-2"><span class="nav-number">4.</span> <span class="nav-text">Impossible</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">H01iday</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://h01iday.github.io/2021/10/26/xss-dvwa/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="H01iday">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-10-26 18:53:49" itemprop="dateCreated datePublished" datetime="2021-10-26T18:53:49+08:00">2021-10-26</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-10-27 21:47:51" itemprop="dateModified" datetime="2021-10-27T21:47:51+08:00">2021-10-27</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>反射型XSS</p>
+<h3 id="Low"><a href="#Low" class="headerlink" title="Low"></a>Low</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">header (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( array_key_exists( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;&lt;pre&gt;Hello &#x27;</span> . <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>这里没有任何的防御，直接注入js即可</p>
+<h3 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">header (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( array_key_exists( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$name</span> = str_replace( <span class="string">&#x27;&lt;script&gt;&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>这里做的一个防御措施就是，将&lt;script&gt;tag换成空串也很好绕过</p>
+<p>大小写绕过</p>
+<p>&lt;Script&gt;alert(‘xxx’)&lt;/script&gt;</p>
+<p>组合过滤条件绕过</p>
+<p>&lt;scr&lt;script&gt;ipt&gt;alert(‘sss’)&lt;/script&gt;</p>
+<p>尝试使用别的标签来绕过</p>
+<body onload=alert('s')>
+
+<p>&lt;a href=’’ onclick=alert(‘ss’)&gt;click&lt;/a&gt;</p>
+<p>&lt;a href=’’ onclick=alert(/ss/)&gt;click&lt;/a&gt;</p>
+<h3 id="High"><a href="#High" class="headerlink" title="High"></a>High</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">header (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( array_key_exists( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$name</span> = preg_replace( <span class="string">&#x27;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>php函数：array_key_exists — 检查数组里是否有指定的键名</p>
+<p>$_GET变量是一个数组，内容是由 HTTP GET 方法发送的变量名称和值。</p>
+<p><code> $name = preg_replace( &#39;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&#39;, &#39;&#39;, $_GET[ &#39;name&#39; ] );</code>这里可以看到对&lt;script&gt;标签进行了严格的过滤。</p>
+<p><code>.</code>匹配除换行符 \n 之外的任何单字符。</p>
+<p><code>*</code>匹配前面的子表达式零次或多次。</p>
+<p><code>/i</code>指不区分大小写</p>
+<p>不用&lt;script&gt;标签罢了，可以用img iframe等其他标签来绕过</p>
+<body onload=alert('s')>
+
+<p>&lt;img src=”” onerror=alert(‘xss’)&gt;</p>
+<p>&lt;a href=’’ onclick=alert(‘ss’)&gt;click&lt;/a&gt;</p>
+<p>&lt;a href=’’ onclick=alert(/ss/)&gt;click&lt;/a&gt;</p>
+<h3 id="Impossible"><a href="#Impossible" class="headerlink" title="Impossible"></a>Impossible</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( array_key_exists( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Check Anti-CSRF token</span></span><br><span class="line">    checkToken( <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;user_token&#x27;</span> ], <span class="variable">$_SESSION</span>[ <span class="string">&#x27;session_token&#x27;</span> ], <span class="string">&#x27;index.php&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$name</span> = htmlspecialchars( <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Generate Anti-CSRF token</span></span><br><span class="line">generateSessionToken();</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>这里最重点的一个操作为htmlspecialchars【php函数】</p>
+<p>例子：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$str</span> = <span class="string">&quot;This is some &lt;b&gt;bold&lt;/b&gt; text.&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$str</span>;<span class="comment">//output：This is some bold text.【其中bold被加粗】</span></span><br><span class="line"><span class="keyword">echo</span> htmlspecialchars(<span class="variable">$str</span>);<span class="comment">//output：This is some &lt;b&gt;bold&lt;/b&gt; text.</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>所有注入的&lt;&gt;都会被原样输出，不会被解析成html代码。这样也就无法构造标签进行攻击。</p>
+<h2 id="存储型XSS"><a href="#存储型XSS" class="headerlink" title="存储型XSS"></a>存储型XSS</h2><h3 id="Low-1"><a href="#Low-1" class="headerlink" title="Low"></a>Low</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_POST</span>[ <span class="string">&#x27;btnSign&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$message</span> = trim( <span class="variable">$_POST</span>[ <span class="string">&#x27;mtxMessage&#x27;</span> ] );</span><br><span class="line">    <span class="variable">$name</span>    = trim( <span class="variable">$_POST</span>[ <span class="string">&#x27;txtName&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Sanitize message input</span></span><br><span class="line">    <span class="variable">$message</span> = stripslashes( <span class="variable">$message</span> );</span><br><span class="line">    <span class="variable">$message</span> = ((<span class="keyword">isset</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; is_object(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_real_escape_string(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$message</span> ) : ((trigger_error(<span class="string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="string">&quot;&quot;</span> : <span class="string">&quot;&quot;</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Sanitize name input</span></span><br><span class="line">    <span class="variable">$name</span> = ((<span class="keyword">isset</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; is_object(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_real_escape_string(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$name</span> ) : ((trigger_error(<span class="string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="string">&quot;&quot;</span> : <span class="string">&quot;&quot;</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Update database</span></span><br><span class="line">    <span class="variable">$query</span>  = <span class="string">&quot;INSERT INTO guestbook ( comment, name ) VALUES ( &#x27;<span class="subst">$message</span>&#x27;, &#x27;<span class="subst">$name</span>&#x27; );&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="variable">$___mysqli_res</span> : <span class="literal">false</span>)) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//mysql_close();</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>知识点：</p>
+<p>①trim()函数</p>
+<p>trim() 函数移除字符串两侧的空白字符或其他预定义字符。</p>
+<ul>
+<li>“\0” - NULL</li>
+<li>“\t” - 制表符</li>
+<li>“\n” - 换行</li>
+<li>“\x0B” - 垂直制表符</li>
+<li>“\r” - 回车</li>
+<li>“ “ - 空格</li>
+</ul>
+<p>②stripslashes()函数</p>
+<p>删除反斜杠\</p>
+<p>③mysqli_real_escape_string()</p>
+<p>此函数用来对字符串中的特殊字符进行转义, 以使得这个字符串是一个合法的 SQL 语句。</p>
+<p>会被进行转义的字符包括： <code>NUL （ASCII 0），\n，\r，\，&#39;，&quot; 和       Control-Z</code>.   </p>
+<p>   low没有进行什么有效的防御直接进行注入即可</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xss20.png" alt="xss20"></p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xss21.png" alt="xss21"></p>
+<p>查看数据库可以发现</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xss22.png" alt="xss22"></p>
+<p>故每次从其它页面进入到这个页面都会自动弹出1337的alert窗口</p>
+<h3 id="Medium-1"><a href="#Medium-1" class="headerlink" title="Medium"></a>Medium</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_POST</span>[ <span class="string">&#x27;btnSign&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$message</span> = trim( <span class="variable">$_POST</span>[ <span class="string">&#x27;mtxMessage&#x27;</span> ] );</span><br><span class="line">    <span class="variable">$name</span>    = trim( <span class="variable">$_POST</span>[ <span class="string">&#x27;txtName&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Sanitize message input</span></span><br><span class="line">    <span class="variable">$message</span> = strip_tags( addslashes( <span class="variable">$message</span> ) );</span><br><span class="line">    <span class="variable">$message</span> = ((<span class="keyword">isset</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; is_object(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_real_escape_string(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$message</span> ) : ((trigger_error(<span class="string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="string">&quot;&quot;</span> : <span class="string">&quot;&quot;</span>));</span><br><span class="line">    <span class="variable">$message</span> = htmlspecialchars( <span class="variable">$message</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Sanitize name input</span></span><br><span class="line">    <span class="variable">$name</span> = str_replace( <span class="string">&#x27;&lt;script&gt;&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$name</span> );</span><br><span class="line">    <span class="variable">$name</span> = ((<span class="keyword">isset</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; is_object(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_real_escape_string(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$name</span> ) : ((trigger_error(<span class="string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="string">&quot;&quot;</span> : <span class="string">&quot;&quot;</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Update database</span></span><br><span class="line">    <span class="variable">$query</span>  = <span class="string">&quot;INSERT INTO guestbook ( comment, name ) VALUES ( &#x27;<span class="subst">$message</span>&#x27;, &#x27;<span class="subst">$name</span>&#x27; );&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="variable">$___mysqli_res</span> : <span class="literal">false</span>)) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//mysql_close();</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>和Low难度比起来，多了 <code>$message = strip_tags(addslashes(\$message ) );</code>这一步处理</p>
+<p>①addslashes() </p>
+<p>给预定义字符前面添加反斜杠【预定义字符：单引号‘、双引号“、反斜杠\、NULL】</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$str</span> = addslashes(<span class="string">&#x27;Shanghai is the &quot;biggest&quot; city in China.&#x27;</span>);</span><br><span class="line"><span class="comment">//output:Shanghai is the \&quot;biggest\&quot; city in China. </span></span><br></pre></td></tr></table></figure>
+
+<p>②strip_tags()</p>
+<p>strip_tags() 函数剥去字符串中的 HTML、XML 以及 PHP 的标签。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> strip_tags(<span class="string">&quot;Hello &lt;b&gt;world!&lt;/b&gt;&quot;</span>);<span class="comment">//output:Hello world</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>只对message部分进行了上述的过滤处理，name部分只过滤&lt;script&gt;的tag，所以可以从name部分下手</p>
+<p>只要不用tag&lt;script&gt;即可，或者用大小写、双重写这样也可</p>
+<h3 id="High-1"><a href="#High-1" class="headerlink" title="High"></a>High</h3><p>high和medium差不多</p>
+<p>只是对name增加了一个这样的过滤</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$name</span> = preg_replace( <span class="string">&#x27;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$name</span> ); </span><br></pre></td></tr></table></figure>
+
+<p>用其他的tag即可</p>
+<h3 id="Impossible-1"><a href="#Impossible-1" class="headerlink" title="Impossible"></a>Impossible</h3><p>name和message两部分都进行了htmlspecialchars，无法注入任何tag</p>
+<h2 id="DOM-XSS"><a href="#DOM-XSS" class="headerlink" title="DOM XSS"></a>DOM XSS</h2><h3 id="Low-2"><a href="#Low-2" class="headerlink" title="Low"></a>Low</h3><h3 id="Medium-2"><a href="#Medium-2" class="headerlink" title="Medium"></a>Medium</h3><p>php函数</p>
+<p>stripos() 函数查找字符串在另一字符串中第一次出现的位置（不区分大小写）。</p>
+<p>header() 函数向客户端发送原始的 HTTP 报头。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span> ( array_key_exists( <span class="string">&quot;default&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; !is_null (<span class="variable">$_GET</span>[ <span class="string">&#x27;default&#x27;</span> ]) ) &#123;</span><br><span class="line">    <span class="variable">$default</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;default&#x27;</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Do not allow script tags</span></span><br><span class="line">    <span class="keyword">if</span> (stripos (<span class="variable">$default</span>, <span class="string">&quot;&lt;script&quot;</span>) !== <span class="literal">false</span>) &#123;</span><br><span class="line">        header (<span class="string">&quot;location: ?default=English&quot;</span>);</span><br><span class="line">        <span class="keyword">exit</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>可以看到会过滤掉&lt;script的内容</p>
+<p>那么进行这样的注入应该没问题吧？</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xss23.png" alt="xss23"></p>
+<p>发现没有弹框弹出，查看一下源代码，发现注入内容称为option value的一部分，没有成为一个tag。因为select内部不能放除了option之外的标签。所以需要先手动将select闭合掉</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xss24.png" alt="xss24"></p>
+<p>闭合掉之后发现1337弹框正常弹出！</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xss25.png" alt="xss25"></p>
+<h3 id="High-2"><a href="#High-2" class="headerlink" title="High"></a>High</h3><h3 id="Impossible-2"><a href="#Impossible-2" class="headerlink" title="Impossible"></a>Impossible</h3>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/26/DOM%20based/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/11/06/C/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">H01iday</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

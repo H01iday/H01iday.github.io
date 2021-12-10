@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"h01iday.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Scan TypesTCP Connect scan（-sT）a TCP Connect scan works by performing the three-way handshake with each target port in turn. In other words, Nmap tries to connect to each specified TCP port, and deter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://h01iday.github.io/2021/09/10/nmap/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Scan TypesTCP Connect scan（-sT）a TCP Connect scan works by performing the three-way handshake with each target port in turn. In other words, Nmap tries to connect to each specified TCP port, and deter">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/SYN%20Scan.png">
+<meta property="article:published_time" content="2021-09-10T06:52:10.602Z">
+<meta property="article:modified_time" content="2021-09-05T11:07:16.019Z">
+<meta property="article:author" content="H01iday">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/blog/H01iday/source/_posts/pics/SYN%20Scan.png">
+
+
+<link rel="canonical" href="https://h01iday.github.io/2021/09/10/nmap/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://h01iday.github.io/2021/09/10/nmap/","path":"2021/09/10/nmap/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Scan-Types"><span class="nav-number">1.</span> <span class="nav-text">Scan Types</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-Connect-scan%EF%BC%88-sT%EF%BC%89"><span class="nav-number">1.0.1.</span> <span class="nav-text">TCP Connect scan（-sT）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SYN-Scans%EF%BC%88-sS%EF%BC%89-referred-to-as-%E2%80%9CHalf-open%E2%80%9D-scans-or-%E2%80%9CStealth%E2%80%9D-scans"><span class="nav-number">1.0.2.</span> <span class="nav-text">SYN Scans（-sS）[ referred to as “Half-open” scans, or “Stealth” scans.]</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UDP-scans%EF%BC%88-sU%EF%BC%89"><span class="nav-number">1.0.3.</span> <span class="nav-text">UDP scans（-sU）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NULL-FIN-and-Xmas-TCP-port-scans"><span class="nav-number">1.0.4.</span> <span class="nav-text">NULL, FIN and Xmas TCP port scans</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#NULL-scans-sN"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">NULL scans (-sN)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#FIN-scans-sF"><span class="nav-number">1.0.4.2.</span> <span class="nav-text">FIN scans (-sF)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Xmas-scans-sX"><span class="nav-number">1.0.4.3.</span> <span class="nav-text">Xmas scans (-sX)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ICMP-Networking-Scanning"><span class="nav-number">1.0.5.</span> <span class="nav-text">ICMP Networking Scanning</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NSE-Script"><span class="nav-number">1.0.6.</span> <span class="nav-text">NSE Script</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">H01iday</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://h01iday.github.io/2021/09/10/nmap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="H01iday">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-09-10 14:52:10" itemprop="dateCreated datePublished" datetime="2021-09-10T14:52:10+08:00">2021-09-10</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-09-05 19:07:16" itemprop="dateModified" datetime="2021-09-05T19:07:16+08:00">2021-09-05</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="Scan-Types"><a href="#Scan-Types" class="headerlink" title="Scan Types"></a>Scan Types</h2><h4 id="TCP-Connect-scan（-sT）"><a href="#TCP-Connect-scan（-sT）" class="headerlink" title="TCP Connect scan（-sT）"></a>TCP Connect scan（-sT）</h4><p>a TCP Connect scan works by performing the three-way handshake with each target port in turn. In other words, Nmap tries to connect to each specified TCP port, and determines whether the service is open by the response it receives.</p>
+<p>检测某个端口是否open，对该端口发起三次握手，对目标服务器发送设置SYN的packet，发起第一次握手</p>
+<p>可能1：端口关闭，目标服务器返回带有RST(Reset)的packet</p>
+<p>可能2：端口打开，目标服务器返回SYN/ACK的packet</p>
+<p>可能3：数据包被目标端的防火墙拦截。即filtered。则目标服务器收不到请求packet。如果将防火墙设置为返回RST【 it is very easy to configure a firewall to respond with a RST TCP packet.This can make it extremely difficult (if not impossible即使并非不可能) to get an accurate reading of the target(s).】</p>
+<h4 id="SYN-Scans（-sS）-referred-to-as-“Half-open”-scans-or-“Stealth”-scans"><a href="#SYN-Scans（-sS）-referred-to-as-“Half-open”-scans-or-“Stealth”-scans" class="headerlink" title="SYN Scans（-sS）[ referred to as “Half-open” scans, or “Stealth” scans.]"></a>SYN Scans（-sS）[ referred to as “<em>Half-open”</em> scans, or <em>“Stealth”</em> scans.]</h4><p>和TCP Connect scan相比， SYN scans sends back a RST TCP packet after receiving a SYN/ACK from the server (this prevents the server from repeatedly trying to make the request). </p>
+<img src="D:\blog\H01iday\source\_posts\pics\SYN Scan.png" alt="SYN Scan" style="zoom:67%;" />
+
+<p>好处1：逃过老的入侵检测系统的发现。因为这些检测系统都在检测<code>full three way handshake</code></p>
+<p>好处2：侦听开放端口的应用程序不会记录SYN Scans，理由同上</p>
+<p>好处3：无需完全建立连接，故也无需四次分手。速度快</p>
+<p>handle open port：发送RST</p>
+<p>handle closed/filtered port：和TCP Connect scan一样</p>
+<p>坏处1：需要sudo权限(linux)。因为SYN Scans需要能够建立原始数据包(which is root user的权限)</p>
+<p><strong>【Nmap默认scan：SYN scan（有sudo权限）；TCP Connect scan（无sudo权限）】</strong></p>
+<h4 id="UDP-scans（-sU）"><a href="#UDP-scans（-sU）" class="headerlink" title="UDP scans（-sU）"></a>UDP scans（-sU）</h4><p>packet发送给UDP port</p>
+<p>无响应：Nmap认为该端口open|filtered</p>
+<p>有响应：响应返回ICMP(ping) packet containing a message that the port is unreachable.</p>
+<p>scan花费时间很长，scan前1000个端口需要20mins。故<code>--top-ports &lt;number&gt;</code></p>
+<p>scanning with <code>nmap -sU --top-ports 20 &lt;target&gt;</code>. 会scan最常使用的前20个port</p>
+<h4 id="NULL-FIN-and-Xmas-TCP-port-scans"><a href="#NULL-FIN-and-Xmas-TCP-port-scans" class="headerlink" title="NULL, FIN and Xmas TCP port scans"></a>NULL, FIN and Xmas TCP port scans</h4><h5 id="NULL-scans-sN"><a href="#NULL-scans-sN" class="headerlink" title="NULL scans (-sN)"></a>NULL scans (-sN)</h5><p>TCP request is sent with no flags set at all.</p>
+<p>Nmap expects a RST if the port is closed.</p>
+<p>If the port is open then there is no response</p>
+<h5 id="FIN-scans-sF"><a href="#FIN-scans-sF" class="headerlink" title="FIN scans (-sF)"></a>FIN scans (-sF)</h5><p>TCP request is sent with the FIN flag</p>
+<p>Nmap expects a RST if the port is closed.</p>
+<p>If the port is open then there is no response</p>
+<h5 id="Xmas-scans-sX"><a href="#Xmas-scans-sX" class="headerlink" title="Xmas scans (-sX)"></a>Xmas scans (-sX)</h5><p>TCP request发送格式错误的数据包 sets (PSH, URG and FIN)【正常情况下的数据包这三个参数不能同时置1】</p>
+<p>Nmap expects a RST if the port is closed.</p>
+<p>If the port is open then there is no response</p>
+<p>open/filtered都没有response。有时可以判断出filtered是因为返回了ICMP unreachable packet</p>
+<p>故：</p>
+<p>状态1：open/filtered无返回</p>
+<p>状态2：filtered返回了ICMP unreachable packet</p>
+<p>状态3：closed返回了RST的packet</p>
+<p>【特殊情况】</p>
+<p>Microsoft Windows (and a lot of Cisco network devices)，对所有格式错误数据包都返回RST，不管端口是否开放。这种情况无法判断</p>
+<h4 id="ICMP-Networking-Scanning"><a href="#ICMP-Networking-Scanning" class="headerlink" title="ICMP Networking Scanning"></a>ICMP Networking Scanning</h4><p>查看哪些IP地址包含活动主机</p>
+<p>Nmap sends an ICMP packet to each possible IP address for the specified network. When it receives a response, it marks the IP address that responded as being alive. </p>
+<p><code>nmap -sn 192.168.0.1-254</code>即ping192.168.0.1-254里面所有主机</p>
+<p><code>nmap -sn 192.168.0.0/24</code>同上</p>
+<h4 id="NSE-Script"><a href="#NSE-Script" class="headerlink" title="NSE Script"></a>NSE Script</h4><p>运行特定的脚本<code>--script=&lt;script-name&gt;</code>  e.g. <code>--script=http-fileupload-exploiter</code>.</p>
+<p>同时运行多个脚本，用逗号隔开<code>--script=smb-enum-users,smb-enum-shares</code></p>
+<p>如何添加参数 使用<code>--script-args</code>  例<code>nmap -p 80 --script http-put --script-args http-put.url=&#39;/dav/shell.php&#39;,http-put.file=&#39;./shell.php&#39;</code></p>
+<p>关于特定script的帮助文档<code> nmap --script-help &lt;script-name&gt;</code>可以查看对应script的信息</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/10/linux/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/10/OWASP/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">H01iday</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

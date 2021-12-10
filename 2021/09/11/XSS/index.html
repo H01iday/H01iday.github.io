@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"h01iday.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="xss攻击种类 Reflected XSS Stored XSS DOM-based XSS  Reflected XSS 反射型XSS  ①用户正常登录应用程序，得到一个包含会话令牌的 cookie：  ②攻击者通过某种方法向用户提交以下 URL，这个URL包含嵌入式 JavaScript 代码：  ③ 用户从应用程序中访问攻击者传送给他的URL。 ④服务器响应用户的请求。由于应用程序中存在XS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://h01iday.github.io/2021/09/11/XSS/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="xss攻击种类 Reflected XSS Stored XSS DOM-based XSS  Reflected XSS 反射型XSS  ①用户正常登录应用程序，得到一个包含会话令牌的 cookie：  ②攻击者通过某种方法向用户提交以下 URL，这个URL包含嵌入式 JavaScript 代码：  ③ 用户从应用程序中访问攻击者传送给他的URL。 ④服务器响应用户的请求。由于应用程序中存在XS">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/反射xss.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/反射xss1.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/反射xss1.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/反射xss3.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/反射xss4.png">
+<meta property="article:published_time" content="2021-09-11T08:12:46.606Z">
+<meta property="article:modified_time" content="2021-10-29T08:16:10.653Z">
+<meta property="article:author" content="H01iday">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/blog/H01iday/source/_posts/pics/反射xss.png">
+
+
+<link rel="canonical" href="https://h01iday.github.io/2021/09/11/XSS/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://h01iday.github.io/2021/09/11/XSS/","path":"2021/09/11/XSS/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#xss%E6%94%BB%E5%87%BB%E7%A7%8D%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">xss攻击种类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reflected-XSS-%E5%8F%8D%E5%B0%84%E5%9E%8BXSS"><span class="nav-number">2.</span> <span class="nav-text">Reflected XSS 反射型XSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stored-XSS"><span class="nav-number">3.</span> <span class="nav-text">Stored XSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM-XSS"><span class="nav-number">4.</span> <span class="nav-text">DOM XSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%AF%E7%A7%AF%E7%9F%A5%E8%AF%86%E7%82%B9%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">累积知识点：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#lt-body-gt-%E6%A0%87%E7%AD%BE%EF%BC%9A"><span class="nav-number">5.1.</span> <span class="nav-text">&lt;body&gt;标签：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lt-video-gt-%E6%A0%87%E7%AD%BE"><span class="nav-number">5.2.</span> <span class="nav-text">&lt;video&gt;标签:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lt-style-gt-%E6%A0%87%E7%AD%BE%EF%BC%9A"><span class="nav-number">5.3.</span> <span class="nav-text">&lt;style&gt;标签：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaScript-escape-%E5%87%BD%E6%95%B0"><span class="nav-number">5.4.</span> <span class="nav-text">JavaScript escape()函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Javascript-unescape-%E5%87%BD%E6%95%B0"><span class="nav-number">5.5.</span> <span class="nav-text">Javascript unescape()函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaScript-location-hash%E5%B1%9E%E6%80%A7"><span class="nav-number">5.6.</span> <span class="nav-text">JavaScript location.hash属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#location-search%E5%B1%9E%E6%80%A7"><span class="nav-number">5.7.</span> <span class="nav-text">location.search属性</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">H01iday</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://h01iday.github.io/2021/09/11/XSS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="H01iday">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-09-11 16:12:46" itemprop="dateCreated datePublished" datetime="2021-09-11T16:12:46+08:00">2021-09-11</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-10-29 16:16:10" itemprop="dateModified" datetime="2021-10-29T16:16:10+08:00">2021-10-29</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="xss攻击种类"><a href="#xss攻击种类" class="headerlink" title="xss攻击种类"></a>xss攻击种类</h3><ol>
+<li>Reflected XSS</li>
+<li>Stored XSS</li>
+<li>DOM-based XSS</li>
+</ol>
+<h3 id="Reflected-XSS-反射型XSS"><a href="#Reflected-XSS-反射型XSS" class="headerlink" title="Reflected XSS 反射型XSS"></a>Reflected XSS 反射型XSS</h3><img src="D:\blog\H01iday\source\_posts\pics\反射xss.png" alt="反射xss" style="zoom: 80%;" />
+
+<p>①用户正常登录应用程序，得到一个包含会话令牌的 cookie：</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\反射xss1.png" alt="反射xss1"></p>
+<p>②攻击者通过某种方法向用户提交以下 URL，这个URL包含嵌入式 JavaScript 代码：</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\反射xss1.png" alt="反射xss1"></p>
+<p>③ 用户从应用程序中访问攻击者传送给他的URL。</p>
+<p>④服务器响应用户的请求。由于应用程序中存在XSS漏洞，响应中包含攻击者创建的 JavaScript代码。</p>
+<p>⑤用户浏览器收到攻击者的JavaScript代码，像执行从应用程序收到的其他代码一样，浏览器执行这段代码。</p>
+<p>⑥攻击者创建的恶意JavaScript代码为：</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\反射xss3.png" alt="反射xss3"></p>
+<p>⑦这段代码可让用户浏览器向wahh-attacker.com（攻击者拥有的一个域）提出一个请求。请求中包含用户访问应用程序的当前会话令牌：</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\反射xss4.png" alt="反射xss4"></p>
+<p>⑧攻击者监控访问wahh-attacker.com的请求并截获到用户的请求。劫持到用户的会话令牌，从而可以通过该令牌代表用户登录应用程序。</p>
+<h3 id="Stored-XSS"><a href="#Stored-XSS" class="headerlink" title="Stored XSS"></a>Stored XSS</h3><p> Stored XSS is when code is able to be stored on a web page where users can navigate to the page (or load it by some other means like an iframe) and the code will always be executed. This is arguably one of the most dangerous forms of XSS as it is impossible to detect without reading the page (and possibly executing the code).</p>
+<p>【我认为反射性XSS和存储型XSS的区别是在于：反射性是需要诱骗用户去点击特定的URL才能触发，如果用户不点击对应的URL就没有危险；但是存储型是我只要进去这个网页，xss代码就会自动从数据库返回并在我的浏览器执行，所以存储型的xss非常危险】</p>
+<h3 id="DOM-XSS"><a href="#DOM-XSS" class="headerlink" title="DOM XSS"></a>DOM XSS</h3><p>DOM XSS的XSS代码不需要服务端解析响应的直接参与，<strong>触发XSS的是浏览器端的DOM解析</strong></p>
+<h3 id="累积知识点："><a href="#累积知识点：" class="headerlink" title="累积知识点："></a>累积知识点：</h3><h4 id="lt-body-gt-标签："><a href="#lt-body-gt-标签：" class="headerlink" title="&lt;body&gt;标签："></a>&lt;body&gt;标签：</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">alert(1)</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onpageshow</span>=<span class="string">alert(1)</span>&gt;</span> //用户浏览网页时出发JavaScript</span><br></pre></td></tr></table></figure>
+
+<h4 id="lt-video-gt-标签"><a href="#lt-video-gt-标签" class="headerlink" title="&lt;video&gt;标签:"></a>&lt;video&gt;标签:</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">video</span> <span class="attr">onloadstart</span>=<span class="string">alert(1)</span> <span class="attr">src</span>=<span class="string">&quot;/media/hack-the-planet.mp4&quot;</span> /&gt;</span>//视频开始加载时执行JavaScript</span><br></pre></td></tr></table></figure>
+
+<h4 id="lt-style-gt-标签："><a href="#lt-style-gt-标签：" class="headerlink" title="&lt;style&gt;标签："></a>&lt;style&gt;标签：</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">onload</span>=<span class="string">alert(1)</span>&gt;</span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="JavaScript-escape-函数"><a href="#JavaScript-escape-函数" class="headerlink" title="JavaScript escape()函数"></a>JavaScript escape()函数</h4><p>对字符串进行编码，则可以在所有计算机上读取该字符串</p>
+<p>不会对字母和数字编码，也不对* @ - _ + . / 。编码。其它字符会替换为十六进制转义序列</p>
+<h4 id="Javascript-unescape-函数"><a href="#Javascript-unescape-函数" class="headerlink" title="Javascript unescape()函数"></a>Javascript unescape()函数</h4><p>解码被escape函数编码的内容</p>
+<h4 id="JavaScript-location-hash属性"><a href="#JavaScript-location-hash属性" class="headerlink" title="JavaScript location.hash属性"></a>JavaScript location.hash属性</h4><p>该字符串是 URL 的锚部分（从 # 号开始的部分）。</p>
+<p>例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL：http:<span class="comment">//www.runoob.com/test.htm＃PART2</span></span><br><span class="line"><span class="built_in">document</span>.write(location.hash);</span><br><span class="line">》》#part2</span><br></pre></td></tr></table></figure>
+
+<h4 id="location-search属性"><a href="#location-search属性" class="headerlink" title="location.search属性"></a>location.search属性</h4><p>search 属性是一个可读可写的字符串，可设置或返回当前 URL 的查询部分（问号 ? 之后的部分）</p>
+<p>例：假设当前的URL就是<a target="_blank" rel="noopener" href="http://www.runoob.com/submit.htm?email=someone@example.com">http://www.runoob.com/submit.htm?email=someone@example.com</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript"><span class="built_in">document</span>.write(location.search);</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">返回的结果</span><br><span class="line">》》?email=someone@example.com</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/11/sqllab/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/13/XSS-steal%20cookies/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">H01iday</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

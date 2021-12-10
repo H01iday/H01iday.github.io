@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"h01iday.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="01.evaleval(String $code) 把字符串$code作为php代码执行  02.assertassert — 检查一个断言是否为 **false**，如果是false，则根据 assert_options 的设置进行一些操作 PHP5： assert(mixed $assertion, string $description &#x3D; ?) PHP 7：assert mixed $as">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://h01iday.github.io/2021/10/09/%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="01.evaleval(String $code) 把字符串$code作为php代码执行  02.assertassert — 检查一个断言是否为 **false**，如果是false，则根据 assert_options 的设置进行一些操作 PHP5： assert(mixed $assertion, string $description &#x3D; ?) PHP 7：assert mixed $as">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/ec1.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/ec2.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/ec3.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/ec4.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/ec5.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/ec6.png">
+<meta property="article:published_time" content="2021-10-09T13:40:45.322Z">
+<meta property="article:modified_time" content="2021-10-10T08:06:57.008Z">
+<meta property="article:author" content="H01iday">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/blog/H01iday/source_posts/pics/ec1.png">
+
+
+<link rel="canonical" href="https://h01iday.github.io/2021/10/09/%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://h01iday.github.io/2021/10/09/%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/","path":"2021/10/09/代码执行漏洞/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#01-eval"><span class="nav-number">1.</span> <span class="nav-text">01.eval</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#02-assert"><span class="nav-number">2.</span> <span class="nav-text">02.assert</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#03call-user-func"><span class="nav-number">3.</span> <span class="nav-text">03call_user_func</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#04call-user-func-array"><span class="nav-number">4.</span> <span class="nav-text">04call_user_func_array</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#05create-function"><span class="nav-number">5.</span> <span class="nav-text">05create_function</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#06array-map"><span class="nav-number">6.</span> <span class="nav-text">06array_map</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#07preg-replace"><span class="nav-number">7.</span> <span class="nav-text">07preg_replace</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#08%E5%8F%AF%E5%8F%98%E5%87%BD%E6%95%B0"><span class="nav-number">8.</span> <span class="nav-text">08可变函数</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">H01iday</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://h01iday.github.io/2021/10/09/%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="H01iday">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-10-09 21:40:45" itemprop="dateCreated datePublished" datetime="2021-10-09T21:40:45+08:00">2021-10-09</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-10-10 16:06:57" itemprop="dateModified" datetime="2021-10-10T16:06:57+08:00">2021-10-10</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="01-eval"><a href="#01-eval" class="headerlink" title="01.eval"></a>01.eval</h1><p><strong>eval(String $code)</strong></p>
+<p>把<strong>字符串$code</strong>作为php代码执行</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\ec1.png" alt="ec1"></p>
+<h1 id="02-assert"><a href="#02-assert" class="headerlink" title="02.assert"></a>02.assert</h1><p>assert — 检查一个断言是否为 **<code>false</code>**，如果是false，则根据 assert_options 的设置进行一些操作</p>
+<p><strong>PHP5： assert(mixed <code>$assertion</code>, string <code>$description</code> = ?)</strong></p>
+<p><strong>PHP 7：assert mixed <code>$assertion</code>, Throwable <code>$exception</code> = ?)</strong></p>
+<p>[mixed指的是任何类型都可以]</p>
+<p>如果 <code>assertion</code> 是字符串，它将会被 <strong>assert()</strong> 当做 PHP 代码来执行。</p>
+<p><strong>assert()</strong> 的行为可以通过 assert_options($signal, $value) 来配置</p>
+<table>
+<thead>
+<tr>
+<th align="left">标志</th>
+<th align="left">INI 设置</th>
+<th align="left">默认值</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">ASSERT_ACTIVE</td>
+<td align="left">assert.active</td>
+<td align="left">1</td>
+<td align="left">启用 <a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/function.assert.php">assert()</a> 断言</td>
+</tr>
+<tr>
+<td align="left">ASSERT_WARNING</td>
+<td align="left">assert.warning</td>
+<td align="left">1</td>
+<td align="left">为每个失败的断言产生一个 PHP 警告（warning）</td>
+</tr>
+<tr>
+<td align="left">ASSERT_BAIL</td>
+<td align="left">assert.bail</td>
+<td align="left">0</td>
+<td align="left">在断言失败时中止执行</td>
+</tr>
+<tr>
+<td align="left">ASSERT_QUIET_EVAL</td>
+<td align="left">assert.quiet_eval</td>
+<td align="left">0</td>
+<td align="left">在断言表达式求值时禁用 error_reporting</td>
+</tr>
+<tr>
+<td align="left">ASSERT_CALLBACK</td>
+<td align="left">assert.callback</td>
+<td align="left">(null)有则为对应函数</td>
+<td align="left">断言失败时调用回调函数</td>
+</tr>
+</tbody></table>
+<p><img src="D:\blog\H01iday\source_posts\pics\ec2.png" alt="ec2"></p>
+<h1 id="03call-user-func"><a href="#03call-user-func" class="headerlink" title="03call_user_func"></a>03call_user_func</h1><p><strong>call_user_func(callable<code>$callback</code>, mixed <code>$parameter</code> = ?, mixed<code>$...</code> = ?)</strong></p>
+<p>callable的函数有哪些？</p>
+<p>PHP是将函数以string形式传递的。 </p>
+<p>可以使用任何内置或用户自定义函数</p>
+<p>==<strong>但除了语言结构例如：array()，echo，empty()，eval()，exit()，isset()，list()，print 或 unset()。</strong>==</p>
+<p>$callback为被调用的回调函数</p>
+<p>其余参数为$callback函数的参数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">barber</span>(<span class="params"><span class="variable">$type</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;You wanted a <span class="subst">$type</span> haircut, no problem\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line">call_user_func(<span class="string">&#x27;barber&#x27;</span>, <span class="string">&quot;mushroom&quot;</span>);<span class="comment">//output:You wanted a mushroom haircut, no problem</span></span><br><span class="line">call_user_func(<span class="string">&#x27;barber&#x27;</span>, <span class="string">&quot;shave&quot;</span>);<span class="comment">//output:You wanted a shave haircut, no problem</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="D:\blog\H01iday\source_posts\pics\ec3.png" alt="ec3"></p>
+<h1 id="04call-user-func-array"><a href="#04call-user-func-array" class="headerlink" title="04call_user_func_array"></a>04call_user_func_array</h1><p><strong>call_user_func_array(callable <code>$callback</code>, array <code>$param_arr</code>)</strong></p>
+<p>$callback为被调用的回调函数</p>
+<p>$param_arr为参数数组</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foobar</span>(<span class="params"><span class="variable">$arg</span>, <span class="variable">$arg2</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="keyword">__FUNCTION__</span>, <span class="string">&quot; got <span class="subst">$arg</span> and <span class="subst">$arg2</span>\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Call the foobar() function with 2 arguments</span></span><br><span class="line">call_user_func_array(<span class="string">&quot;foobar&quot;</span>, <span class="keyword">array</span>(<span class="string">&quot;one&quot;</span>, <span class="string">&quot;two&quot;</span>));<span class="comment">//output:foobar got one and two</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="05create-function"><a href="#05create-function" class="headerlink" title="05create_function"></a>05create_function</h1><p>Create an anonymous function</p>
+<p><strong>create_function(string <code>$args</code>, string <code>$code</code>)</strong></p>
+<p>通过$args参数，和code创建一个匿名函数。</p>
+<p>返回值：unique function name as a string, or <strong><code>false</code></strong> on error.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">  <span class="variable">$newfun</span> = create_function(<span class="string">&#x27;$a&#x27;</span>,<span class="string">&#x27;return &quot;I Love $a&quot;;&#x27;</span>);</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;newfunc:<span class="subst">$newfun</span>&quot;</span>;<span class="comment">//output:   newfunc:lambda_1【这是任意给的函数名】</span></span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;&lt;/br&gt;&quot;</span>;</span><br><span class="line">  <span class="keyword">echo</span> <span class="variable">$newfun</span>(<span class="string">&quot;apple&quot;</span>);<span class="comment">//output:I Love apple</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$id</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line">    <span class="variable">$code</span>=<span class="string">&#x27;echo&#x27;</span>.<span class="variable">$para</span>.<span class="string">&#x27;test&#x27;</span>.<span class="variable">$id</span>.<span class="string">&#x27;.&#x27;</span>;</span><br><span class="line">    create_function(<span class="string">&#x27;$para&#x27;</span>,<span class="variable">$code</span>);</span><br><span class="line"> <span class="meta">?&gt;</span></span><br><span class="line">==========================将虚拟函数转化为===================</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$id</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line">    <span class="variable">$code</span>=<span class="string">&#x27;echo &#x27;</span>.<span class="variable">$para</span>.<span class="string">&#x27;test&#x27;</span>.<span class="variable">$id</span>.<span class="string">&#x27;.&#x27;</span>;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">func</span>(<span class="params"><span class="variable">$para</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$para</span>.<span class="string">&#x27;test&#x27;</span>.<span class="variable">$id</span>.<span class="string">&#x27;.&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> <span class="meta">?&gt;</span></span><br><span class="line"> 如果将id设为：<span class="number">1</span>;&#125;phpinfo();<span class="comment">/*</span></span><br><span class="line"><span class="comment">=========================分割线=============================*/</span>[为了下面美观，我这里手动闭合一下]</span><br><span class="line"> 那么代码将变为</span><br><span class="line"> <span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$id</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line">    <span class="variable">$code</span>=<span class="string">&#x27;echo &#x27;</span>.<span class="variable">$para</span>.<span class="string">&#x27;test&#x27;</span>.<span class="variable">$id</span>.<span class="string">&#x27;.&#x27;</span>;</span><br><span class="line">    create_function(<span class="string">&#x27;$para&#x27;</span>,<span class="variable">$code</span>);</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">func</span>(<span class="params"><span class="variable">$para</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$para</span>.<span class="string">&#x27;test&#x27;</span><span class="number">.1</span>;&#125;phpinfo();<span class="comment">/*.&#x27;.&#x27;;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment"> ?&gt;</span></span><br><span class="line"><span class="comment"> =====================整理一下==============================*/</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$id</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line">    <span class="variable">$code</span>=<span class="string">&#x27;echo &#x27;</span>.<span class="variable">$para</span>.<span class="string">&#x27;test&#x27;</span>.<span class="variable">$id</span>.<span class="string">&#x27;.&#x27;</span>;</span><br><span class="line">    create_function(<span class="string">&#x27;$para&#x27;</span>,<span class="variable">$code</span>);</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">func</span>(<span class="params"><span class="variable">$para</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$para</span>.<span class="string">&#x27;test&#x27;</span><span class="number">.1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	phpinfo();<span class="comment">/*后面的内容不管是什么都被注释掉了</span></span><br><span class="line"><span class="comment">	.&#x27;.&#x27;;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment"> ?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>再举一个栗子：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$c</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="variable">$lambda</span>=create_function(<span class="string">&#x27;$a,$b&#x27;</span>,<span class="string">&quot;return (strlen(<span class="subst">$a</span>)-strlen(<span class="subst">$b</span>)+&quot;</span> . <span class="string">&quot;strlen(<span class="subst">$c</span>));&quot;</span>);</span><br><span class="line">    <span class="variable">$array</span>=<span class="keyword">array</span>(<span class="string">&#x27;reall long string here,boy&#x27;</span>,<span class="string">&#x27;this&#x27;</span>,<span class="string">&#x27;midding lenth&#x27;</span>,<span class="string">&#x27;larget&#x27;</span>);</span><br><span class="line">    usort(<span class="variable">$array</span>,<span class="variable">$lambda</span>);</span><br><span class="line">    print_r(<span class="variable">$array</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">注入【?c=<span class="number">1</span>));&#125;phpinfo();<span class="comment">/*】</span></span><br><span class="line"><span class="comment">========================这里的$c其实作用就是，提供一个注入口，因为它从GET来。 下面分析==========================</span></span><br><span class="line"><span class="comment">$lambda=create_function(&#x27;$a,$b&#x27;,&quot;return (strlen($a)-strlen($b)+&quot; . &quot;strlen(1));&#125;phpinfo();/*));&quot;);</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">======*/</span>美观匿名函数实际</span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">func</span>(<span class="params"><span class="variable">$a</span>,<span class="variable">$b</span></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (strlen(<span class="variable">$a</span>)-strlen(<span class="variable">$b</span>)+<span class="string">&quot; . &quot;</span>strlen(<span class="number">1</span>));&#125;phpinfo();<span class="comment">/*));</span></span><br><span class="line"><span class="comment"> &#125;</span></span><br><span class="line"><span class="comment"> ===*/</span>美观</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">func</span>(<span class="params"><span class="variable">$a</span>,<span class="variable">$b</span></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (strlen(<span class="variable">$a</span>)-strlen(<span class="variable">$b</span>)+<span class="string">&quot; . &quot;</span>strlen(<span class="number">1</span>));</span><br><span class="line"> &#125;</span><br><span class="line">	phpinfo();<span class="comment">/*));后面的内容都被注释掉了</span></span><br><span class="line"><span class="comment"> &#125;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="06array-map"><a href="#06array-map" class="headerlink" title="06array_map"></a>06array_map</h1><p> 为数组的每个元素应用回调函数</p>
+<p><strong>array_map(callable $callback, array $array, array …$arrays)</strong></p>
+<p>返回数组，是为 <code>array</code> 每个元素应用 <code>callback</code>函数之后的数组。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">cube</span>(<span class="params"><span class="variable">$n</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (<span class="variable">$n</span> * <span class="variable">$n</span> * <span class="variable">$n</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$a</span> = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"><span class="variable">$b</span> = array_map(<span class="string">&#x27;cube&#x27;</span>, <span class="variable">$a</span>);</span><br><span class="line">print_r(<span class="variable">$b</span>);<span class="comment">//output:Array ( [0] =&gt; 1 [1] =&gt; 8 [2] =&gt; 27 [3] =&gt; 64 [4] =&gt; 125 )</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="D:\blog\H01iday\source_posts\pics\ec4.png" alt="ec4"></p>
+<h1 id="07preg-replace"><a href="#07preg-replace" class="headerlink" title="07preg_replace"></a>07preg_replace</h1><p>preg_replace — 执行一个正则表达式的搜索和替换</p>
+<p>搜索 <code>subject</code> 中匹配 <code>pattern</code> 的部分，以 <code>replacement</code> 进行替换。</p>
+<p>preg_replace(<br>    string|array $pattern,<br>    string|array $replacement,<br>    string|array $subject,<br>    int $limit = -1,<br>    int &amp;$count = null<br>)</p>
+<p>limit<br>每个模式在每个 subject 上进行替换的最大次数。默认是 -1(无限)。</p>
+<p>count<br>如果指定，将会被填充为完成的替换次数。//替换完得到count的值</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$string</span> = <span class="string">&#x27;The quick brown fox jumps over the lazy dog.&#x27;</span>;</span><br><span class="line"><span class="variable">$patterns</span> = <span class="keyword">array</span>();</span><br><span class="line"><span class="variable">$patterns</span>[<span class="number">0</span>] = <span class="string">&#x27;/quick/&#x27;</span>;</span><br><span class="line"><span class="variable">$patterns</span>[<span class="number">1</span>] = <span class="string">&#x27;/brown/&#x27;</span>;</span><br><span class="line"><span class="variable">$patterns</span>[<span class="number">2</span>] = <span class="string">&#x27;/fox/&#x27;</span>;</span><br><span class="line"><span class="variable">$replacements</span> = <span class="keyword">array</span>();</span><br><span class="line"><span class="variable">$replacements</span>[<span class="number">0</span>] = <span class="string">&#x27;slow&#x27;</span>;</span><br><span class="line"><span class="variable">$replacements</span>[<span class="number">1</span>] = <span class="string">&#x27;black&#x27;</span>;</span><br><span class="line"><span class="variable">$replacements</span>[<span class="number">2</span>] = <span class="string">&#x27;bear&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> preg_replace(<span class="variable">$patterns</span>, <span class="variable">$replacements</span>, <span class="variable">$string</span>);<span class="comment">//output:The slow black bear jumps over the lazy dog.</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>正则表达式中的/e模式的作用是将替换串中的内容当作代码来执行，/e模式是php语言才有的【/e对高版本php已不适用】</p>
+<img src="D:\blog\H01iday\source\_posts\pics\ec5.png" alt="ec5" style="zoom:67%;" />
+
+<h1 id="08可变函数"><a href="#08可变函数" class="headerlink" title="08可变函数"></a>08可变函数</h1><p>意味着如果一个<strong>变量名</strong>【即$xxx】后有圆括号，PHP 将寻找与变量的值同名的函数，并且尝试执行它。</p>
+<p>可变函数不能用于例如 echo，print，unset()，isset()，empty()，include，require 以及类似的语言结构。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;In foo()&lt;br /&gt;\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"><span class="variable">$arg</span> = <span class="string">&#x27;&#x27;</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;In bar(); argument was &#x27;<span class="subst">$arg</span>&#x27;.&lt;br /&gt;\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 echo 的包装函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">echoit</span>(<span class="params"><span class="variable">$string</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$func</span> = <span class="string">&#x27;foo&#x27;</span>;</span><br><span class="line"><span class="variable">$func</span>();        <span class="comment">//output: In foo()</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$func</span> = <span class="string">&#x27;bar&#x27;</span>;</span><br><span class="line"><span class="variable">$func</span>(<span class="string">&#x27;test&#x27;</span>);  <span class="comment">//output: In bar(); argument was &#x27;test&#x27;.</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$func</span> = <span class="string">&#x27;echoit&#x27;</span>;</span><br><span class="line"><span class="variable">$func</span>(<span class="string">&#x27;test&#x27;</span>);  <span class="comment">//output: test</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="D:\blog\H01iday\source_posts\pics\ec6.png" alt="ec6"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/09/(OS%20command%20injection)%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%90%84%E7%A7%8D%E7%BB%95%E8%BF%87%E6%96%B9%E5%BC%8F/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/10/10/SSRF/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">H01iday</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

